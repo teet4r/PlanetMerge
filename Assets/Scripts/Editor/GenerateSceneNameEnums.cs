@@ -29,28 +29,6 @@ public class GenerateSceneNameEnums : Editor
                 enums.AppendLine($"\t{scene.path.Substring(lastSlash + 1, period - (lastSlash + 1))},");
             }
 
-            //StreamReader sr = new("ProjectSettings/EditorBuildSettings.asset");
-            //string line;
-
-            //while (!(line = sr.ReadLine()).Contains("m_Scenes"));
-
-            //while (true)
-            //{
-            //    var enabled = sr.ReadLine();
-            //    if (!enabled.Contains("enabled"))
-            //        break;
-            //    var isEnabled = enabled[enabled.Length - 1] == '1';
-
-            //    var path = sr.ReadLine();
-            //    if (isEnabled)
-            //    {
-            //        var tokens = path.Split('/');
-            //        enums.AppendLine($"\t{tokens[tokens.Length - 1].Replace(".unity", ",")}");
-            //    }
-
-            //    var guid = sr.ReadLine();
-            //}
-
             StringBuilder script = new();
 
             script.AppendLine("public enum SceneName")

@@ -12,6 +12,11 @@ public class UIMainPopup : UI
 
     private void Awake()
     {
+        _playButton.onClick.AddListener(() =>
+        {
+            CustomSceneManager.LoadScene(SceneName.Play);
+        });
+
         _howToButton.onClick.AddListener(() =>
         {
             UIManager.Show<UIHowToPopup>();

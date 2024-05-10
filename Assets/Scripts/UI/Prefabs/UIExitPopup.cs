@@ -26,6 +26,7 @@ public class UIExitPopup : UI
         _yesButton.onClick.AddListener(() =>
         {
             Application.Quit();
+            SFX.Play(Sfx.Button);
         });
     }
 }
