@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,8 +24,13 @@ public class FirstSceneLoader
 
 public class CustomSceneManager : SingletonBehaviour<CustomSceneManager>
 {
-    public static void LoadScene(SceneName sceneName)
+    public static async UniTask LoadSceneAsync(SceneName sceneName)
     {
-        SceneManager.LoadScene((int)sceneName);
+        await SceneManager.LoadSceneAsync((int)SceneName.Empty);
+        
+        UIManager.HideAll();
+        ObjectPoolManager.HideAll();
+
+        await SceneManager.LoadSceneAsync((int)sceneName);
     }
 }

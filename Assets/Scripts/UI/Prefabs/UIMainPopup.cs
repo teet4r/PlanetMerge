@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,8 @@ public class UIMainPopup : UI
     {
         _playButton.onClick.AddListener(() =>
         {
-            CustomSceneManager.LoadScene(SceneName.Play);
+            SFX.Play(Sfx.Button);
+            CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
         });
 
         _howToButton.onClick.AddListener(() =>

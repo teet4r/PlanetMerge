@@ -46,6 +46,12 @@ public class UIManager : SingletonBehaviour<UIManager>
         return ui;
     }
 
+    public static void HideAll()
+    {
+        foreach (var ui in _uiPool.Values)
+            ui.Hide();
+    }
+
     public static void ClearAll()
     {
         foreach (var ui in _uiPool.Values)
