@@ -104,9 +104,14 @@ public class ObjectPoolManager : SingletonBehaviour<ObjectPoolManager>
         Destroy(obj.gameObject);
     }
 
+    public static T[] GetActiveAll<T>()
+    {
+        return _tr.GetComponentsInChildren<T>(false);
+    }
+
     public static void HideAll()
     {
-        var children = _tr.GetComponentsInChildren<PoolObject>();
+        var children = GetActiveAll<PoolObject>();
 
         for (int i = 0; i < children.Length; ++i)
             children[i].Pool();

@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using UniRx;
 using Behaviour;
-using UnityEngine.UIElements;
-using UnityEngine.EventSystems;
+using Cysharp.Threading.Tasks;
 
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
@@ -21,7 +18,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         Score.Value = 0;
         MaxLevel = 1;
 
-        UIManager.Show<UIPlayPopup>();
+        UIManager.Show<UIPlayPopup>().Bind();
 
         _NextDongle();
     }
@@ -41,15 +38,13 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         _lastDongle.Tr.position = new Vector2(0f, 4.3f);
         _lastDongle.Activate();
 
-        StartCoroutine(_WaitNext());
+        _WaitNext().Forget();
     }
 
-    private IEnumerator _WaitNext()
+    private async UniTask _WaitNext()
     {
-        while (_lastDongle != null)
-            yield return null;
-
-        yield return YieldCache.WaitForSeconds(1.8f);
+        await UniTask.WaitUntil(() => _lastDongle == null);
+        await UniTask.Delay(1800);
 
         _NextDongle();
     }
@@ -61,23 +56,28 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         _isGameover = true;
 
-        StartCoroutine(_GameOverRoutine());
+        _GameOverRoutine().Forget();
     }
 
-    private IEnumerator _GameOverRoutine()
+    private async UniTask _GameOverRoutine()
     {
         // 장면안에 활성화 되어있는 모든 동글 가져오기
-        Dongle[] dongles = FindObjectsOfType<Dongle>();
+        var dongles = ObjectPoolManager.GetActiveAll<Dongle>();
+
+        for (int i = 0; i < dongles.Length; ++i)
+        {
+            dongles[i].Rigid.simulated = false;
+        }
 
         // 윗 목록 하나씩 접근해서 삭제
-        for (int i = 0; i < dongles.Length; i++)
+        for (int i = 0; i < dongles.Length; ++i)
         {
             dongles[i].Hide(Vector3.up * 100);
 
-            yield return YieldCache.WaitForSeconds(0.1f);
+            await UniTask.Delay(100);
         }
 
-        yield return YieldCache.WaitForSeconds(2f);
+        await UniTask.Delay(2000);
 
         //최고 점수 갱신
         int maxScore = Mathf.Max(Score.Value, PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE));

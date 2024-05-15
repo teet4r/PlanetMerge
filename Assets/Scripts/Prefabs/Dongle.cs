@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Dongle : PoolObject
 {
-    public bool Simulated { set => _rigid.simulated = value; }
+    public Rigidbody2D Rigid => _rigid;
 
     private bool _isAlive;
     private bool _isDrag;

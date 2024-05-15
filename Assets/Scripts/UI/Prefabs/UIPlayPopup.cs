@@ -23,10 +23,13 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             UIManager.Show<UISettingPopup>();
             SFX.Play(Sfx.Button);
         });
+    }
 
+    public void Bind()
+    {
         PlayScene.Instance.Score
             .Subscribe(score => _curScoreText.text = score.ToString())
-            .AddTo(gameObject);
+            .AddTo(disposables);
     }
 
     public void OnPointerDown(PointerEventData eventData)
