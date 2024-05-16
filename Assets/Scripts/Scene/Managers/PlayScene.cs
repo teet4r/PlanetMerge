@@ -11,7 +11,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     public int MaxLevel;
     
     private bool _isGameover;
-    private Dongle _lastDongle;
+    private Planet _lastPlanet;
 
     private void OnEnable()
     {
@@ -34,16 +34,16 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         if(_isGameover)
             return;
 
-        _lastDongle = ObjectPoolManager.Release<Dongle>();
-        _lastDongle.Tr.position = new Vector2(0f, 4.3f);
-        _lastDongle.Activate();
+        _lastPlanet = ObjectPoolManager.Release<Planet>();
+        _lastPlanet.Tr.position = new Vector2(0f, 4.3f);
+        _lastPlanet.Activate();
 
         _WaitNext().Forget();
     }
 
     private async UniTask _WaitNext()
     {
-        await UniTask.WaitUntil(() => _lastDongle == null);
+        await UniTask.WaitUntil(() => _lastPlanet == null);
         await UniTask.Delay(1800);
 
         _NextDongle();
@@ -62,17 +62,17 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     private async UniTask _GameOverRoutine()
     {
         // 장면안에 활성화 되어있는 모든 동글 가져오기
-        var dongles = ObjectPoolManager.GetActiveAll<Dongle>();
+        var planets = ObjectPoolManager.GetActiveAll<Planet>();
 
-        for (int i = 0; i < dongles.Length; ++i)
+        for (int i = 0; i < planets.Length; ++i)
         {
-            dongles[i].Rigid.simulated = false;
+            planets[i].Rigid.simulated = false;
         }
 
         // 윗 목록 하나씩 접근해서 삭제
-        for (int i = 0; i < dongles.Length; ++i)
+        for (int i = 0; i < planets.Length; ++i)
         {
-            dongles[i].Hide(Vector3.up * 100);
+            planets[i].Hide(Vector3.up * 100);
 
             await UniTask.Delay(100);
         }
@@ -89,18 +89,18 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     
     public void TouchDown()
     {
-        if (_lastDongle == null)
+        if (_lastPlanet == null)
             return;
 
-        _lastDongle.Drag();
+        _lastPlanet.Drag();
     }
 
     public void TouchUp()
     {
-        if (_lastDongle == null)
+        if (_lastPlanet == null)
             return;
 
-        _lastDongle.Drop();
-        _lastDongle = null;
+        _lastPlanet.Drop();
+        _lastPlanet = null;
     }
 }

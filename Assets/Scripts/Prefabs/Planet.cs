@@ -3,34 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dongle : PoolObject
+public class Planet : CollidablePoolObject
 {
-    public Rigidbody2D Rigid => _rigid;
-
     private bool _isAlive;
     private bool _isDrag;
     private bool _isMerging;
     private bool _isAttach;
     private int _level;
 
-    private Rigidbody2D _rigid;
     private Animator _animator;
-    private CircleCollider2D _circleCollider;
     private SpriteRenderer _spriteRenderer;
 
-    private Color _dongleColor;
+    private Color _planetColor;
 
     private Camera _mainCamera;
     private float _deadtime = 0;
 
-    private void Awake()
+    public override void Initialize()
     {
-        _rigid = GetComponent<Rigidbody2D>();
+        base.Initialize();
+
         _animator = GetComponent<Animator>();
-        _circleCollider = GetComponent<CircleCollider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
-        _dongleColor = _spriteRenderer.color;
+        _planetColor = _spriteRenderer.color;
     }
 
     protected override void OnEnable()
@@ -39,9 +35,9 @@ public class Dongle : PoolObject
 
         _mainCamera = Camera.main;
 
-        _level = Random.Range(0, PlayScene.Instance.MaxLevel);
+        _level = 7; // Random.Range(0, PlayScene.Instance.MaxLevel);
         _animator.SetInteger(AniParam.LEVEL, _level);
-        _spriteRenderer.color = _dongleColor;
+        _spriteRenderer.color = _planetColor;
      
         _isAlive = true;
     }
@@ -81,100 +77,93 @@ public class Dongle : PoolObject
         tr.localRotation = Quaternion.identity;
         tr.localScale = Vector3.zero;
 
-        _rigid.simulated = false;
-        _rigid.velocity = Vector2.zero;
-        _rigid.angularVelocity = 0;
-        _circleCollider.enabled = true;
+        Rigid.simulated = false;
+        Rigid.velocity = Vector2.zero;
+        Rigid.angularVelocity = 0;
+        Collider.enabled = true;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(Tag.FINISH))
-        {
-            _deadtime += Time.deltaTime;
+        var collidable = collision.gameObject.GetComponent<ICollidable>();
 
-            if (_deadtime > 4)
-                PlayScene.Instance.GameOver();
+        switch (collidable)
+        {
+            case GameoverLine:
+                _deadtime += Time.deltaTime;
+
+                if (_deadtime > 4)
+                    PlayScene.Instance.GameOver();
+                break;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(Tag.FINISH))
-            _deadtime = 0;
+        var collidable = collision.gameObject.GetComponent<ICollidable>();
+
+        switch (collidable)
+        {
+            case GameoverLine:
+                _deadtime = 0;
+                break;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _Attach();
 
-        if (collision.gameObject.CompareTag(Tag.DONGLE))
-        {
-            Dongle other = collision.gameObject.GetComponent<Dongle>();
+        var collidable = collision.gameObject.GetComponent<ICollidable>();
 
-            if(_level == other._level && !_isMerging && !other._isMerging)
-            {
-                if (_level < 8)
-                {
-                    //나와 상대 위치 가져오기
-                    float meX = tr.position.x;
-                    float meY = tr.position.y;
-                    float otherX = other.tr.position.x;
-                    float otherY = other.tr.position.y;
-                    //1. 내가 아래
-                    //2. 동일한 높이, 내가 오른쪽
-                    if (meY < otherY || (meY == otherY && meX > otherX))
-                    {
-                        //상대 숨기기
-                        other.Hide(tr.position);
-                        //나 레벨업
-                        _LevelUp();
-                    }
-                }
-                else // level >= 8
-                {
-                    other.Hide(Vector3.up * 100);
-                    other._PlayEffect();
-                    Hide(Vector3.up * 100);
-                    _PlayEffect();
-                }
-            }
+        switch (collidable)
+        {
+            case Planet:
+                _Merge(collidable as Planet);
+                break;
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Tag.DONGLE))
-        {
-            Dongle other = collision.gameObject.GetComponent<Dongle>();
+        var collidable = collision.gameObject.GetComponent<ICollidable>();
 
-            if (_level == other._level && !_isMerging && !other._isMerging)
+        switch (collidable)
+        {
+            case Planet:
+                _Merge(collidable as Planet);
+                break;
+        }
+    }
+
+    private void _Merge(Planet other)
+    {
+        if (_level != other._level || _isMerging || other._isMerging)
+            return;
+
+        if (_level < 9)
+        {
+            //나와 상대 위치 가져오기
+            float meX = tr.position.x;
+            float meY = tr.position.y;
+            float otherX = other.tr.position.x;
+            float otherY = other.tr.position.y;
+            //1. 내가 아래
+            //2. 동일한 높이, 내가 오른쪽
+            if (meY < otherY || (meY == otherY && meX > otherX))
             {
-                if (_level < 8)
-                {
-                    //나와 상대 위치 가져오기
-                    float meX = tr.position.x;
-                    float meY = tr.position.y;
-                    float otherX = other.tr.position.x;
-                    float otherY = other.tr.position.y;
-                    //1. 내가 아래
-                    //2. 동일한 높이, 내가 오른쪽
-                    if (meY < otherY || (meY == otherY && meX > otherX))
-                    {
-                        //상대 숨기기
-                        other.Hide(tr.position);
-                        //나 레벨업
-                        _LevelUp();
-                    }
-                }
-                else // level >= 8
-                {
-                    other.Hide(Vector3.up * 100);
-                    other._PlayEffect();
-                    Hide(Vector3.up * 100);
-                    _PlayEffect();
-                }
+                //상대 숨기기
+                other.Hide(tr.position);
+                //나 레벨업
+                _LevelUp();
             }
+        }
+        else // level >= 9
+        {
+            other.Hide(Vector3.up * 100);
+            other._PlayEffect();
+            Hide(Vector3.up * 100);
+            _PlayEffect();
         }
     }
 
@@ -186,7 +175,7 @@ public class Dongle : PoolObject
     public void Drop()
     {
         _isDrag = false;
-        _rigid.simulated = true;
+        Rigid.simulated = true;
     }
 
     private void _Attach()
@@ -221,8 +210,8 @@ public class Dongle : PoolObject
         _isAlive = false;
         _isMerging = true;
 
-        _rigid.simulated = false;
-        _circleCollider.enabled = false;
+        Rigid.simulated = false;
+        Collider.enabled = false;
 
         if (targetPos == Vector3.up * 100)
             _PlayEffect();
@@ -257,8 +246,8 @@ public class Dongle : PoolObject
     {
         _isMerging = true;
 
-        _rigid.velocity = Vector2.zero;
-        _rigid.angularVelocity = 0;
+        Rigid.velocity = Vector2.zero;
+        Rigid.angularVelocity = 0;
 
         await UniTask.Delay(200, cancellationToken : DisableCancellationToken);
 

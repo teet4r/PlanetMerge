@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5700232024042769781}
   - component: {fileID: 8909115155213204256}
   m_Layer: 0
-  m_Name: Dongle
+  m_Name: Planet
   m_TagString: Dongle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
