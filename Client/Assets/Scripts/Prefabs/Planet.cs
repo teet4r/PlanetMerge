@@ -35,7 +35,7 @@ public class Planet : CollidablePoolObject
 
         _mainCamera = Camera.main;
 
-        _level = 7; // Random.Range(0, PlayScene.Instance.MaxLevel);
+        _level = Random.Range(0, PlayScene.Instance.MaxLevel);
         _animator.SetInteger(AniParam.LEVEL, _level);
         _spriteRenderer.color = _planetColor;
      
