@@ -10,6 +10,8 @@ public class UIMainPopup : UI
     [SerializeField] private Button _howToButton;
     [SerializeField] private Button _settingButton;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Button _loginButton;
+    [SerializeField] private Text _a;
 
     private void Awake()
     {
@@ -36,5 +38,15 @@ public class UIMainPopup : UI
             UIManager.Show<UIExitPopup>();
             SFX.Play(Sfx.Button);
         });
+
+        _loginButton.onClick.AddListener(() =>
+        {
+            GoogleTester.Instance.SignInWithGoogle();
+        });
+    }
+
+    private void Update()
+    {
+            _a.text = GoogleTester.Instance.infoText;
     }
 }

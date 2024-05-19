@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_android_client_id,@string/default_web_client_id">
+  <string name="gcm_defaultSenderId" translatable="false">198148377120</string>
+  <string name="google_storage_bucket" translatable="false">planetmerge-30b99.appspot.com</string>
+  <string name="project_id" translatable="false">planetmerge-30b99</string>
+  <string name="google_api_key" translatable="false">AIzaSyAb-pggyb4wRFZNmDp_QcY0yudXxaU1y14</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAb-pggyb4wRFZNmDp_QcY0yudXxaU1y14</string>
+  <string name="google_app_id" translatable="false">1:198148377120:android:eee0a58a4825365f360a45</string>
+  <string name="default_android_client_id" translatable="false">198148377120-3bcice1b2agpv6achl4l29hjqlkrj7h0.apps.googleusercontent.com</string>
+  <string name="default_web_client_id" translatable="false">198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com</string>
+</resources>

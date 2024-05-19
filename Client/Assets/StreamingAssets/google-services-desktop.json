@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "198148377120",
+    "project_id": "planetmerge-30b99",
+    "storage_bucket": "planetmerge-30b99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198148377120:android:eee0a58a4825365f360a45",
+        "android_client_info": {
+          "package_name": "com.ArariGame.PlanetMerge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198148377120-3bcice1b2agpv6achl4l29hjqlkrj7h0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ArariGame.PlanetMerge",
+            "certificate_hash": "a347bcc10fc0b43fa2e667ea515aabdaa160c465"
+          }
+        },
+        {
+          "client_id": "198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb-pggyb4wRFZNmDp_QcY0yudXxaU1y14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
