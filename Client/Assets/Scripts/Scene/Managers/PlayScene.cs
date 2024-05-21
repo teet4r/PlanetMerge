@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
-    public readonly ReactiveProperty<int> Score = new();
+    public readonly ReactiveProperty<long> Score = new();
     public int MaxLevel;
     
     private bool _isGameover;
@@ -79,9 +79,9 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         await UniTask.Delay(2000);
 
-        //최고 점수 갱신
-        int maxScore = Mathf.Max(Score.Value, PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE));
-        PlayerPrefs.SetInt(PlayerPrefsKey.BEST_SCORE, maxScore);
+        ////최고 점수 갱신
+        //int maxScore = Mathf.Max(Score.Value, PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE));
+        //PlayerPrefs.SetInt(PlayerPrefsKey.BEST_SCORE, maxScore);
 
         //게임오버 ui
         UIManager.Show<UIGameoverPopup>().Bind(Score.Value);
@@ -102,5 +102,17 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         _lastPlanet.Drop();
         _lastPlanet = null;
+    }
+
+    private void _RenewalHighestScore()
+    {
+        if (Login.Type == LoginType.Google)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 }

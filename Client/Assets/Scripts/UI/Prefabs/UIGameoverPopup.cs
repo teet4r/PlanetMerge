@@ -26,7 +26,7 @@ public class UIGameoverPopup : UI
         });
     }
 
-    public void Bind(int score)
+    public void Bind(long score)
     {
         _scoreText.text = $"Á¡¼ö : {score}";
     }

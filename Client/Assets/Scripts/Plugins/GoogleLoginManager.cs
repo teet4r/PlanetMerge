@@ -2,41 +2,43 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Behaviour;
+using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Google;
 using UnityEngine;
 
-public class GoogleTester : SingletonBehaviour<GoogleTester>
+public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
 {
-    public string infoText;
-    public string webClientId = "198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com";
+    public string userId => _auth.CurrentUser.UserId;
 
-    private FirebaseAuth auth;
-    private GoogleSignInConfiguration configuration;
+    private string webClientId = "198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com";
+    private FirebaseAuth _auth;
+    private GoogleSignInConfiguration _configuration;
+    private string _infoText;
 
     protected override void Awake()
     {
         base.Awake();
 
-        configuration = new GoogleSignInConfiguration
+        _configuration = new GoogleSignInConfiguration
         {
             WebClientId = webClientId,
             RequestEmail = true,
             RequestIdToken = true
         };
 
-        CheckFirebaseDependencies();
+        _CheckFirebaseDependencies();
     }
 
-    private void CheckFirebaseDependencies()
+    private void _CheckFirebaseDependencies()
     {
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
                 if (task.Result == DependencyStatus.Available)
-                    auth = FirebaseAuth.DefaultInstance;
+                    _auth = FirebaseAuth.DefaultInstance;
                 else
                     AddToInformation("Could not resolve all Firebase dependencies: " + task.Result.ToString());
             }
@@ -47,20 +49,20 @@ public class GoogleTester : SingletonBehaviour<GoogleTester>
         });
     }
 
-    public void SignInWithGoogle() => OnSignIn();
-    public void SignOutFromGoogle() => OnSignOut();
+    public async UniTask SignInWithGoogle() => await _OnSignIn();
+    public void SignOutFromGoogle() => _OnSignOut();
 
-    private void OnSignIn()
+    private async UniTask _OnSignIn()
     {
-        GoogleSignIn.Configuration = configuration;
+        GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
         AddToInformation("Calling SignIn");
 
-        GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
+        await GoogleSignIn.DefaultInstance.SignIn().ContinueWith(_OnAuthenticationFinished);
     }
 
-    private void OnSignOut()
+    private void _OnSignOut()
     {
         AddToInformation("Calling SignOut");
         GoogleSignIn.DefaultInstance.SignOut();
@@ -72,7 +74,7 @@ public class GoogleTester : SingletonBehaviour<GoogleTester>
         GoogleSignIn.DefaultInstance.Disconnect();
     }
 
-    internal void OnAuthenticationFinished(Task<GoogleSignInUser> task)
+    internal async UniTask _OnAuthenticationFinished(Task<GoogleSignInUser> task)
     {
         if (task.IsFaulted)
         {
@@ -98,18 +100,17 @@ public class GoogleTester : SingletonBehaviour<GoogleTester>
         else
         {
             AddToInformation("Welcome: " + task.Result.DisplayName + "!");
-            AddToInformation("Email = " + task.Result.Email);
             AddToInformation("Google ID Token = " + task.Result.IdToken);
             AddToInformation("Email = " + task.Result.Email);
-            SignInWithGoogleOnFirebase(task.Result.IdToken);
+            await _SignInWithGoogleOnFirebase(task.Result.IdToken);
         }
     }
 
-    private void SignInWithGoogleOnFirebase(string idToken)
+    private async UniTask _SignInWithGoogleOnFirebase(string idToken)
     {
         Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
 
-        auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+        await _auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
         {
             AggregateException ex = task.Exception;
             if (ex != null)
@@ -119,6 +120,7 @@ public class GoogleTester : SingletonBehaviour<GoogleTester>
             }
             else
             {
+                Login.Type = LoginType.Google;
                 AddToInformation("Sign In Successful.");
             }
         });
@@ -126,29 +128,29 @@ public class GoogleTester : SingletonBehaviour<GoogleTester>
 
     public void OnSignInSilently()
     {
-        GoogleSignIn.Configuration = configuration;
+        GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
         AddToInformation("Calling SignIn Silently");
 
-        GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(OnAuthenticationFinished);
+        GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(_OnAuthenticationFinished);
     }
 
     public void OnGamesSignIn()
     {
-        GoogleSignIn.Configuration = configuration;
+        GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = true;
         GoogleSignIn.Configuration.RequestIdToken = false;
 
         AddToInformation("Calling Games SignIn");
 
-        GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
+        GoogleSignIn.DefaultInstance.SignIn().ContinueWith(_OnAuthenticationFinished);
     }
 
     private void AddToInformation(string str)
     {
-        infoText += "\n" + str;
+        _infoText += "\n" + str;
 
-        Debug.Log(infoText);
+        Debug.Log(_infoText);
     }
 }

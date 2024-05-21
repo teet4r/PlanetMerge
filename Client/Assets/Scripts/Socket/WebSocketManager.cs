@@ -19,15 +19,15 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         };
     }
 
-    private void Update()
-    {
-        if (_webSocket == null)
-            return;
+    //private void Update()
+    //{
+    //    if (_webSocket == null)
+    //        return;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _webSocket.Send("지금 보냄!");
-            _webSocket.Send("1231543534563453");
-        }
-    }
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        _webSocket.Send("지금 보냄!");
+    //        _webSocket.Send("1231543534563453");
+    //    }
+    //}
 }
