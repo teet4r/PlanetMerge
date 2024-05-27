@@ -1,22 +1,45 @@
+const fs = require('fs');
 const WebSocket = require('ws');
-const db = require('./db');
+const { makeCsApi } = require('./makeApi');
+const userManager = require('./userManager');
 
+// load methods --------------------
+const methods = {};
+const fileList = fs.readdirSync('./api');
+
+for (const file of fileList) {
+    const api = require(`./api/${file}`);
+    const apiName = file.substring(0, file.length - 3);
+
+    makeCsApi(api, apiName);
+    for (const [name, property] of Object.entries(api))
+        if (name == 'api')
+            methods[apiName] = property;
+}
+
+// connect server --------------------
 const wss = new WebSocket.Server({ port: 8000 }, () => { 
     console.log('PlanetMerge Server Start');
 });
 
-wss.on('connection', function connection(ws) { 
-    ws.on('message', async (data) => {
-        const dataStr = data.toString();
-        console.log(dataStr);
+wss.on('connection', function connection(ws) {
+    ws.on('message', async (reqPacket) => {
+        reqPacket = JSON.parse(reqPacket);
 
-        const strs = dataStr.split(' ');
-        if (strs.length == 1)
-            await db.query('INSERT INTO users VALUES(?)', [strs[0]]);
-        else
-            await db.query('INSERT INTO userscores VALUES(?, ?)', [strs[0], strs[1]]);
+        const apiName = reqPacket.apiName;
+        const data = JSON.parse(reqPacket.data);
 
-        // ws.send(JSON.stringify(result));
+        const args = [];
+        for (const key in data)
+            args.push(data[key]);
+
+        const result = await methods[apiName](...args);
+        const resPacket = {
+            apiName: apiName,
+            data: JSON.stringify(result),
+        }
+        
+        ws.send(JSON.stringify(resPacket));
     });
 });
 

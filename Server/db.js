@@ -15,7 +15,7 @@ async function initialize() {
 
 initialize();
 
-async function query(sql, values = []) {
+exports.query = async function(sql, values = []) {
     const connection = await pool.getConnection();
 
     const [results, fields] = await connection.query(sql, values);
@@ -24,5 +24,3 @@ async function query(sql, values = []) {
 
     return results;
 }
-
-module.exports = { query };
