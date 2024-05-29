@@ -18,6 +18,21 @@ for (const file of fileList) {
     }
 }
 
+// const express = require('express');
+// const app = express();
+// const port = 8000;
+
+// app.use(express.urlencoded({ extended: true }));
+
+// app.post('/', (req, res) => {
+//     console.log(req.body);
+//     res.send('Hello World!');
+// });
+
+// app.listen(port, () => {
+//   console.log(`PlanetMerge Server running on port ${port}...`);
+// });
+
 // connect server --------------------
 const wss = new WebSocket.Server({ port: 8000 }, () => { 
     console.log('PlanetMerge Server Start');

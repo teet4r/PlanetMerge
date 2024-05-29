@@ -2,7 +2,12 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Text;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 using WebSocketSharp;
 
 public class WebSocketManager : SingletonBehaviour<WebSocketManager>
@@ -18,7 +23,7 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
 
     private void Start()
     {
-        _socket = new WebSocket("ws://0.tcp.jp.ngrok.io:10726");
+        _socket = new WebSocket("ws://0.tcp.jp.ngrok.io:10570");
         _socket.Connect();
         
         _socket.OnMessage += (sender, e) =>
@@ -48,5 +53,42 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         _packetQ[apiName] = null;
 
         return response;
+    }
+    
+    private void _Start()
+    {
+        StartCoroutine(GetRequest("http://localhost:8000/"));
+    }
+
+    IEnumerator GetRequest(string uri)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("1234", "55555555");
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(uri, form))
+        {
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+
+            Debug.Log(webRequest.downloadHandler.text);
+            //switch (webRequest.result)
+            //{
+            //    case UnityWebRequest.Result.ConnectionError:
+            //    case UnityWebRequest.Result.DataProcessingError:
+            //        Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+            //        break;
+            //    case UnityWebRequest.Result.ProtocolError:
+            //        Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+            //        break;
+            //    case UnityWebRequest.Result.Success:
+            //        Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+            //        jsonText = webRequest.downloadHandler.text;
+            //        NewsListData[] newsListDatas = JsonConvert.DeserializeObject<NewsListData[]>(jsonText);
+            //        StartCoroutine(CoLoadImageTexture(newsListDatas[0].img_url));
+            //        title.text = newsListDatas[0].title;
+            //        contents.text = newsListDatas[0].contents;
+            //        break;
+            //}
+        }
     }
 }
