@@ -79,7 +79,8 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         await UniTask.Delay(2000);
 
-        ////최고 점수 갱신
+        //최고 점수 갱신
+        await _RenewalHighestScore();
         //int maxScore = Mathf.Max(Score.Value, PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE));
         //PlayerPrefs.SetInt(PlayerPrefsKey.BEST_SCORE, maxScore);
 
@@ -104,11 +105,13 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         _lastPlanet = null;
     }
 
-    private void _RenewalHighestScore()
+    private async UniTask _RenewalHighestScore()
     {
         if (Login.Type == LoginType.Google)
         {
+            var result = await RenewalHighestScore.Send(Score.Value);
 
+            Score.Value = result.highestScore;
         }
         else
         {

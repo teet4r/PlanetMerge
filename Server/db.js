@@ -10,15 +10,25 @@ async function initialize() {
         port: dbConfig.port,
         password: dbConfig.password,
         database: dbConfig.database,
+        multipleStatements: true,
     });
 }
 
 initialize();
 
 exports.query = async function(sql, values = []) {
-    const connection = await pool.getConnection();
+    return this.queries([sql], [values]);
+}
 
-    const [results, fields] = await connection.query(sql, values);
+exports.queries = async function(sqls = [], values = [[]]) {
+    const connection = await pool.getConnection();
+    let queries = '';
+
+    for (let i = 0; i < sqls.length; ++i) {
+        queries += mysql.format(sqls[i], values[i]); 
+    }
+
+    const [results, fields] = await connection.query(queries);
 
     connection.release();
 

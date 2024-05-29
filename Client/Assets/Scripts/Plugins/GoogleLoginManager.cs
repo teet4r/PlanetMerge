@@ -10,12 +10,12 @@ using UnityEngine;
 
 public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
 {
-    public string userId => _auth.CurrentUser.UserId;
+    public static string UserId => _auth.CurrentUser.UserId;
 
-    private string webClientId = "198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com";
-    private FirebaseAuth _auth;
-    private GoogleSignInConfiguration _configuration;
-    private string _infoText;
+    private static string webClientId = "198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com";
+    private static FirebaseAuth _auth;
+    private static GoogleSignInConfiguration _configuration;
+    private static string _infoText;
 
     protected override void Awake()
     {
@@ -31,7 +31,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         _CheckFirebaseDependencies();
     }
 
-    private void _CheckFirebaseDependencies()
+    private static void _CheckFirebaseDependencies()
     {
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
@@ -49,10 +49,10 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         });
     }
 
-    public async UniTask SignInWithGoogle() => await _OnSignIn();
-    public void SignOutFromGoogle() => _OnSignOut();
+    public static async UniTask SignInWithGoogle() => await _OnSignIn();
+    public static void SignOutFromGoogle() => _OnSignOut();
 
-    private async UniTask _OnSignIn()
+    private static async UniTask _OnSignIn()
     {
         GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
@@ -62,19 +62,19 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         await GoogleSignIn.DefaultInstance.SignIn().ContinueWith(_OnAuthenticationFinished);
     }
 
-    private void _OnSignOut()
+    private static void _OnSignOut()
     {
         AddToInformation("Calling SignOut");
         GoogleSignIn.DefaultInstance.SignOut();
     }
 
-    public void OnDisconnect()
+    public static void OnDisconnect()
     {
         AddToInformation("Calling Disconnect");
         GoogleSignIn.DefaultInstance.Disconnect();
     }
 
-    internal async UniTask _OnAuthenticationFinished(Task<GoogleSignInUser> task)
+    internal static async UniTask _OnAuthenticationFinished(Task<GoogleSignInUser> task)
     {
         if (task.IsFaulted)
         {
@@ -106,11 +106,11 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         }
     }
 
-    private async UniTask _SignInWithGoogleOnFirebase(string idToken)
+    private static async UniTask _SignInWithGoogleOnFirebase(string idToken)
     {
         Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
 
-        await _auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+        await _auth.SignInWithCredentialAsync(credential).ContinueWith(async task =>
         {
             AggregateException ex = task.Exception;
             if (ex != null)
@@ -120,13 +120,16 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
             }
             else
             {
+                await UserLogin.Send();
+
                 Login.Type = LoginType.Google;
+                PlayerPrefs.SetInt(PlayerPrefsKey.LAST_LOGIN, (int)LoginType.Google);
                 AddToInformation("Sign In Successful.");
             }
         });
     }
 
-    public void OnSignInSilently()
+    public static void OnSignInSilently()
     {
         GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
@@ -136,7 +139,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(_OnAuthenticationFinished);
     }
 
-    public void OnGamesSignIn()
+    public static void OnGamesSignIn()
     {
         GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = true;
@@ -147,7 +150,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(_OnAuthenticationFinished);
     }
 
-    private void AddToInformation(string str)
+    private static void AddToInformation(string str)
     {
         _infoText += "\n" + str;
 

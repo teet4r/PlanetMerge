@@ -18,7 +18,7 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
 
     private void Start()
     {
-        _socket = new WebSocket("ws://localhost:8000");
+        _socket = new WebSocket("ws://0.tcp.jp.ngrok.io:10726");
         _socket.Connect();
         
         _socket.OnMessage += (sender, e) =>
@@ -30,23 +30,8 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         };
     }
 
-    private void Update()
-    {
-        if (_socket == null)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            _CallTest().Forget();
-    }
-
-    private async UniTask _CallTest()
-    {
-        var result = await Api_RenewalHighestScore.Send("1234", 55555);
-    }
-
     public static async UniTask<Res> Send<Req, Res>(string apiName, Req request)
     {
-        // 이미 응답 대기 중인 패킷이 있는데 또 보내려하면?
         if (!_packetQ.ContainsKey(apiName))
             _packetQ.Add(apiName, null);
 

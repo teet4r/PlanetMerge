@@ -7,12 +7,12 @@ exports.makeCsApi = function(api, apiName) {
     const requestParams = [];
     const requestParams2 = [];
     
-    for (const [name, type] of Object.entries(api.Response)) {
+    for (const [name, type] of Object.entries(api.Request)) {
         requestClass += `\t\tpublic ${type} ${name};\n`;
         requestParams.push(`${type} ${name}`);
         requestParams2.push(`\t\t\t\t${name} = ${name},`);
     }
-    for (const [name, type] of Object.entries(api.Request)) {
+    for (const [name, type] of Object.entries(api.Response)) {
         responseClass += `\t\tpublic ${type} ${name};\n`;
     }
 

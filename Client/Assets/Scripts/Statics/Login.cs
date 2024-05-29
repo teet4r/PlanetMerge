@@ -1,4 +1,4 @@
 public static class Login
 {
-    public static LoginType Type = LoginType.Guest;
+    public static LoginType Type = LoginType.None;
 }

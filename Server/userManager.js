@@ -4,27 +4,10 @@ const User = require('./user');
 
 const users = {};
 
-exports.login = async function(userId) {
-    let user = users[userId];
-
-    if (user)
-        return;
-    
-    user = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
-
-    if (!user) {
-        await db.query('INSERT INTO users(id) VALUES(?)', [userId]);
-        user = new User(userId);
-    }
-
-    await db.query(
-        'UPDATE loginlogs SET time = ? WHERE userId = ?',
-        [moment.utc().format('YYYY-MM-DD hh:mm:ss'), userId]
-    );
-
-    users[userId] = user;
+exports.load = async function(user) {
+    users[user.id] = user;
 }
 
-exports.get = async function(userId) {
-    return users[userId];
+exports.get = async function(user) {
+    return users[user.id];
 }
