@@ -24,7 +24,7 @@ public class UILoginPopup : UI
 
         _guestLogin.onClick.AddListener(() =>
         {
-
+            CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
         });
     }
 
