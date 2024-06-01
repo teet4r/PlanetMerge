@@ -5,20 +5,22 @@ const moment = require('moment');
 
 exports.Request = {
     userId: 'string',
+    email: 'string',
 }
 
 exports.Response = {
+    success: 'bool',
 }
 
-exports.api = async function(userId) {
+exports.api = async function(userId, email) {
     const result = await db.query('SELECT * FROM users WHERE id = ?;', [userId]);
     const user = result[0];
     const utcNow = moment.utc().format('YYYY-MM-DD hh:mm:ss');
 
     if (!user) {
         await db.query(
-            'INSERT INTO users(id) VALUES(?);',
-            [userId],
+            'INSERT INTO users(id, email) VALUES(?, ?);',
+            [userId, email],
         );
     }
     

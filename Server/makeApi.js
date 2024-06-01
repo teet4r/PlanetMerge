@@ -6,6 +6,8 @@ exports.makeCsApi = function(api, apiName) {
     let responseClass = '';
     const requestParams = [];
     const requestParams2 = [];
+    const additionalUsings = api.AdditionalUsings;
+    let additionalUsingsText = '';
     
     for (const [name, type] of Object.entries(api.Request)) {
         requestClass += `\t\tpublic ${type} ${name};\n`;
@@ -15,13 +17,18 @@ exports.makeCsApi = function(api, apiName) {
     for (const [name, type] of Object.entries(api.Response)) {
         responseClass += `\t\tpublic ${type} ${name};\n`;
     }
+    if (additionalUsings) {
+        for (const usings of additionalUsings) {
+            additionalUsingsText += `${usings}\n`;
+        }
+    }
 
     const csApi = 
 `using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+${additionalUsingsText}
 public static class ${className}
 {
     public class Request
@@ -44,8 +51,8 @@ ${requestParams2.join('\n')}
 
         return result;
     }
-}
-`
+}`
+
     fs.writeFile(`../Client/Assets/Scripts/Api/${className}.cs`, csApi, (err) => {
         if (!err) {
             console.log(`${className} is created`);
