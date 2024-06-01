@@ -2,26 +2,26 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Firebase.Auth;
 
-public static class Api_UserLogin
+public static class Api_GoogleUserTest
 {
     public class Request
     {
-		public string uid;
+		public string firebaseData;
     }
 
     public class Response
     {
-		public bool success;
     }
 
-    public static async UniTask<Response> Send(string uid)
+    public static async UniTask<Response> Send(string firebaseData)
     {
         var result = await WebSocketManager.Send<Request, Response>(
-            "UserLogin",
+            "GoogleUserTest",
             new Request()
             {
-				uid = uid,
+				firebaseData = firebaseData,
             }
         );
 

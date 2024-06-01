@@ -7,22 +7,23 @@ public static class Api_RenewalHighestScore
 {
     public class Request
     {
-		public string userId;
+		public string uid;
 		public long score;
     }
 
     public class Response
     {
 		public long highestScore;
+		public bool success;
     }
 
-    public static async UniTask<Response> Send(string userId, long score)
+    public static async UniTask<Response> Send(string uid, long score)
     {
         var result = await WebSocketManager.Send<Request, Response>(
             "RenewalHighestScore",
             new Request()
             {
-				userId = userId,
+				uid = uid,
 				score = score,
             }
         );

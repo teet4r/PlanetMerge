@@ -110,6 +110,8 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         if (Login.Type == LoginType.Google)
         {
             var result = await RenewalHighestScore.Send(Score.Value);
+            if (!result.success)
+                return;
 
             Score.Value = result.highestScore;
         }

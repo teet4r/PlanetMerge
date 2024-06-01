@@ -2,28 +2,29 @@ const userManager = require('../userManager');
 const db = require('../db');
 
 exports.Request = {
-    userId: 'string',
+    uid: 'string',
     score: 'long',
 }
 
 exports.Response = {
     highestScore: 'long',
+    success: 'bool',
 }
 
-exports.api = async function(userId, score) {
-    const user = await userManager.get(userId);
-
+exports.api = async function(uid, score) {
+    const user = await userManager.getUser(uid);
     if (!user) {
-        return {};
+        return { success: false };
     }
 
     const highestScore = Math.max(0, score);
 
-    await db.query('UPDATE users SET highestScore = ? WHERE id = ?', [highestScore, userId]);
+    await db.query('UPDATE users SET highestScore = ? WHERE uid = ?', [highestScore, uid]);
 
     user.highestScore = highestScore;
 
     return {
-        highestScore
+        highestScore: highestScore,
+        success: true,
     };
 }

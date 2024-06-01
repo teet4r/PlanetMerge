@@ -19,7 +19,7 @@ for (const file of fileList) {
     }
 }
 
-firebase.initialize();
+const waitingQ = new Set();
 
 // connect server --------------------
 const wss = new WebSocket.Server({ port: 8000 }, () => { 
@@ -31,6 +31,10 @@ wss.on('connection', function connection(ws) {
         reqPacket = JSON.parse(reqPacket);
 
         const apiName = reqPacket.apiName;
+        if (waitingQ.has(apiName)) {
+            return;
+        }
+        waitingQ.add(apiName);
         const data = JSON.parse(reqPacket.data);
 
         const args = [];
@@ -45,6 +49,7 @@ wss.on('connection', function connection(ws) {
         }
         
         ws.send(JSON.stringify(resPacket));
+        waitingQ.delete(apiName);
     });
 });
 

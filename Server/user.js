@@ -1,6 +1,7 @@
 class User {
-    constructor(id) {
-        this.id = id;
+    constructor(uid, email) {
+        this.uid = uid;
+        this.email = email;
         this.highestScore = 0;
     }
 };

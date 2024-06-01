@@ -1,13 +1,26 @@
-const moment = require('moment/moment');
 const db = require('./db');
+const fb = require('./firebase');
 const User = require('./user');
 
 const users = {};
 
-exports.load = async function(user) {
-    users[user.id] = user;
+exports.load = async function(uid) {
+    const fbUser = await fb.getUser(uid);
+    if (!fbUser) {
+        return;
+    }
+
+    const email = fbUser.email;
+
+    const dbUser = (await db.query('SELECT * FROM users WHERE uid = ?;', [uid]))[0];
+    if (!dbUser) {
+        await db.query('INSERT INTO users(uid, email) VALUES(?, ?);', [uid, email]);
+        dbUser = new User(uid, email);
+    }
+
+    return users[uid] = dbUser;
 }
 
-exports.get = async function(user) {
-    return users[user.id];
+exports.getUser = function(uid) {
+    return users[uid];
 }

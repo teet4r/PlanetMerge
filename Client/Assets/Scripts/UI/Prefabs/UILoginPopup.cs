@@ -17,9 +17,8 @@ public class UILoginPopup : UI
 
         _googleLogin.onClick.AddListener(async () =>
         {
-            await GoogleLoginManager.SignInWithGoogle();
-
-            CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
+            if (await GoogleLoginManager.SignInWithGoogle())
+                CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
         });
 
         _guestLogin.onClick.AddListener(() =>

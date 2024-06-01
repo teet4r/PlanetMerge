@@ -2,9 +2,21 @@
 const admin = require("firebase-admin");
 const serviceAccount = require("./planetmerge-30b99-firebase-adminsdk-3kwx0-2d09fb1b99.json");
 
-// Initialize Firebase
-exports.initialize = async function() {
+async function initialize() {
     admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-    const users = await admin.app().auth().listUsers();
-    console.log(users);
+}
+
+initialize();
+
+exports.getUser = async function(uid) {
+    let record;
+
+    try {
+        record = await admin.auth().getUser(uid);
+    }
+    catch (e) {
+        return null;
+    }
+
+    return record;
 }
