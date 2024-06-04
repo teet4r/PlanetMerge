@@ -7,9 +7,9 @@ using Cysharp.Threading.Tasks;
 
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
-    public readonly ReactiveProperty<long> Score = new();
     public int MaxLevel;
-    
+    public readonly ReactiveProperty<long> Score = new(0);
+
     private bool _isGameover;
     private Planet _lastPlanet;
 
@@ -53,7 +53,6 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     {
         if(_isGameover)
             return;
-
         _isGameover = true;
 
         _GameOverRoutine().Forget();
@@ -107,13 +106,12 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
     private async UniTask _RenewalHighestScore()
     {
-        if (Login.Type == LoginType.Google)
-        {
-            var result = await RenewalHighestScore.Send(Score.Value);
-            if (!result.success)
-                return;
+        if (User.HighestScore >= Score.Value)
+            return;
 
-            Score.Value = result.highestScore;
+        if (User.LoginType == LoginType.Google)
+        {
+            await RenewalHighestScore.Send(Score.Value);
         }
         else
         {

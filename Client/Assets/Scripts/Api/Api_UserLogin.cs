@@ -5,13 +5,16 @@ using UnityEngine;
 
 public static class Api_UserLogin
 {
+    [System.Serializable]
     public class Request
     {
 		public string uid;
     }
 
+    [System.Serializable]
     public class Response
     {
+		public UserData userData;
 		public bool success;
     }
 

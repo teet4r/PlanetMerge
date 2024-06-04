@@ -31,10 +31,12 @@ using UnityEngine;
 ${additionalUsingsText}
 public static class ${className}
 {
+    [System.Serializable]
     public class Request
     {
 ${requestClass}    }
 
+    [System.Serializable]
     public class Response
     {
 ${responseClass}    }

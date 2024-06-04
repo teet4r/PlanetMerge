@@ -6,11 +6,13 @@ using Firebase.Auth;
 
 public static class Api_GoogleUserTest
 {
+    [System.Serializable]
     public class Request
     {
 		public string firebaseData;
     }
 
+    [System.Serializable]
     public class Response
     {
     }

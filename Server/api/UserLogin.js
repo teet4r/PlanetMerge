@@ -7,6 +7,7 @@ exports.Request = {
 }
 
 exports.Response = {
+    userData: 'UserData',
     success: 'bool',
 }
 
@@ -18,9 +19,12 @@ exports.api = async function(uid) {
     }
 
     await db.query(
-        'INSERT INTO loginlogs VALUES(?, ?);',
-        [uid, utcNow]
+        'INSERT INTO userlogs VALUES(?, ?, ?);',
+        [uid, 'Login', utcNow]
     );
 
-    return { success: true };
+    return {
+        userData: user,
+        success: true,
+    };
 }

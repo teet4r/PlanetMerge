@@ -16,7 +16,10 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         if (!PlayerPrefs.HasKey(PlayerPrefsKey.BEST_SCORE))
             PlayerPrefs.SetInt(PlayerPrefsKey.BEST_SCORE, 0);
 
-        _bestScoreText.text = PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE).ToString();
+        if (User.LoginType == LoginType.Google)
+            _bestScoreText.text = User.HighestScore.ToString();
+        else
+            _bestScoreText.text = PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE).ToString();
 
         _pauseButton.onClick.AddListener(() =>
         {

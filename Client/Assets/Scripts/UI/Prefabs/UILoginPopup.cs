@@ -9,29 +9,18 @@ public class UILoginPopup : UI
     [SerializeField] private Button _googleLogin;
     [SerializeField] private Button _guestLogin;
 
-    private LoginType _lastLoginType;
-
     private void Awake()
     {
-        _lastLoginType = (LoginType)PlayerPrefs.GetInt(PlayerPrefsKey.LAST_LOGIN, 0);
+        User.Initialize();
 
-        _googleLogin.onClick.AddListener(async () =>
+        _googleLogin.onClick.AddListener(() =>
         {
-            if (await GoogleLoginManager.SignInWithGoogle())
-                CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
+            LoginScene.Instance.LoginProcess(LoginType.Google).Forget();
         });
 
         _guestLogin.onClick.AddListener(() =>
         {
-            CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
-        });
-    }
-
-    private void Start()
-    {
-        if (_lastLoginType == LoginType.Guest)
-            _guestLogin.onClick.Invoke();
-        else if (_lastLoginType == LoginType.Google)
-            _googleLogin.onClick.Invoke();
+            LoginScene.Instance.LoginProcess(LoginType.Guest).Forget();
+        }); 
     }
 }

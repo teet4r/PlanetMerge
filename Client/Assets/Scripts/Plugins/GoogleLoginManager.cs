@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
 {
-    public static FirebaseUser User => _auth.CurrentUser;
+    public static string UserId => _auth.CurrentUser.UserId;
 
     private static string webClientId = "198148377120-u6lhqe4oof52slibvorgsbu8kv2atqcr.apps.googleusercontent.com";
     private static FirebaseAuth _auth;
@@ -49,7 +49,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         });
     }
 
-    public static async UniTask<bool> SignInWithGoogle()
+    public static async UniTask<bool> SignInWithGoogleClient()
     {
         var loading = UIManager.Show<UILoadingPopup>();
 
@@ -59,7 +59,8 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
 
         return success;
     }
-    public static void SignOutFromGoogle() => _OnSignOut();
+
+    public static void SignOutFromGoogleClient() => _OnSignOut();
 
     private static async UniTask<bool> _OnSignIn()
     {
@@ -78,12 +79,14 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
     {
         //AddToInformation("Calling SignOut");
         GoogleSignIn.DefaultInstance.SignOut();
+        _auth = null;
     }
 
     public static void OnDisconnect()
     {
         //AddToInformation("Calling Disconnect");
         GoogleSignIn.DefaultInstance.Disconnect();
+        _auth = null;
     }
 
     internal static async UniTask<bool> _OnAuthenticationFinished(Task<GoogleSignInUser> task)
@@ -124,36 +127,20 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
     {
         Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
 
-        return await await _auth.SignInWithCredentialAsync(credential).ContinueWith(async task =>
+        return await _auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
         {
             AggregateException ex = task.Exception;
-            if (ex != null)
-            {
-                //if (ex.InnerExceptions[0] is FirebaseException inner && (inner.ErrorCode != 0))
-                //    AddToInformation("\nError code = " + inner.ErrorCode + " Message = " + inner.Message);
-            }
-            else
-            {
-                var result = await UserLogin.Send();
+            //if (ex != null)
+            //{
+            //    if (ex.InnerExceptions[0] is FirebaseException inner && (inner.ErrorCode != 0))
+            //        AddToInformation("\nError code = " + inner.ErrorCode + " Message = " + inner.Message);
+            //}
+            //else
+            //{
+            //    AddToInformation("Sign In Successful.");
+            //}
 
-                //string data = "";
-                //data += $"DisplayName: {User.DisplayName}\n";
-                //data += $"UserId: {User.UserId}\n";
-                //data += $"PhoneNumber: {User.PhoneNumber}\n";
-                //data += $"Email: {User.Email}\n";
-                //data += $"IsEmailVerified: {User.IsEmailVerified}\n";
-                //data += $"IsAnonymous: {User.IsAnonymous}\n";
-                //data += $"ProviderId: {User.ProviderId}\n";
-
-                //await Api_GoogleUserTest.Send(data);
-
-                Login.Type = LoginType.Google;
-                PlayerPrefs.SetInt(PlayerPrefsKey.LAST_LOGIN, (int)LoginType.Google);
-                //AddToInformation("Sign In Successful.");
-                return result.success;
-            }
-
-            return false;
+            return ex == null;
         });
     }
 

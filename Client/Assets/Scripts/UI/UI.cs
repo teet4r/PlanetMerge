@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class UI : MonoBehaviour
@@ -20,6 +21,7 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < disposables.Count; ++i)
             disposables[i]?.Dispose();
+        disposables.Clear();
 
         gameObject.SetActive(false);
     }

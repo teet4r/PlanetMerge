@@ -1,15 +1,18 @@
 const fs = require('fs');
 const WebSocket = require('ws');
-const { makeCsApi } = require('./makeApi');
-const firebase = require('./firebase');
+const { makeCsApi } = require('./makeCsApi');
+const { makeCsEnum } = require('./makeCsEnum');
+const { makeCsCommonClass } = require('./makeCsCommonClass');
 
-// load methods --------------------
+// update files ----------------------------------------
 const methods = {};
-const fileList = fs.readdirSync('./api');
+const apiNameList = fs.readdirSync('./api');
+const enumNameList = fs.readdirSync('./enum');
+const classNameList = fs.readdirSync('./commonClass');
 
-for (const file of fileList) {
-    const api = require(`./api/${file}`);
-    const apiName = file.substring(0, file.length - 3);
+for (const apiFullName of apiNameList) {
+    const api = require(`./api/${apiFullName}`);
+    const apiName = apiFullName.substring(0, apiFullName.length - 3);
 
     makeCsApi(api, apiName);
     for (const [name, property] of Object.entries(api)) {
@@ -19,37 +22,43 @@ for (const file of fileList) {
     }
 }
 
-const waitingQ = new Set();
+for (const enumFullName of enumNameList) {
+    const enumFile = require(`./enum/${enumFullName}`);
+    const enumName = enumFullName.substring(0, enumFullName.length - 3);
 
-// connect server --------------------
-const wss = new WebSocket.Server({ port: 8000 }, () => { 
+    makeCsEnum(enumFile, enumName);
+}
+
+for (const classFullName of classNameList) {
+    const classFile = require(`./commonClass/${classFullName}`);
+    const className = classFullName.substring(0, classFullName.length - 3);
+
+    makeCsCommonClass(classFile, className);
+}
+
+// connect server ----------------------------------------
+const wss = new WebSocket.Server({ port: 8000, }, function() { 
     console.log('PlanetMerge Server Start');
 });
 
 wss.on('connection', function connection(ws) {
-    ws.on('message', async (reqPacket) => {
-        reqPacket = JSON.parse(reqPacket);
+    ws.on('message', async (data) => {
+        data = data.toString().split('/');
 
-        const apiName = reqPacket.apiName;
-        if (waitingQ.has(apiName)) {
+        const apiName = data[0];
+        const api = methods[apiName];
+        if (!api) {
             return;
         }
-        waitingQ.add(apiName);
-        const data = JSON.parse(reqPacket.data);
-
+        const request = JSON.parse(data[1]);
         const args = [];
-        for (const key in data) {
-            args.push(data[key]);
+        for (const key in request) {
+            args.push(request[key]);
         }
 
-        const result = await methods[apiName](...args);
-        const resPacket = {
-            apiName: apiName,
-            data: JSON.stringify(result),
-        }
-        
-        ws.send(JSON.stringify(resPacket));
-        waitingQ.delete(apiName);
+        const result = await api(...args);
+
+        ws.send(`${apiName}/${JSON.stringify(result)}`);
     });
 });
 
