@@ -7,7 +7,9 @@ public static class Heartbeat
 {
     public static async UniTask<Api_Heartbeat.Response> Send()
     {
-        var result = await Api_Heartbeat.Send();
+        var result = await Api_Heartbeat.Send(User.UserId);
+        if (!result.success)
+            Application.Quit();
 
         return result;
     }

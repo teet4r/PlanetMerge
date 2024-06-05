@@ -11,21 +11,11 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
     private static Dictionary<string, string> _packetQ;
     private static HashSet<string> _exceptLoadingPopupApi;
     private static UILoadingPopup _loading;
-    private static CancellationTokenSource _cancellationTokenSource;
-
-    private void OnDestroy()
-    {
-        Close();
-    }
 
     public static void Open()
     {
-        _cancellationTokenSource?.Cancel();
-        _cancellationTokenSource?.Dispose();
-        _cancellationTokenSource = new();
-
         //_socket = new WebSocket("ws://localhost:8000");
-        _socket = new WebSocket("ws://0.tcp.jp.ngrok.io:15502");
+        _socket = new WebSocket("ws://0.tcp.jp.ngrok.io:11682");
         _socket.Connect();
 
         _socket.OnMessage += (sender, e) =>
@@ -41,19 +31,6 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         {
             "Heartbeat",
         };
-    }
-
-    public static void Close()
-    {
-        _cancellationTokenSource?.Cancel();
-        _cancellationTokenSource?.Dispose();
-        _cancellationTokenSource = null;
-
-        _socket?.Close();
-        _socket = null;
-
-        _packetQ = null;
-        _exceptLoadingPopupApi = null;
     }
 
     public static async UniTask<Res> Send<Req, Res>(string apiName, Req request)
@@ -78,10 +55,10 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
 
     public static async UniTask StartHeartbeat()
     {
-        while (!_cancellationTokenSource.IsCancellationRequested)
+        while (true)
         {
-            await Heartbeat.Send();
-            await UniTask.Delay(10000, cancellationToken: _cancellationTokenSource.Token);
+            var result = await Heartbeat.Send();
+            await UniTask.Delay(10000);
         }
     }
 }

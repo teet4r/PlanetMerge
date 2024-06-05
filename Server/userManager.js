@@ -19,6 +19,10 @@ exports.load = async function(uid) {
     return users[uid] = dbUser;
 }
 
+exports.unload = async function(uid) {
+    delete users[uid];
+}
+
 exports.getUser = function(uid) {
     return users[uid];
 }

@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
+    public const float GAMEOVER_TRIGGER_TIME = 3f;
     public int MaxLevel;
     public readonly ReactiveProperty<long> Score = new(0);
 
@@ -49,16 +50,16 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         _NextDongle();
     }
 
-    public void GameOver()
+    public void Gameover()
     {
         if(_isGameover)
             return;
         _isGameover = true;
 
-        _GameOverRoutine().Forget();
+        _GameoverRoutine().Forget();
     }
 
-    private async UniTask _GameOverRoutine()
+    private async UniTask _GameoverRoutine()
     {
         // 장면안에 활성화 되어있는 모든 동글 가져오기
         var planets = ObjectPoolManager.GetActiveAll<Planet>();
@@ -80,8 +81,6 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         //최고 점수 갱신
         await _RenewalHighestScore();
-        //int maxScore = Mathf.Max(Score.Value, PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE));
-        //PlayerPrefs.SetInt(PlayerPrefsKey.BEST_SCORE, maxScore);
 
         //게임오버 ui
         UIManager.Show<UIGameoverPopup>().Bind(Score.Value);
@@ -89,7 +88,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     
     public void TouchDown()
     {
-        if (_lastPlanet == null)
+        if (_isGameover || _lastPlanet == null)
             return;
 
         _lastPlanet.Drag();
@@ -97,7 +96,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
     public void TouchUp()
     {
-        if (_lastPlanet == null)
+        if (_isGameover || _lastPlanet == null)
             return;
 
         _lastPlanet.Drop();
@@ -110,12 +109,8 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
             return;
 
         if (User.LoginType == LoginType.Google)
-        {
             await RenewalHighestScore.Send(Score.Value);
-        }
         else
-        {
-
-        }
+            PlayerPrefs.SetString(PlayerPrefsKey.HIGHEST_SCORE, Score.Value.ToString());
     }
 }

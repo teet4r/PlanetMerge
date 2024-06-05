@@ -14,6 +14,7 @@ public static class UserLogin
         User.LoginType = LoginType.Google;
         PlayerPrefs.SetInt(PlayerPrefsKey.LAST_LOGIN, (int)LoginType.Google);
         User.UpdateData(result.userData);
+        WebSocketManager.StartHeartbeat().Forget();
 
         return result;
     }

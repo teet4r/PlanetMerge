@@ -13,13 +13,10 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 
     private void Awake()
     {
-        if (!PlayerPrefs.HasKey(PlayerPrefsKey.BEST_SCORE))
-            PlayerPrefs.SetInt(PlayerPrefsKey.BEST_SCORE, 0);
-
         if (User.LoginType == LoginType.Google)
             _bestScoreText.text = User.HighestScore.ToString();
         else
-            _bestScoreText.text = PlayerPrefs.GetInt(PlayerPrefsKey.BEST_SCORE).ToString();
+            _bestScoreText.text = PlayerPrefs.GetString(PlayerPrefsKey.HIGHEST_SCORE, "0");
 
         _pauseButton.onClick.AddListener(() =>
         {

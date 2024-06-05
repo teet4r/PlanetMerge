@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8909115155213204260}
   - component: {fileID: 5700232024042769781}
   - component: {fileID: 8909115155213204256}
+  - component: {fileID: 9012995645095060427}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Dongle
@@ -183,3 +184,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae18ba297b17c74f82e52b6552921be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _colorSpriteRenderer: {fileID: 9012995645095060427}
+--- !u!114 &9012995645095060427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8909115155213204261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c8d561758f9c9438ed77a9cb96650b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 8909115155213204262}

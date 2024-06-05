@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Planet : CollidablePoolObject
 {
+    [SerializeField] private ColorSpriteRenderer _colorSpriteRenderer;
     private bool _isAlive;
     private bool _isDrag;
     private bool _isMerging;
@@ -91,9 +92,9 @@ public class Planet : CollidablePoolObject
         {
             case GameoverLine:
                 _deadtime += Time.deltaTime;
-
-                if (_deadtime > 4)
-                    PlayScene.Instance.GameOver();
+                _colorSpriteRenderer.StartColoringRGB(Color.red, 3f);
+                //if (_deadtime > PlayScene.GAMEOVER_TRIGGER_TIME)
+                //    PlayScene.Instance.Gameover();
                 break;
         }
     }
@@ -105,6 +106,7 @@ public class Planet : CollidablePoolObject
         switch (collidable)
         {
             case GameoverLine:
+                _colorSpriteRenderer.StartColoringRGB(Color.white, _deadtime);
                 _deadtime = 0;
                 break;
         }
@@ -167,6 +169,8 @@ public class Planet : CollidablePoolObject
         }
     }
 
+
+
     public void Drag()
     {
         _isDrag = true;
@@ -177,6 +181,8 @@ public class Planet : CollidablePoolObject
         _isDrag = false;
         Rigid.simulated = true;
     }
+
+
 
     private void _Attach()
     {
@@ -197,19 +203,20 @@ public class Planet : CollidablePoolObject
         _isAttach = false;
     }
 
+
+
     public void Hide(Vector3 targetPos)
     {
+        if (!_isAlive)
+            return;
+        _isAlive = false;
+        _isMerging = true;
+
         _HideRoutine(targetPos).Forget();
     }
 
     private async UniTask _HideRoutine(Vector3 targetPos)
     {
-        if (!_isAlive)
-            return;
-
-        _isAlive = false;
-        _isMerging = true;
-
         Rigid.simulated = false;
         Collider.enabled = false;
 
@@ -237,15 +244,17 @@ public class Planet : CollidablePoolObject
         Pool();
     }
 
+
+
     private void _LevelUp()
     {
+        _isMerging = true;
+
         _LevelUpRoutine().Forget();
     }
 
     private async UniTask _LevelUpRoutine()
     {
-        _isMerging = true;
-
         Rigid.velocity = Vector2.zero;
         Rigid.angularVelocity = 0;
 
@@ -265,6 +274,8 @@ public class Planet : CollidablePoolObject
         _isMerging = false;
     }
 
+
+
     private void _PlayEffect()
     {
         var effect = ObjectPoolManager.Release<MergeEffect>();
@@ -275,6 +286,8 @@ public class Planet : CollidablePoolObject
         effect.Activate();
         effect.Play().Forget();
     }
+
+
 
     public override void Pool() => ObjectPoolManager.Return(this);
 }

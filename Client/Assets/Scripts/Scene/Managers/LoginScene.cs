@@ -11,19 +11,18 @@ public class LoginScene : SceneSingletonBehaviour<LoginScene>
 
     private void Start()
     {
-        WebSocketManager.Open();
-
         _AutoLogin().Forget();
     }
 
     private async UniTask _AutoLogin()
     {
         _lastLoginType = (LoginType)PlayerPrefs.GetInt(PlayerPrefsKey.LAST_LOGIN, 0);
-        if (_lastLoginType != LoginType.None)
-            if (await LoginProcess(_lastLoginType))
-                return;
-
-        UIManager.Show<UILoginPopup>();
+        if (_lastLoginType == LoginType.None ||
+            _lastLoginType == LoginType.Guest ||
+            !await LoginProcess(_lastLoginType))
+        {
+            UIManager.Show<UILoginPopup>();
+        }
     }
 
     public async UniTask<bool> LoginProcess(LoginType loginType)
@@ -31,17 +30,17 @@ public class LoginScene : SceneSingletonBehaviour<LoginScene>
         if (loginType == LoginType.Guest)
         {
             PlayerPrefs.SetInt(PlayerPrefsKey.LAST_LOGIN, (int)LoginType.Guest);
-            WebSocketManager.Close();
+            CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
+            return true;
         }
-        else if (loginType == LoginType.Google)
-        {
-            if (!await GoogleLoginManager.SignInWithGoogleClient()) // client validation
-                return false;
-            if (!(await UserLogin.Send()).success) // server validation
-                return false;
-            
-            WebSocketManager.StartHeartbeat().Forget();
-        }
+
+        if (!await GoogleLoginManager.SignInWithGoogleClient()) // client validation
+            return false;
+
+        WebSocketManager.Open();
+
+        if (!(await UserLogin.Send()).success) // server validation
+            return false;
 
         CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
 
