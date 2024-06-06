@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Planet : CollidablePoolObject
 {
-    [SerializeField] private ColorSpriteRenderer _colorSpriteRenderer;
+    [SerializeField] private ColorSprite _colorSprite;
     private bool _isAlive;
     private bool _isDrag;
     private bool _isMerging;
@@ -92,9 +92,9 @@ public class Planet : CollidablePoolObject
         {
             case GameoverLine:
                 _deadtime += Time.deltaTime;
-                _colorSpriteRenderer.StartColoringRGB(Color.red, 3f);
-                //if (_deadtime > PlayScene.GAMEOVER_TRIGGER_TIME)
-                //    PlayScene.Instance.Gameover();
+                _colorSprite.Color(Color.red, 3f);
+                if (_deadtime > PlayScene.GAMEOVER_TRIGGER_TIME)
+                    PlayScene.Instance.Gameover();
                 break;
         }
     }
@@ -106,7 +106,7 @@ public class Planet : CollidablePoolObject
         switch (collidable)
         {
             case GameoverLine:
-                _colorSpriteRenderer.StartColoringRGB(Color.white, _deadtime);
+                _colorSprite.Color(Color.white, _deadtime);
                 _deadtime = 0;
                 break;
         }
