@@ -21,7 +21,7 @@ public class UIMainPopup : UI
 
         _howToButton.onClick.AddListener(() =>
         {
-            UIManager.Show<UIHowToPopup>();
+            UIManager.Show<UIIllustratedPopup>();
             SFX.Play(Sfx.Button);
         });
 
