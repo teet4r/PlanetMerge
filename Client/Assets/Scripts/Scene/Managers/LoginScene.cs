@@ -36,8 +36,8 @@ public class LoginScene : SceneSingletonBehaviour<LoginScene>
 
         if (!await GoogleLoginManager.SignInWithGoogleClient()) // client validation
             return false;
-
-        WebSocketManager.Open();
+        
+        await WebSocketManager.Open();
 
         if (!(await UserLogin.Send()).success) // server validation
             return false;

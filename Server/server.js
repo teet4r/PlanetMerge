@@ -3,6 +3,7 @@ const WebSocket = require('ws');
 const { makeCsApi } = require('./makeCsApi');
 const { makeCsEnum } = require('./makeCsEnum');
 const { makeCsCommonClass } = require('./makeCsCommonClass');
+const userManager = require('./userManager');
 
 // update files ----------------------------------------
 const methods = {};
@@ -15,6 +16,7 @@ for (const apiFullName of apiNameList) {
     const apiName = apiFullName.substring(0, apiFullName.length - 3);
 
     makeCsApi(api, apiName);
+
     for (const [name, property] of Object.entries(api)) {
         if (name == 'api') {    
             methods[apiName] = property;
@@ -37,11 +39,20 @@ for (const classFullName of classNameList) {
 }
 
 // connect server ----------------------------------------
+const clients = {};
+
 const wss = new WebSocket.Server({ port: 8000, }, function() { 
     console.log('PlanetMerge Server Start');
 });
 
 wss.on('connection', function connection(ws) {
+    console.log('클라이언트 연결됨!');
+
+    ws.onclose = function() {
+        // userManager.unload();
+        console.log('클라이언트 닫힘!');
+    };
+
     ws.on('message', async (data) => {
         data = data.toString().split('/');
 
@@ -65,3 +76,7 @@ wss.on('connection', function connection(ws) {
 wss.on('listening', () => { 
     console.log('listening...');
 });
+
+// setInterval(() => {
+//     console.log(userManager.logAllUsers());
+// }, 2000);

@@ -12,11 +12,18 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
     private static HashSet<string> _exceptLoadingPopupApi;
     private static UILoadingPopup _loading;
 
-    public static void Open()
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        _socket?.Close();
+        _socket = null;
+    }
+
+    public static async UniTask<bool> Open()
     {
         //_socket = new WebSocket("ws://localhost:8000");
-        _socket = new WebSocket("ws://0.tcp.jp.ngrok.io:11682");
-        _socket.Connect();
+        _socket = new WebSocket("ws://0.tcp.jp.ngrok.io:11775");
 
         _socket.OnMessage += (sender, e) =>
         {
@@ -31,6 +38,14 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         {
             "Heartbeat",
         };
+
+        while (!_socket.IsAlive)
+        {
+            _socket.Connect();
+            await UniTask.DelayFrame(1, cancellationToken: cancellationToken);
+        }
+
+        return true;
     }
 
     public static async UniTask<Res> Send<Req, Res>(string apiName, Req request)
@@ -42,7 +57,7 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
 
         _socket.Send($"{apiName}/{JsonUtility.ToJson(request)}");
 
-        await UniTask.WaitUntil(() => _packetQ[apiName] != null);
+        await UniTask.WaitUntil(() => _packetQ[apiName] != null, cancellationToken: cancellationToken);
 
         var response = JsonUtility.FromJson<Res>(_packetQ[apiName]);
 
@@ -58,7 +73,7 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         while (true)
         {
             var result = await Heartbeat.Send();
-            await UniTask.Delay(10000);
+            await UniTask.Delay(10000, cancellationToken: cancellationToken);
         }
     }
 }

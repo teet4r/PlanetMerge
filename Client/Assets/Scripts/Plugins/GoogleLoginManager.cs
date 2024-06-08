@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Behaviour;
 using Cysharp.Threading.Tasks;
@@ -20,44 +21,46 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
     protected override void Awake()
     {
         base.Awake();
-
+        
         _configuration = new GoogleSignInConfiguration
         {
             WebClientId = webClientId,
             RequestEmail = true,
             RequestIdToken = true
         };
-
-        _CheckFirebaseDependencies();
-    }
-
-    private static void _CheckFirebaseDependencies()
-    {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                if (task.Result == DependencyStatus.Available)
-                    _auth = FirebaseAuth.DefaultInstance;
-                //else
-                //    AddToInformation("Could not resolve all Firebase dependencies: " + task.Result.ToString());
-            }
-            else
-            {
-                //AddToInformation("Dependency check was not completed. Error : " + task.Exception.Message);
-            }
-        });
     }
 
     public static async UniTask<bool> SignInWithGoogleClient()
     {
         var loading = UIManager.Show<UILoadingPopup>();
 
-        var success = await _OnSignIn();
-
+        if (!await _CheckFirebaseDependencies())
+        {
+            loading.Hide();
+            return false;
+        }
+        if (!await _OnSignIn())
+        {
+            loading.Hide();
+            return false;
+        }
         loading.Hide();
 
-        return success;
+        return true;
+    }
+
+    private static async UniTask<bool> _CheckFirebaseDependencies()
+    {
+        return await FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted && task.Result == DependencyStatus.Available)
+            {
+                _auth = FirebaseAuth.DefaultInstance;
+                return true;
+            }
+
+            return false;
+        }, cancellationToken: cancellationToken);
     }
 
     public static void SignOutFromGoogleClient() => _OnSignOut();
@@ -67,24 +70,21 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
-        //AddToInformation("Calling SignIn");
 
         return await await GoogleSignIn.DefaultInstance.SignIn().ContinueWith(async task =>
         {
             return await _OnAuthenticationFinished(task);
-        });
+        }, cancellationToken: cancellationToken);
     }
 
     private static void _OnSignOut()
     {
-        //AddToInformation("Calling SignOut");
         GoogleSignIn.DefaultInstance.SignOut();
         _auth = null;
     }
 
     public static void OnDisconnect()
     {
-        //AddToInformation("Calling Disconnect");
         GoogleSignIn.DefaultInstance.Disconnect();
         _auth = null;
     }
@@ -110,15 +110,9 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         }
         else if (task.IsCanceled)
         {
-            //AddToInformation("Canceled");
         }
         else
-        {
-            //AddToInformation("Welcome: " + task.Result.DisplayName + "!");
-            //AddToInformation("Google ID Token = " + task.Result.IdToken);
-            //AddToInformation("Email = " + task.Result.Email);
             return await _SignInWithGoogleOnFirebase(task.Result.IdToken);
-        }
 
         return false;
     }
@@ -141,7 +135,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
             //}
 
             return ex == null;
-        });
+        }, cancellationToken: cancellationToken);
     }
 
     public static void OnSignInSilently()
@@ -149,8 +143,6 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
-        //AddToInformation("Calling SignIn Silently");
-
         GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(_OnAuthenticationFinished);
     }
 
@@ -159,9 +151,6 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         GoogleSignIn.Configuration = _configuration;
         GoogleSignIn.Configuration.UseGameSignIn = true;
         GoogleSignIn.Configuration.RequestIdToken = false;
-
-        //AddToInformation("Calling Games SignIn");
-
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(_OnAuthenticationFinished);
     }
 

@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 namespace Behaviour
@@ -6,6 +7,9 @@ namespace Behaviour
     {
         public static T Instance => _instance;
         private static T _instance;
+
+        protected static CancellationToken cancellationToken => _cancellationTokenSource.Token;
+        private static CancellationTokenSource _cancellationTokenSource;
 
         protected virtual void Awake()
         {
@@ -18,6 +22,14 @@ namespace Behaviour
             }
 
             DontDestroyOnLoad(gameObject);
+
+            _cancellationTokenSource = new();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
     }
 }
