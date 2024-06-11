@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4663590713055407626}
   - component: {fileID: 3876512510238336134}
   - component: {fileID: 7466553877843849206}
-  - component: {fileID: 1564689524448218097}
+  - component: {fileID: 302254563558550235}
+  - component: {fileID: 2108878891076559330}
   m_Layer: 5
   m_Name: UIReadyPopup
   m_TagString: Untagged
@@ -77,7 +78,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1564689524448218097
+--- !u!225 &302254563558550235
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502660239391801768}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &2108878891076559330
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,12 +99,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1502660239391801768}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d71b26582948ad4a930c8d452b87eb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e63ccaf83d855b4a9286c358f32b016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _closeButton: {fileID: 0}
-  _noButton: {fileID: 0}
-  _yesButton: {fileID: 0}
+  _canvasGroup: {fileID: 302254563558550235}
 --- !u!1 &5617631240156173811
 GameObject:
   m_ObjectHideFlags: 0

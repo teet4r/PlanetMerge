@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playButton: {fileID: 4634514771362845616}
-  _howToButton: {fileID: 7095367466177672264}
+  _illustratedButton: {fileID: 7095367466177672264}
   _settingButton: {fileID: 2499499670997183673}
   _exitButton: {fileID: 2795182241128007659}
 --- !u!1 &3789600984772966263

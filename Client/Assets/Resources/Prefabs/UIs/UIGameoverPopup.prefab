@@ -399,9 +399,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b36cbc20cc7f2748ad39b09c71d0b0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goMainButton: {fileID: 0}
-  _retryButton: {fileID: 0}
+  _goMainButton: {fileID: 7924020959189422184}
+  _retryButton: {fileID: 726263682429277469}
   _scoreText: {fileID: 8913040708294279805}
+  _bestScoreText: {fileID: 2612659937974294657}
+  _newBestScoreGroup: {fileID: 4836252149144800743}
 --- !u!1 &4836252149144800743
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,8 @@ public class UIGameoverPopup : UI
     [SerializeField] private Button _goMainButton;
     [SerializeField] private Button _retryButton;
     [SerializeField] private Text _scoreText;
+    [SerializeField] private Text _bestScoreText;
+    [SerializeField] private GameObject _newBestScoreGroup;
 
     private void Awake()
     {
@@ -25,8 +27,10 @@ public class UIGameoverPopup : UI
         });
     }
 
-    public void Bind(long score)
+    public void Bind(long score, long highestScore)
     {
-        _scoreText.text = $"점수 : {score}";
+        _scoreText.text = $"현재 점수 : {score}";
+        _bestScoreText.text = $"최고 점수 : {highestScore}";
+        _newBestScoreGroup.SetActive(score > highestScore);
     }
 }

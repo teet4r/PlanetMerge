@@ -5,25 +5,18 @@ using UnityEngine.UI;
 
 public class UIExitPopup : UI
 {
-    [SerializeField] private Button _closeButton;
-    [SerializeField] private Button _noButton;
-    [SerializeField] private Button _yesButton;
+    [SerializeField] private Button _cancelButton;
+    [SerializeField] private Button _exitButton;
 
     private void Awake()
     {
-        _closeButton.onClick.AddListener(() =>
+        _cancelButton.onClick.AddListener(() =>
         {
             Hide();
             SFX.Play(Sfx.Button);
         });
 
-        _noButton.onClick.AddListener(() =>
-        {
-            Hide();
-            SFX.Play(Sfx.Button);
-        });
-
-        _yesButton.onClick.AddListener(() =>
+        _exitButton.onClick.AddListener(() =>
         {
             Application.Quit();
             SFX.Play(Sfx.Button);

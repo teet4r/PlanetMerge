@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UIMainPopup : UI
 {
     [SerializeField] private Button _playButton;
-    [SerializeField] private Button _howToButton;
+    [SerializeField] private Button _illustratedButton;
     [SerializeField] private Button _settingButton;
     [SerializeField] private Button _exitButton;
 
@@ -19,22 +19,23 @@ public class UIMainPopup : UI
             CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
         });
 
-        _howToButton.onClick.AddListener(() =>
+        _illustratedButton.onClick.AddListener(() =>
         {
-            UIManager.Show<UIIllustratedPopup>();
             SFX.Play(Sfx.Button);
+            UIManager.Show<UIReadyPopup>().Bind();
+            //UIManager.Show<UIIllustratedPopup>();
         });
 
         _settingButton.onClick.AddListener(() =>
         {
-            UIManager.Show<UISettingPopup>();
             SFX.Play(Sfx.Button);
+            UIManager.Show<UISettingPopup>();
         });
 
         _exitButton.onClick.AddListener(() =>
         {
-            UIManager.Show<UIExitPopup>();
             SFX.Play(Sfx.Button);
+            UIManager.Show<UIExitPopup>();
         });
     }
 }

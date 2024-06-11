@@ -9,6 +9,7 @@ public class UI : MonoBehaviour
     public RectTransform RectTr => _rectTr;
     private RectTransform _rectTr;
 
+    protected Action onHide;
     protected List<IDisposable> disposables = new();
 
     public void Initialize()
@@ -22,6 +23,8 @@ public class UI : MonoBehaviour
         for (int i = 0; i < disposables.Count; ++i)
             disposables[i]?.Dispose();
         disposables.Clear();
+
+        onHide?.Invoke();
 
         gameObject.SetActive(false);
     }

@@ -79,11 +79,13 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         await UniTask.Delay(2000);
 
+        var highestScore = User.HighestScore;
+
         //최고 점수 갱신
         await _RenewalHighestScore();
 
         //게임오버 ui
-        UIManager.Show<UIGameoverPopup>().Bind(Score.Value);
+        UIManager.Show<UIGameoverPopup>().Bind(Score.Value, highestScore);
     }
     
     public void TouchDown()
