@@ -581,7 +581,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e176ad44506b447a5c3932be83732e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _goToStore: {fileID: 1342533002022125396}
   _closeButton: {fileID: 7130416892182973383}
+  _bgmSlider: {fileID: 4878126111605334697}
+  _sfxSlider: {fileID: 4553588253273453410}
 --- !u!1 &2873429506156802098
 GameObject:
   m_ObjectHideFlags: 0

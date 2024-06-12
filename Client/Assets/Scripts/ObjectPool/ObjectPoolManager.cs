@@ -81,12 +81,7 @@ public class ObjectPoolManager : SingletonBehaviour<ObjectPoolManager>
         _tr = GetComponent<Transform>();
     }
 
-    protected override void OnDestroy()
-    {
-        base .OnDestroy();
-
-        ClearAll();
-    }
+    private void OnDestroy() => ClearAll();
 
     public static T Release<T>() where T : PoolObject
     {

@@ -9,13 +9,13 @@ public class SFX : SingletonBehaviour<SFX>
     private static AudioSource _audioSource;
     private static Dictionary<Sfx, AudioClip> _sfxs = new();
 
-    public static bool Mute
+    public static float Volume
     {
-        get => _audioSource.mute;
+        get => _audioSource.volume;
         set
         {
-            _audioSource.mute = value;
-            PlayerPrefs.SetInt(PlayerPrefsKey.SFX_ON, value ? 0 : 1);
+            _audioSource.volume = value;
+            PlayerPrefs.SetFloat(PlayerPrefsKey.SFX_VALUE, value);
         }
     }
 
@@ -23,13 +23,9 @@ public class SFX : SingletonBehaviour<SFX>
     {
         base.Awake();
 
-        if (!PlayerPrefs.HasKey(PlayerPrefsKey.SFX_ON))
-            PlayerPrefs.SetInt(PlayerPrefsKey.SFX_ON, 1);
-
         _audioSource = GetComponent<AudioSource>();
 
-        if (PlayerPrefs.GetInt(PlayerPrefsKey.SFX_ON) == 0)
-            Mute = true;
+        _audioSource.volume = PlayerPrefs.GetFloat(PlayerPrefsKey.SFX_VALUE, 1f);
     }
 
     public static void Play(Sfx sfx)

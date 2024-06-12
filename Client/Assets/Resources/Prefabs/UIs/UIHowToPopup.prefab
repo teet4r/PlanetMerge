@@ -529,7 +529,7 @@ GameObject:
   - component: {fileID: 5944048764742885922}
   - component: {fileID: 5244741804383619629}
   m_Layer: 5
-  m_Name: UIIllustratedPopup
+  m_Name: UIHowToPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

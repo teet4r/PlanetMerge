@@ -12,10 +12,8 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
     private static HashSet<string> _exceptLoadingPopupApi;
     private static UILoadingPopup _loading;
 
-    protected override void OnDestroy()
+    private void OnDestroy()
     {
-        base.OnDestroy();
-
         _socket?.Close();
         _socket = null;
     }
@@ -42,7 +40,7 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         while (!_socket.IsAlive)
         {
             _socket.Connect();
-            await UniTask.DelayFrame(1, cancellationToken: cancellationToken);
+            await UniTask.DelayFrame(1);
         }
 
         return true;
@@ -57,7 +55,7 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
 
         _socket.Send($"{apiName}/{JsonUtility.ToJson(request)}");
 
-        await UniTask.WaitUntil(() => _packetQ[apiName] != null, cancellationToken: cancellationToken);
+        await UniTask.WaitUntil(() => _packetQ[apiName] != null);
 
         var response = JsonUtility.FromJson<Res>(_packetQ[apiName]);
 
@@ -73,7 +71,7 @@ public class WebSocketManager : SingletonBehaviour<WebSocketManager>
         while (true)
         {
             var result = await Heartbeat.Send();
-            await UniTask.Delay(10000, cancellationToken: cancellationToken);
+            await UniTask.Delay(10000);
         }
     }
 }

@@ -60,7 +60,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
             }
 
             return false;
-        }, cancellationToken: cancellationToken);
+        });
     }
 
     public static void SignOutFromGoogleClient() => _OnSignOut();
@@ -74,7 +74,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
         return await await GoogleSignIn.DefaultInstance.SignIn().ContinueWith(async task =>
         {
             return await _OnAuthenticationFinished(task);
-        }, cancellationToken: cancellationToken);
+        });
     }
 
     private static void _OnSignOut()
@@ -135,7 +135,7 @@ public class GoogleLoginManager : SingletonBehaviour<GoogleLoginManager>
             //}
 
             return ex == null;
-        }, cancellationToken: cancellationToken);
+        });
     }
 
     public static void OnSignInSilently()

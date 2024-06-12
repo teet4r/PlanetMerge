@@ -9,13 +9,13 @@ public class BGM : SingletonBehaviour<BGM>
     private static AudioSource _audioSource;
     private static Dictionary<Bgm, AudioClip> _bgms = new();
 
-    public static bool Mute
+    public static float Volume
     {
-        get => _audioSource.mute;
+        get => _audioSource.volume;
         set
         {
-            _audioSource.mute = value;
-            PlayerPrefs.SetInt(PlayerPrefsKey.BGM_ON, value ? 0 : 1);
+            _audioSource.volume = value;
+            PlayerPrefs.SetFloat(PlayerPrefsKey.BGM_VALUE, value);
         }
     }
 
@@ -24,12 +24,8 @@ public class BGM : SingletonBehaviour<BGM>
         base.Awake();
 
         _audioSource = GetComponent<AudioSource>();
-        
-        if (!PlayerPrefs.HasKey(PlayerPrefsKey.BGM_ON))
-            PlayerPrefs.SetInt(PlayerPrefsKey.BGM_ON, 1);
 
-        if (PlayerPrefs.GetInt(PlayerPrefsKey.BGM_ON) == 0)
-            Mute = true;
+        _audioSource.volume = PlayerPrefs.GetFloat(PlayerPrefsKey.BGM_VALUE, 1f);
     }
 
     public static void Play(Bgm bgm)
