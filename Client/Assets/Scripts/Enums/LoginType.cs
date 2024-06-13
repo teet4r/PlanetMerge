@@ -1,6 +1,6 @@
 public enum LoginType
 {
-    None,
-    Guest,
-    Google,
+	None = 0,
+	Guest = 1,
+	Google = 2,
 }

@@ -1,16 +1,20 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class Planet : CollidablePoolObject
 {
+    public readonly ReactiveProperty<int> Level = new(0);
+    public readonly List<IDisposable> Disposables = new();
+
     [SerializeField] private ColorSprite _colorSprite;
     private bool _isAlive;
     private bool _isDrag;
     private bool _isMerging;
     private bool _isAttach;
-    private int _level;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
@@ -36,8 +40,8 @@ public class Planet : CollidablePoolObject
 
         _mainCamera = Camera.main;
 
-        _level = Random.Range(0, PlayScene.Instance.MaxLevel);
-        _animator.SetInteger(AniParam.LEVEL, _level);
+        Level.Value = UnityEngine.Random.Range(0, PlayScene.Instance.MaxLevel);
+        _animator.SetInteger(AniParam.LEVEL, Level.Value);
         _spriteRenderer.color = _planetColor;
      
         _isAlive = true;
@@ -69,7 +73,6 @@ public class Planet : CollidablePoolObject
         base.OnDisable();
 
         _isAlive = false;
-        _level = 0;
         _isDrag = false;
         _isMerging = false;
         _isAttach = false;
@@ -82,6 +85,10 @@ public class Planet : CollidablePoolObject
         Rigid.velocity = Vector2.zero;
         Rigid.angularVelocity = 0;
         Collider.enabled = true;
+
+        for (int i = 0; i < Disposables.Count; ++i)
+            Disposables[i]?.Dispose();
+        Disposables.Clear();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -92,8 +99,9 @@ public class Planet : CollidablePoolObject
         {
             case GameoverLine:
                 _deadtime += Time.deltaTime;
-                _colorSprite.Color(Color.red, 3f);
-                if (_deadtime > PlayScene.GAMEOVER_TRIGGER_TIME)
+                if (_deadtime > 1f)
+                    _colorSprite.Color(Color.red, _deadtime - 1f, 2f);
+                if (_deadtime > 3f)
                     PlayScene.Instance.Gameover();
                 break;
         }
@@ -140,10 +148,10 @@ public class Planet : CollidablePoolObject
 
     private void _Merge(Planet other)
     {
-        if (_level != other._level || _isMerging || other._isMerging)
+        if (Level.Value != other.Level.Value || _isMerging || other._isMerging)
             return;
 
-        if (_level < 9)
+        if (Level.Value < 9)
         {
             //나와 상대 위치 가져오기
             float meX = tr.position.x;
@@ -157,7 +165,7 @@ public class Planet : CollidablePoolObject
                 //상대 숨기기
                 other.Hide(tr.position);
                 //나 레벨업
-                _LevelUp();
+                LevelUp();
             }
         }
         else // level >= 9
@@ -237,7 +245,7 @@ public class Planet : CollidablePoolObject
             await UniTask.DelayFrame(1, cancellationToken : DisableCancellationToken);
         }
 
-        PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, _level);
+        PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, Level.Value);
 
         _isMerging = false;
 
@@ -246,14 +254,25 @@ public class Planet : CollidablePoolObject
 
 
 
-    private void _LevelUp()
+    public void LevelUp()
     {
         _isMerging = true;
 
-        _LevelUpRoutine().Forget();
+        Level.Value = Mathf.Min(Level.Value + 1, C.PLANET_MAX_LEVEL);
+
+        _ChangeLevelRoutine(Level.Value).Forget();
     }
 
-    private async UniTask _LevelUpRoutine()
+    public void LevelDown()
+    {
+        _isMerging = true;
+
+        Level.Value = Mathf.Max(Level.Value - 1, 0);
+
+        _ChangeLevelRoutine(Level.Value).Forget();
+    }
+
+    private async UniTask _ChangeLevelRoutine(int level)
     {
         Rigid.velocity = Vector2.zero;
         Rigid.angularVelocity = 0;
@@ -263,13 +282,11 @@ public class Planet : CollidablePoolObject
         _PlayEffect();
         SFX.Play(Sfx.LevelUp);
 
-        _animator.SetInteger(AniParam.LEVEL, _level + 1);
+        _animator.SetInteger(AniParam.LEVEL, level);
 
         await UniTask.Delay(300, cancellationToken: DisableCancellationToken);
 
-        _level++;
-
-        PlayScene.Instance.MaxLevel = Mathf.Max(_level, PlayScene.Instance.MaxLevel);
+        PlayScene.Instance.MaxLevel = Mathf.Max(level, PlayScene.Instance.MaxLevel);
 
         _isMerging = false;
     }

@@ -86,9 +86,10 @@ GameObject:
   - component: {fileID: 4369142876211711484}
   - component: {fileID: 7500154094550041610}
   - component: {fileID: 8671363037314405542}
-  - component: {fileID: 1329220304309495811}
+  - component: {fileID: 6291346688458695143}
+  - component: {fileID: 8585189796191556917}
   m_Layer: 5
-  m_Name: BoomItemBtn
+  m_Name: BoomItemToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +155,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1329220304309495811
+--- !u!114 &6291346688458695143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,7 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 945226110349784125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -179,14 +180,14 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: fab22ca411fb9404994fe7c272111143, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -195,9 +196,28 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 8671363037314405542}
-  m_OnClick:
+  toggleTransition: 1
+  graphic: {fileID: 0}
+  m_Group: {fileID: 0}
+  onValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  m_IsOn: 0
+--- !u!114 &8585189796191556917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945226110349784125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d68ad63467534446ab07e70030ab9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 9137732138307570774}
+  _onSprite: {fileID: 21300000, guid: c0ee38148e4091a43bbd7d2cf3f8bc75, type: 3}
+  _offSprite: {fileID: 21300000, guid: fab22ca411fb9404994fe7c272111143, type: 3}
 --- !u!1 &2265800323030000300
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,6 +733,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseButton: {fileID: 8680500076097721194}
   _curScoreText: {fileID: 4439737988846037397}
+  _boomItemToggle: {fileID: 8585189796191556917}
+  _upGradeItemButton: {fileID: 2356750958227484202}
+  _downGradeItemButton: {fileID: 6052062071233351919}
 --- !u!1 &5236042117432297903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1188,6 +1211,7 @@ GameObject:
   - component: {fileID: 8575510040153313608}
   - component: {fileID: 4094788334139584804}
   - component: {fileID: 1372998426202498547}
+  - component: {fileID: 2356750958227484202}
   m_Layer: 5
   m_Name: UpgradeItemBtn
   m_TagString: Untagged
@@ -1280,7 +1304,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1299,6 +1323,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2356750958227484202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907912069788359497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9310a6c1455831d4d872ba49f32bbe03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 231115752470659957}
+  _enabledSprite: {fileID: 21300000, guid: 0ee69f8806e41c94e9303b5788e44c43, type: 3}
+  _disabledSprite: {fileID: 21300000, guid: fab22ca411fb9404994fe7c272111143, type: 3}
 --- !u!1 &8266826469066991672
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,6 +1580,7 @@ GameObject:
   - component: {fileID: 3250422305972862293}
   - component: {fileID: 8038431436514001324}
   - component: {fileID: 2821126731204188276}
+  - component: {fileID: 6052062071233351919}
   m_Layer: 5
   m_Name: DownGradeItemBtn
   m_TagString: Untagged
@@ -1633,7 +1673,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1652,6 +1692,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6052062071233351919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8828880321620592325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9310a6c1455831d4d872ba49f32bbe03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 7014191504653665641}
+  _enabledSprite: {fileID: 21300000, guid: 63f4fbd66e16a75449a240e79dbb39bd, type: 3}
+  _disabledSprite: {fileID: 21300000, guid: fab22ca411fb9404994fe7c272111143, type: 3}
 --- !u!1 &9044725642301208247
 GameObject:
   m_ObjectHideFlags: 0

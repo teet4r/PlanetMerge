@@ -7,21 +7,20 @@ using Cysharp.Threading.Tasks;
 
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
-    public const float GAMEOVER_TRIGGER_TIME = 3f;
     public int MaxLevel;
     public readonly ReactiveProperty<long> Score = new(0);
+    public readonly ReactiveProperty<Planet> LastPlanet = new();
 
     private bool _isGameover;
-    private Planet _lastPlanet;
 
     private void OnEnable()
     {
         Score.Value = 0;
         MaxLevel = 1;
 
-        UIManager.Show<UIPlayPopup>().Bind();
-
         _NextDongle();
+
+        UIManager.Show<UIPlayPopup>().Bind();
     }
 
     private void Update()
@@ -35,16 +34,16 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         if(_isGameover)
             return;
 
-        _lastPlanet = ObjectPoolManager.Release<Planet>();
-        _lastPlanet.Tr.position = new Vector2(0f, 4.3f);
-        _lastPlanet.Activate();
+        LastPlanet.Value = ObjectPoolManager.Release<Planet>();
+        LastPlanet.Value.Tr.position = new Vector2(0f, 4.3f);
+        LastPlanet.Value.Activate();
 
         _WaitNext().Forget();
     }
 
     private async UniTask _WaitNext()
     {
-        await UniTask.WaitUntil(() => _lastPlanet == null);
+        await UniTask.WaitUntil(() => LastPlanet.Value == null);
         await UniTask.Delay(1800);
 
         _NextDongle();
@@ -90,19 +89,19 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     
     public void TouchDown()
     {
-        if (_isGameover || _lastPlanet == null)
+        if (_isGameover || LastPlanet.Value == null)
             return;
 
-        _lastPlanet.Drag();
+        LastPlanet.Value.Drag();
     }
 
     public void TouchUp()
     {
-        if (_isGameover || _lastPlanet == null)
+        if (_isGameover || LastPlanet.Value == null)
             return;
 
-        _lastPlanet.Drop();
-        _lastPlanet = null;
+        LastPlanet.Value.Drop();
+        LastPlanet.Value = null;
     }
 
     private async UniTask _RenewalHighestScore()
@@ -113,6 +112,9 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         if (User.LoginType == LoginType.Google)
             await RenewalHighestScore.Send(Score.Value);
         else
+        {
+            User.HighestScore = Score.Value;
             PlayerPrefs.SetString(PlayerPrefsKey.HIGHEST_SCORE, Score.Value.ToString());
+        }
     }
 }
