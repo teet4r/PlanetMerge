@@ -7,14 +7,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class CustomButton : MonoBehaviour
 {
-    public new bool enabled
+    public bool interactable
     {
-        get => button.enabled;
+        get => button.interactable;
         set
         {
-            if (button.enabled != value)
+            if (button.interactable != value)
                 _image.sprite = value ? _enabledSprite : _disabledSprite;
-            button.enabled = value;
+            button.interactable = value;
         }
     }
 

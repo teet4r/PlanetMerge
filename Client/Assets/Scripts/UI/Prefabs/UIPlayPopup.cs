@@ -41,15 +41,15 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         {
             if (lastPlanet == null)
             {
-                _upGradeItemButton.enabled = false;
-                _downGradeItemButton.enabled = false;
+                _upGradeItemButton.interactable = false;
+                _downGradeItemButton.interactable = false;
             }
             else
             {
                 lastPlanet.Level.Subscribe(level =>
                 {
-                    _upGradeItemButton.enabled = level < C.PLANET_MAX_LEVEL;
-                    _downGradeItemButton.enabled = level > 0;
+                    _upGradeItemButton.interactable = level < C.PLANET_MAX_LEVEL;
+                    _downGradeItemButton.interactable = level > 0;
                 }).AddTo(lastPlanet.Disposables);
             }
         }).AddTo(disposables);
