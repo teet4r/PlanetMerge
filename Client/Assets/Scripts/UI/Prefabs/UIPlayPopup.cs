@@ -8,19 +8,13 @@ using UnityEngine.UI;
 public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Button _pauseButton;
-    [SerializeField] private Text _bestScoreText;
     [SerializeField] private Text _curScoreText;
 
     private void Awake()
     {
-        if (User.LoginType == LoginType.Google)
-            _bestScoreText.text = User.HighestScore.ToString();
-        else
-            _bestScoreText.text = PlayerPrefs.GetString(PlayerPrefsKey.HIGHEST_SCORE, "0");
-
         _pauseButton.onClick.AddListener(() =>
         {
-            UIManager.Show<UISettingPopup>();
+            UIManager.Show<UIPausePopup>();
             SFX.Play(Sfx.Button);
         });
     }

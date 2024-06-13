@@ -29,6 +29,7 @@ public class LoginScene : SceneSingletonBehaviour<LoginScene>
     {
         if (loginType == LoginType.Guest)
         {
+            User.LoginType = LoginType.Guest;
             PlayerPrefs.SetInt(PlayerPrefsKey.LAST_LOGIN, (int)LoginType.Guest);
             CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
             return true;
