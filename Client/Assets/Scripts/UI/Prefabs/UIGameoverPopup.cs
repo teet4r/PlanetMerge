@@ -27,10 +27,10 @@ public class UIGameoverPopup : UI
         });
     }
 
-    public void Bind(long score, long highestScore)
+    public void Bind(long score)
     {
         _scoreText.text = $"현재 점수 : {score}";
-        _bestScoreText.text = $"최고 점수 : {highestScore}";
-        _newBestScoreGroup.SetActive(score > highestScore);
+        _bestScoreText.text = $"최고 점수 : {User.HighestScore}";
+        _newBestScoreGroup.SetActive(score > User.HighestScore);
     }
 }
