@@ -10,16 +10,14 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _curScoreText;
     [SerializeField] private CustomToggle _boomItemToggle;
-    [SerializeField] private CustomButton _upGradeItemButton;
-    [SerializeField] private CustomButton _downGradeItemButton;
+    [SerializeField] private CustomButton _upgradeItemButton;
+    [SerializeField] private CustomButton _downgradeItemButton;
 
     private Camera _mainCamera;
     private bool _boomItemMode;
-
-    private void OnEnable()
-    {
-        _mainCamera = Camera.main;
-    }
+    private bool _availableBoomItem;
+    private bool _availableUpgradeItem;
+    private bool _availableDowngradeItem;
 
     private void Start()
     {
@@ -29,27 +27,67 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             SFX.Play(Sfx.Button);
         });
 
-        _boomItemToggle.AddListener(isOn => _boomItemMode = isOn);
-        _upGradeItemButton.AddListener(() => PlayScene.Instance.LastPlanet.Value?.LevelUp());
-        _downGradeItemButton.AddListener(() => PlayScene.Instance.LastPlanet.Value?.LevelDown());
+        _boomItemToggle.AddListener(isOn =>
+        {
+            if (!_availableBoomItem)
+            {
+                _boomItemMode = false;
+                _boomItemToggle.SetSprite(SpriteName.Close_X);
+            }
+            else
+            {
+                _boomItemMode = isOn;
+                _boomItemToggle.SetSprite(isOn ? SpriteName.Close_X : SpriteName.Boom);
+            }
+        });
+
+        _upgradeItemButton.AddListener(() =>
+        {
+            if (!_availableUpgradeItem)
+                return;
+
+            _availableUpgradeItem = false;
+            PlayScene.Instance.LastPlanet?.LevelUp();
+        });
+
+        _downgradeItemButton.AddListener(() =>
+        {
+            if (!_availableDowngradeItem)
+                return;
+
+            _availableDowngradeItem = false;
+            PlayScene.Instance.LastPlanet?.LevelDown();
+        });
     }
 
     public void Bind()
     {
-        PlayScene.Instance.LastPlanet.Subscribe(lastPlanet => 
+        _mainCamera = Camera.main;
+
+        _boomItemToggle.Interactable = true;
+        _upgradeItemButton.Interactable = true;
+        _downgradeItemButton.Interactable = true;
+
+        _availableBoomItem = true;
+        _availableUpgradeItem = true;
+        _availableDowngradeItem = true;
+
+        Observable.EveryFixedUpdate().Subscribe(t =>
         {
-            if (lastPlanet == null)
+            if (PlayScene.Instance.LastPlanet == null)
             {
-                _upGradeItemButton.interactable = false;
-                _downGradeItemButton.interactable = false;
+                _upgradeItemButton.Interactable = false;
+                _downgradeItemButton.Interactable = false;
             }
             else
             {
-                lastPlanet.Level.Subscribe(level =>
-                {
-                    _upGradeItemButton.interactable = level < C.PLANET_MAX_LEVEL;
-                    _downGradeItemButton.interactable = level > 0;
-                }).AddTo(lastPlanet.Disposables);
+                var level = PlayScene.Instance.LastPlanet.Level;
+
+                _upgradeItemButton.SetSprite(_availableUpgradeItem ? SpriteName.Upgrade : SpriteName.Close_X);
+                _upgradeItemButton.Interactable = _availableUpgradeItem && level < C.PLANET_MAX_LEVEL;
+
+                _downgradeItemButton.SetSprite(_availableDowngradeItem ? SpriteName.Downgrade : SpriteName.Close_X);
+                _downgradeItemButton.Interactable = _availableDowngradeItem && level > 0;
             }
         }).AddTo(disposables);
 
@@ -89,6 +127,8 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             return;
 
         planet.Hide(Vector3.up * 100);
+        _availableBoomItem = false;
         _boomItemToggle.IsOn = false;
+        _boomItemToggle.Interactable = false;
     }
 }

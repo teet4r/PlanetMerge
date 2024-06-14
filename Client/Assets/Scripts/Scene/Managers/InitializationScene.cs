@@ -15,6 +15,6 @@ public class InitializationScene : SceneSingletonBehaviour<InitializationScene>
 
     private void Start()
     {
-        CustomSceneManager.LoadSceneAsync(SceneName.Login).Forget();
+        CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
     }
 }

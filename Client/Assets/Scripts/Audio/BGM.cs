@@ -31,7 +31,7 @@ public class BGM : SingletonBehaviour<BGM>
     public static void Play(Bgm bgm)
     {
         if (!_bgms.TryGetValue(bgm, out AudioClip clip))
-            _bgms.Add(bgm, clip = Resources.Load<AudioClip>($"AudioClips/Bgm/{bgm}"));
+            _bgms.Add(bgm, clip = Resources.Load<AudioClip>($"AudioClips/Bgms/{bgm}"));
 
         if (clip == _audioSource.clip)
             return;

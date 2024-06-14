@@ -7,8 +7,8 @@ using System.Text;
 #if UNITY_EDITOR
 using UnityEditor;
 
-[CustomEditor(typeof(BGM))]
-public class GenerateBgmNameEnums : Editor
+[CustomEditor(typeof(SpriteNameEnumsGenerator))]
+public class GenerateSpriteNameEnums : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -16,28 +16,28 @@ public class GenerateBgmNameEnums : Editor
 
         StringBuilder enums = new();
 
-        if (GUILayout.Button("Generate Bgm Name Enums"))
+        if (GUILayout.Button("Generate Sprite Name Enums"))
         {
-            var bgms = Resources.LoadAll("AudioClips/Bgms/");
+            var sprites = Resources.LoadAll<Sprite>("Sprites/");
 
-            for (int i = 0; i < bgms.Length; ++i)
-                enums.AppendLine($"\t{bgms[i].name},");
+            for (int i = 0; i < sprites.Length; ++i)
+                enums.AppendLine($"\t{sprites[i].name},");
 
             StringBuilder script = new();
 
-            script.AppendLine("public enum Bgm")
+            script.AppendLine("public enum SpriteName")
                 .AppendLine("{")
                 .Append(enums)
                 .AppendLine("}");
 
-            StreamWriter sw = new(File.Create($"{Application.dataPath}/Scripts/Enums/Bgm.cs"));
+            StreamWriter sw = new(File.Create($"{Application.dataPath}/Scripts/Enums/SpriteName.cs"));
 
             sw.Write(script.ToString());
             sw.Close();
 
             AssetDatabase.Refresh();
 
-            Debug.Log("Generate Bgm Name Enums!");
+            Debug.Log("Generate Sprite Name Enums!");
         }
     }
 }

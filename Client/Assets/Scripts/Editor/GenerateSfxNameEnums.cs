@@ -18,7 +18,7 @@ public class GenerateSfxNameEnums : Editor
 
         if (GUILayout.Button("Generate Sfx Name Enums"))
         {
-            var sfxs = Resources.LoadAll("AudioClips/Sfx/");
+            var sfxs = Resources.LoadAll("AudioClips/Sfxs/");
 
             for (int i = 0; i < sfxs.Length; ++i)
                 enums.AppendLine($"\t{sfxs[i].name},");

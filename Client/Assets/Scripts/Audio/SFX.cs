@@ -31,7 +31,7 @@ public class SFX : SingletonBehaviour<SFX>
     public static void Play(Sfx sfx)
     {
         if (!_sfxs.TryGetValue(sfx, out AudioClip clip))
-            _sfxs.Add(sfx, clip = Resources.Load<AudioClip>($"AudioClips/Sfx/{sfx}"));
+            _sfxs.Add(sfx, clip = Resources.Load<AudioClip>($"AudioClips/Sfxs/{sfx}"));
 
         _audioSource.PlayOneShot(clip);
     }

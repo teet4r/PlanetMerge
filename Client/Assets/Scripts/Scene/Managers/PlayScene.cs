@@ -9,8 +9,9 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
     public int MaxLevel;
     public readonly ReactiveProperty<long> Score = new(0);
-    public readonly ReactiveProperty<Planet> LastPlanet = new();
+    public Planet LastPlanet => _lastPlanet;
 
+    private Planet _lastPlanet;
     private bool _isGameover;
 
     private void OnEnable()
@@ -34,16 +35,18 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         if(_isGameover)
             return;
 
-        LastPlanet.Value = ObjectPoolManager.Release<Planet>();
-        LastPlanet.Value.Tr.position = new Vector2(0f, 4.3f);
-        LastPlanet.Value.Activate();
+        var lastPlanet = ObjectPoolManager.Release<Planet>();
+        lastPlanet.Tr.position = new Vector2(0f, 4.3f);
+        lastPlanet.Activate();
+
+        _lastPlanet = lastPlanet;
 
         _WaitNext().Forget();
     }
 
     private async UniTask _WaitNext()
     {
-        await UniTask.WaitUntil(() => LastPlanet.Value == null);
+        await UniTask.WaitUntil(() => _lastPlanet == null);
         await UniTask.Delay(1800);
 
         _NextDongle();
@@ -79,40 +82,43 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         await UniTask.Delay(2000);
 
         //최고 점수 갱신
-        await _RenewalHighestScore();
+        //await _RenewalHighestScore();
+        var prevHighestScore = long.Parse(PlayerPrefs.GetString(PlayerPrefsKey.HIGHEST_SCORE, "0"));
+        var curHighestScore = prevHighestScore < Score.Value ? Score.Value : prevHighestScore;
+        PlayerPrefs.SetString(PlayerPrefsKey.HIGHEST_SCORE, curHighestScore.ToString());
 
         //게임오버 ui
-        UIManager.Show<UIGameoverPopup>().Bind(Score.Value);
+        UIManager.Show<UIGameoverPopup>().Bind(Score.Value, prevHighestScore, curHighestScore);
     }
     
     public void TouchDown()
     {
-        if (_isGameover || LastPlanet.Value == null)
+        if (_isGameover || _lastPlanet == null)
             return;
 
-        LastPlanet.Value.Drag();
+        _lastPlanet.Drag();
     }
 
     public void TouchUp()
     {
-        if (_isGameover || LastPlanet.Value == null)
+        if (_isGameover || _lastPlanet == null)
             return;
 
-        LastPlanet.Value.Drop();
-        LastPlanet.Value = null;
+        _lastPlanet.Drop();
+        _lastPlanet = null;
     }
 
-    private async UniTask _RenewalHighestScore()
-    {
-        if (User.HighestScore >= Score.Value)
-            return;
+    //private async UniTask _RenewalHighestScore()
+    //{
+    //    if (User.HighestScore >= Score.Value)
+    //        return;
 
-        if (User.LoginType == LoginType.Google)
-            await RenewalHighestScore.Send(Score.Value);
-        else
-        {
-            User.HighestScore = Score.Value;
-            PlayerPrefs.SetString(PlayerPrefsKey.HIGHEST_SCORE, Score.Value.ToString());
-        }
-    }
+    //    if (User.LoginType == LoginType.Google)
+    //        await RenewalHighestScore.Send(Score.Value);
+    //    else
+    //    {
+    //        User.HighestScore = Score.Value;
+    //        PlayerPrefs.SetString(PlayerPrefsKey.HIGHEST_SCORE, Score.Value.ToString());
+    //    }
+    //}
 }

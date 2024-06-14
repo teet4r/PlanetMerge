@@ -12,19 +12,25 @@ public class CustomToggle : MonoBehaviour
         get => toggle.isOn;
         set => toggle.isOn = value;
     }
+    public bool Interactable
+    {
+        get => toggle.interactable;
+        set => toggle.interactable = value;
+    }
+
+    [SerializeField] private Image _image;
+    private Sprite _originSprite;
 
     protected Toggle toggle;
-
-    [SerializeField] protected Image _image;
-    [SerializeField] protected Sprite _onSprite;
-    [SerializeField] protected Sprite _offSprite;
 
     protected virtual void Awake()
     {
         toggle = GetComponent<Toggle>();
 
-        toggle.onValueChanged.AddListener(isOn => _image.sprite = isOn ? _offSprite : _onSprite);
+        _originSprite = _image.sprite;
     }
 
     public void AddListener(UnityAction<bool> call) => toggle.onValueChanged.AddListener(call);
+
+    public void SetSprite(SpriteName spriteName) => _image.sprite = ResourceLoader.LoadSprite(spriteName);
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,27 +8,28 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class CustomButton : MonoBehaviour
 {
-    public bool interactable
+    public bool Interactable
     {
         get => button.interactable;
-        set
-        {
-            if (button.interactable != value)
-                _image.sprite = value ? _enabledSprite : _disabledSprite;
-            button.interactable = value;
-        }
+        set => button.interactable = value;
     }
 
-    [SerializeField] private Image _image;
-    [SerializeField] private Sprite _enabledSprite;
-    [SerializeField] private Sprite _disabledSprite;
-
     protected Button button;
+    protected Sprite originSprite;
+
+    [SerializeField] private Image _image;
 
     protected virtual void Awake()
     {
         button = GetComponent<Button>();
+
+        originSprite = _image.sprite;
     }
 
     public void AddListener(UnityAction call) => button.onClick.AddListener(call);
+
+    public void SetSprite(SpriteName spriteName)
+    {
+        _image.sprite = ResourceLoader.LoadSprite(spriteName);
+    }
 }

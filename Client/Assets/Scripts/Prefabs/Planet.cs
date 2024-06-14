@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Planet : CollidablePoolObject
 {
-    public readonly ReactiveProperty<int> Level = new(0);
+    public int Level => _level;
     public readonly List<IDisposable> Disposables = new();
 
     [SerializeField] private ColorSprite _colorSprite;
@@ -15,6 +15,7 @@ public class Planet : CollidablePoolObject
     private bool _isDrag;
     private bool _isMerging;
     private bool _isAttach;
+    private int _level;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
@@ -40,8 +41,8 @@ public class Planet : CollidablePoolObject
 
         _mainCamera = Camera.main;
 
-        Level.Value = UnityEngine.Random.Range(0, PlayScene.Instance.MaxLevel);
-        _animator.SetInteger(AniParam.LEVEL, Level.Value);
+        _level = UnityEngine.Random.Range(0, PlayScene.Instance.MaxLevel);
+        _animator.SetInteger(AniParam.LEVEL, _level);
         _spriteRenderer.color = _planetColor;
      
         _isAlive = true;
@@ -148,10 +149,10 @@ public class Planet : CollidablePoolObject
 
     private void _Merge(Planet other)
     {
-        if (Level.Value != other.Level.Value || _isMerging || other._isMerging)
+        if (_level != other._level || _isMerging || other._isMerging)
             return;
 
-        if (Level.Value < 9)
+        if (_level < 9)
         {
             //나와 상대 위치 가져오기
             float meX = tr.position.x;
@@ -165,7 +166,7 @@ public class Planet : CollidablePoolObject
                 //상대 숨기기
                 other.Hide(tr.position);
                 //나 레벨업
-                LevelUp();
+                LevelUp(needMergingTime: true);
             }
         }
         else // level >= 9
@@ -245,7 +246,7 @@ public class Planet : CollidablePoolObject
             await UniTask.DelayFrame(1, cancellationToken : DisableCancellationToken);
         }
 
-        PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, Level.Value);
+        PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, _level);
 
         _isMerging = false;
 
@@ -254,30 +255,31 @@ public class Planet : CollidablePoolObject
 
 
 
-    public void LevelUp()
+    public void LevelUp(bool needMergingTime = false)
     {
         _isMerging = true;
 
-        Level.Value = Mathf.Min(Level.Value + 1, C.PLANET_MAX_LEVEL);
+        _level = Mathf.Min(_level + 1, C.PLANET_MAX_LEVEL);
 
-        _ChangeLevelRoutine(Level.Value).Forget();
+        _ChangeLevelRoutine(_level, needMergingTime).Forget();
     }
 
-    public void LevelDown()
+    public void LevelDown(bool needMergingTime = false)
     {
         _isMerging = true;
 
-        Level.Value = Mathf.Max(Level.Value - 1, 0);
+        _level = Mathf.Max(_level - 1, 0);
 
-        _ChangeLevelRoutine(Level.Value).Forget();
+        _ChangeLevelRoutine(_level, needMergingTime).Forget();
     }
 
-    private async UniTask _ChangeLevelRoutine(int level)
+    private async UniTask _ChangeLevelRoutine(int level, bool needMergingTime)
     {
         Rigid.velocity = Vector2.zero;
         Rigid.angularVelocity = 0;
 
-        await UniTask.Delay(200, cancellationToken : DisableCancellationToken);
+        if (needMergingTime)
+            await UniTask.Delay(200, cancellationToken: DisableCancellationToken);
 
         _PlayEffect();
         SFX.Play(Sfx.LevelUp);
