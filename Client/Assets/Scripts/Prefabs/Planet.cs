@@ -42,8 +42,9 @@ public class Planet : CollidablePoolObject
         _mainCamera = Camera.main;
 
         _level = UnityEngine.Random.Range(0, PlayScene.Instance.MaxLevel);
-        _animator.SetInteger(AniParam.LEVEL, _level);
         _spriteRenderer.color = _planetColor;
+        _spriteRenderer.sprite = ResourceLoader.LoadSprite($"Level{_level}");
+        _animator.SetInteger(AniParam.LEVEL, _level);
      
         _isAlive = true;
     }
@@ -285,6 +286,7 @@ public class Planet : CollidablePoolObject
         SFX.Play(Sfx.LevelUp);
 
         _animator.SetInteger(AniParam.LEVEL, level);
+        _spriteRenderer.sprite = ResourceLoader.LoadSprite($"Level{level}");
 
         await UniTask.Delay(300, cancellationToken: DisableCancellationToken);
 

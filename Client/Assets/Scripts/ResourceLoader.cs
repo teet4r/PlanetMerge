@@ -8,7 +8,12 @@ public static class ResourceLoader
 
     public static Sprite LoadSprite(SpriteName spriteName)
     {
-        return _Load<Sprite>("Sprites", spriteName.ToString());
+        return LoadSprite(spriteName.ToString());
+    }
+
+    public static Sprite LoadSprite(string spriteName)
+    {
+        return _Load<Sprite>("Sprites", spriteName);
     }
 
     private static T _Load<T>(string folderPath, string name) where T : Object
