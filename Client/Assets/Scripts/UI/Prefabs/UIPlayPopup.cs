@@ -39,6 +39,8 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
                 _boomItemMode = isOn;
                 _boomItemToggle.SetSprite(isOn ? SpriteName.Close_X : SpriteName.Boom);
             }
+
+            PlayScene.Instance?.Planets.ForEach(planet => planet.SetColor(isOn ? Color.green : Color.white));
         });
 
         _upgradeItemButton.AddListener(() =>
@@ -76,11 +78,14 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         {
             if (PlayScene.Instance.LastPlanet == null)
             {
+                _boomItemToggle.Interactable = false;
                 _upgradeItemButton.Interactable = false;
                 _downgradeItemButton.Interactable = false;
             }
             else
             {
+                _boomItemToggle.Interactable = _availableBoomItem;
+
                 var level = PlayScene.Instance.LastPlanet.Level;
 
                 _upgradeItemButton.SetSprite(_availableUpgradeItem ? SpriteName.Upgrade : SpriteName.Close_X);
@@ -89,11 +94,11 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
                 _downgradeItemButton.SetSprite(_availableDowngradeItem ? SpriteName.Downgrade : SpriteName.Close_X);
                 _downgradeItemButton.Interactable = _availableDowngradeItem && level > 0;
             }
-        }).AddTo(disposables);
+        }).AddTo(disposablesOnHide);
 
         PlayScene.Instance.Score
             .Subscribe(score => _curScoreText.text = score.ToString())
-            .AddTo(disposables);
+            .AddTo(disposablesOnHide);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -120,10 +125,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         touchPosition = Input.touches[0].position;
 #endif
         var collider = Physics2D.OverlapPoint(_mainCamera.ScreenToWorldPoint(touchPosition));
-        if (collider == null)
-            return;
-
-        if (!collider.TryGetComponent(out Planet planet))
+        if (collider == null || !collider.TryGetComponent(out Planet planet))
             return;
 
         planet.Hide(Vector3.up * 100);

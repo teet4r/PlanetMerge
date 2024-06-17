@@ -9,6 +9,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
     public int MaxLevel;
     public readonly ReactiveProperty<long> Score = new(0);
+    public readonly List<Planet> Planets = new();
     public Planet LastPlanet => _lastPlanet;
 
     private Planet _lastPlanet;
@@ -18,6 +19,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     {
         Score.Value = 0;
         MaxLevel = 1;
+        Planets.Clear();
 
         _NextDongle();
 
@@ -46,8 +48,8 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
     private async UniTask _WaitNext()
     {
-        await UniTask.WaitUntil(() => _lastPlanet == null);
-        await UniTask.Delay(1800);
+        await UniTask.WaitUntil(() => _lastPlanet == null, cancellationToken: destroyCancellationToken);
+        await UniTask.Delay(1800, cancellationToken: destroyCancellationToken);
 
         _NextDongle();
     }
@@ -64,22 +66,17 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     private async UniTask _GameoverRoutine()
     {
         // 장면안에 활성화 되어있는 모든 동글 가져오기
-        var planets = ObjectPoolManager.GetActiveAll<Planet>();
-
-        for (int i = 0; i < planets.Length; ++i)
-        {
-            planets[i].Rigid.simulated = false;
-        }
+        Planets.ForEach(planet => planet.Rigid.simulated = false);
 
         // 윗 목록 하나씩 접근해서 삭제
-        for (int i = 0; i < planets.Length; ++i)
+        Planets.ForEach(async planet =>
         {
-            planets[i].Hide(Vector3.up * 100);
+            planet.Hide(Vector3.up * 100);
 
-            await UniTask.Delay(100);
-        }
+            await UniTask.Delay(100, cancellationToken: destroyCancellationToken);
+        });
 
-        await UniTask.Delay(2000);
+        await UniTask.Delay(2000, cancellationToken: destroyCancellationToken);
 
         //최고 점수 갱신
         //await _RenewalHighestScore();

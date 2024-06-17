@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using log4net.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using UnityEngine;
 public class Planet : CollidablePoolObject
 {
     public int Level => _level;
-    public readonly List<IDisposable> Disposables = new();
 
     [SerializeField] private ColorSprite _colorSprite;
     private bool _isAlive;
@@ -19,6 +19,7 @@ public class Planet : CollidablePoolObject
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    private CircleCollider2D _circleCollider2D;
 
     private Color _planetColor;
 
@@ -31,6 +32,7 @@ public class Planet : CollidablePoolObject
 
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _circleCollider2D = GetComponent<CircleCollider2D>();
 
         _planetColor = _spriteRenderer.color;
     }
@@ -45,7 +47,22 @@ public class Planet : CollidablePoolObject
         _spriteRenderer.color = _planetColor;
         _spriteRenderer.sprite = ResourceLoader.LoadSprite($"Level{_level}");
         _animator.SetInteger(AniParam.LEVEL, _level);
-     
+
+        if (_level == 7)
+        {
+            _circleCollider2D.radius = 0.94f;
+            _circleCollider2D.offset = new Vector2(-0.075f, 0f);
+            _spriteRenderer.sortingOrder = 3;
+        }
+        else
+        {
+            _circleCollider2D.radius = 1.055f;
+            _circleCollider2D.offset = Vector2.zero;
+            _spriteRenderer.sortingOrder = 2;
+        }
+
+        PlayScene.Instance?.Planets.Add(this);
+
         _isAlive = true;
     }
 
@@ -88,9 +105,7 @@ public class Planet : CollidablePoolObject
         Rigid.angularVelocity = 0;
         Collider.enabled = true;
 
-        for (int i = 0; i < Disposables.Count; ++i)
-            Disposables[i]?.Dispose();
-        Disposables.Clear();
+        PlayScene.Instance?.Planets.Remove(this);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -285,6 +300,18 @@ public class Planet : CollidablePoolObject
         _PlayEffect();
         SFX.Play(Sfx.LevelUp);
 
+        if (level == 7)
+        {
+            _circleCollider2D.radius = 0.94f;
+            _circleCollider2D.offset = new Vector2(-0.075f, 0f);
+            _spriteRenderer.sortingOrder = 3;
+        }
+        else
+        {
+            _circleCollider2D.radius = 1.055f;
+            _circleCollider2D.offset = Vector2.zero;
+            _spriteRenderer.sortingOrder = 2;
+        }
         _animator.SetInteger(AniParam.LEVEL, level);
         _spriteRenderer.sprite = ResourceLoader.LoadSprite($"Level{level}");
 
@@ -307,6 +334,10 @@ public class Planet : CollidablePoolObject
         effect.Activate();
         effect.Play().Forget();
     }
+
+
+
+    public void SetColor(Color color) => _spriteRenderer.color = color;
 
 
 

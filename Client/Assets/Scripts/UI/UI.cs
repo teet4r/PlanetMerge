@@ -10,7 +10,7 @@ public class UI : MonoBehaviour
     private RectTransform _rectTr;
 
     protected Action onHide;
-    protected List<IDisposable> disposables = new();
+    protected List<IDisposable> disposablesOnHide = new();
 
     public void Initialize()
     {
@@ -20,9 +20,9 @@ public class UI : MonoBehaviour
     public virtual void Show() => gameObject.SetActive(true);
     public virtual void Hide()
     {
-        for (int i = 0; i < disposables.Count; ++i)
-            disposables[i]?.Dispose();
-        disposables.Clear();
+        for (int i = 0; i < disposablesOnHide.Count; ++i)
+            disposablesOnHide[i]?.Dispose();
+        disposablesOnHide.Clear();
 
         onHide?.Invoke();
 
