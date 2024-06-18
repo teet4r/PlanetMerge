@@ -69,12 +69,12 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         Planets.ForEach(planet => planet.Rigid.simulated = false);
 
         // 윗 목록 하나씩 접근해서 삭제
-        Planets.ForEach(async planet =>
+        for (int i = 0; i < Planets.Count; ++i)
         {
-            planet.Hide(Vector3.up * 100);
+            Planets[i].Hide(Vector3.up * 100);
 
             await UniTask.Delay(100, cancellationToken: destroyCancellationToken);
-        });
+        };
 
         await UniTask.Delay(2000, cancellationToken: destroyCancellationToken);
 

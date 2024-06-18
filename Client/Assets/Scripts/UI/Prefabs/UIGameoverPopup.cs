@@ -17,13 +17,15 @@ public class UIGameoverPopup : UI
         _goMainButton.onClick.AddListener(() =>
         {
             SFX.Play(Sfx.Button);
-            CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
+
+            AdManager.ShowInterstitialAd(() => CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget());
         });
 
         _retryButton.onClick.AddListener(() =>
         {
             SFX.Play(Sfx.Button);
-            CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
+
+            AdManager.ShowInterstitialAd(() => CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget());
         });
     }
 

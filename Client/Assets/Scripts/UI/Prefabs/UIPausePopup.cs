@@ -20,14 +20,32 @@ public class UIPausePopup : UI
 
         _retryButton.onClick.AddListener(() =>
         {
-            CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
             SFX.Play(Sfx.Button);
+            UIManager.Get<UIRemindPopup>()
+                .SetTitle("다시하기")
+                .SetDescription("처음부터 다시 하시겠습니까?")
+                .SetYesButton(() =>
+                {
+                    SFX.Play(Sfx.Button);
+                    CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
+                })
+                .SetNoButton(null)
+                .Show();
         });
 
         _goToMainButton.onClick.AddListener(() =>
         {
-            CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
             SFX.Play(Sfx.Button);
+            UIManager.Get<UIRemindPopup>()
+                .SetTitle("홈으로 가기")
+                .SetDescription("홈으로 돌아가시겠습니까?")
+                .SetYesButton(() =>
+                {
+                    SFX.Play(Sfx.Button);
+                    CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
+                })
+                .SetNoButton(null)
+                .Show();
         });
     }
 }
