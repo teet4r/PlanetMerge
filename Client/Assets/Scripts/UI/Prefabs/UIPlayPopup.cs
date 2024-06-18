@@ -40,7 +40,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
                 _boomItemToggle.SetSprite(isOn ? SpriteName.Close_X : SpriteName.Boom);
             }
 
-            PlayScene.Instance?.Planets.ForEach(planet => planet.SetColor(isOn ? Color.green : Color.white));
+            PlayScene.Instance?.Planets.ForEach(planet => planet.SetColor(isOn ? new Color(0, 1, 1, 1) : Color.white));
         });
 
         _upgradeItemButton.AddListener(() =>
