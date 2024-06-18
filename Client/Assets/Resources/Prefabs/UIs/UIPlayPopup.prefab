@@ -581,6 +581,7 @@ MonoBehaviour:
   _boomItemToggle: {fileID: 3441806057039483238}
   _upgradeItemButton: {fileID: 324232208977466485}
   _downgradeItemButton: {fileID: 1792784504926866537}
+  "_boom\uC544\uC774\uD15C\uC4F8\uB54C\uC801\uC6A9\uD560\uC0C9\uAE54": {r: 0, g: 1, b: 1, a: 1}
 --- !u!1 &5478135567535832748
 GameObject:
   m_ObjectHideFlags: 0

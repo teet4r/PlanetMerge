@@ -7,11 +7,17 @@ using UnityEngine.UI;
 
 public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 {
+    [Header("---------- 참조 ----------")]
+    [Space(15)]
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _curScoreText;
     [SerializeField] private CustomToggle _boomItemToggle;
     [SerializeField] private CustomButton _upgradeItemButton;
     [SerializeField] private CustomButton _downgradeItemButton;
+
+    [Header("---------- 인스펙터 에디터 ----------")]
+    [Space(15)]
+    [SerializeField] private Color _boom아이템쓸때적용할색깔;
 
     private Camera _mainCamera;
     private bool _boomItemMode;
@@ -40,7 +46,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
                 _boomItemToggle.SetSprite(isOn ? SpriteName.Close_X : SpriteName.Boom);
             }
 
-            PlayScene.Instance?.Planets.ForEach(planet => planet.SetColor(isOn ? new Color(0, 1, 1, 1) : Color.white));
+            PlayScene.Instance?.Planets.ForEach(planet => planet.SetColor(isOn ? _boom아이템쓸때적용할색깔 : Color.white));
         });
 
         _upgradeItemButton.AddListener(() =>
