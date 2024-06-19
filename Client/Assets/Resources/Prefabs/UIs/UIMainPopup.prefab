@@ -96,6 +96,7 @@ MonoBehaviour:
   _howToButton: {fileID: 7095367466177672264}
   _settingButton: {fileID: 2499499670997183673}
   _exitButton: {fileID: 2795182241128007659}
+  _bestScoreText: {fileID: 7722408381910317251}
   _versionText: {fileID: 2132224946611638166}
 --- !u!1 &1215514438776008268
 GameObject:

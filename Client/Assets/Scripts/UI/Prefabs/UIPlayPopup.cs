@@ -46,7 +46,10 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
                 _boomItemToggle.SetSprite(isOn ? SpriteName.Close_X : SpriteName.Boom);
             }
 
-            PlayScene.Instance?.Planets.ForEach(planet => planet.SetColor(isOn ? _boom아이템쓸때적용할색깔 : Color.white));
+            var planets = FindObjectsOfType<Planet>();
+
+            for (int i = 0; i < planets.Length; ++i)
+                planets[i].SetColor(isOn ? _boom아이템쓸때적용할색깔 : Color.white);
         });
 
         _upgradeItemButton.AddListener(() =>
@@ -54,6 +57,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             if (!_availableUpgradeItem)
                 return;
 
+            SFX.Play(Sfx.UpDowngrade);
             _availableUpgradeItem = false;
             PlayScene.Instance.LastPlanet?.LevelUp();
         });
@@ -63,6 +67,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             if (!_availableDowngradeItem)
                 return;
 
+            SFX.Play(Sfx.UpDowngrade);
             _availableDowngradeItem = false;
             PlayScene.Instance.LastPlanet?.LevelDown();
         });
@@ -103,7 +108,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         }).AddTo(disposablesOnHide);
 
         PlayScene.Instance.Score
-            .Subscribe(score => _curScoreText.text = score.ToString())
+            .Subscribe(score => _curScoreText.text = score.Comma())
             .AddTo(disposablesOnHide);
     }
 
@@ -134,6 +139,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         if (collider == null || !collider.TryGetComponent(out Planet planet))
             return;
 
+        SFX.Play(Sfx.Boom);
         planet.Hide(Vector3.up * 100);
         _availableBoomItem = false;
         _boomItemToggle.IsOn = false;

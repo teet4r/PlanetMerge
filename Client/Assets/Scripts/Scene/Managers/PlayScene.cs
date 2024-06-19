@@ -8,8 +8,7 @@ using Cysharp.Threading.Tasks;
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
     public int MaxLevel;
-    public readonly ReactiveProperty<long> Score = new(0);
-    public readonly List<Planet> Planets = new();
+    public readonly ReactiveProperty<int> Score = new(0);
     public Planet LastPlanet => _lastPlanet;
 
     private Planet _lastPlanet;
@@ -19,7 +18,6 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     {
         Score.Value = 0;
         MaxLevel = 1;
-        Planets.Clear();
 
         _NextDongle();
 
@@ -66,12 +64,15 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     private async UniTask _GameoverRoutine()
     {
         // 장면안에 활성화 되어있는 모든 동글 가져오기
-        Planets.ForEach(planet => planet.Rigid.simulated = false);
+        var planets = FindObjectsOfType<Planet>();
+
+        for (int i = 0; i < planets.Length; ++i)
+            planets[i].Rigid.simulated = false;
 
         // 윗 목록 하나씩 접근해서 삭제
-        for (int i = 0; i < Planets.Count; ++i)
+        for (int i = 0; i < planets.Length; ++i)
         {
-            Planets[i].Hide(Vector3.up * 100);
+            planets[i].Hide(Vector3.up * 100);
 
             await UniTask.Delay(100, cancellationToken: destroyCancellationToken);
         };
@@ -80,9 +81,9 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         //최고 점수 갱신
         //await _RenewalHighestScore();
-        var prevHighestScore = long.Parse(PlayerPrefs.GetString(PlayerPrefsKey.HIGHEST_SCORE, "0"));
+        var prevHighestScore = PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0);
         var curHighestScore = prevHighestScore < Score.Value ? Score.Value : prevHighestScore;
-        PlayerPrefs.SetString(PlayerPrefsKey.HIGHEST_SCORE, curHighestScore.ToString());
+        PlayerPrefs.SetInt(PlayerPrefsKey.HIGHEST_SCORE, curHighestScore);
 
         //게임오버 ui
         UIManager.Show<UIGameoverPopup>().Bind(Score.Value, prevHighestScore, curHighestScore);

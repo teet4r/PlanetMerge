@@ -33,7 +33,7 @@ public class LoginScene : SceneSingletonBehaviour<LoginScene>
             User.UpdateData(new UserData()
             {
                 uid = "",
-                highestScore = long.Parse(PlayerPrefs.GetString(PlayerPrefsKey.HIGHEST_SCORE, "0")),
+                highestScore = PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0),
             });
             PlayerPrefs.SetInt(PlayerPrefsKey.LAST_LOGIN, (int)LoginType.Guest);
             CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();

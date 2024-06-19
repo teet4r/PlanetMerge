@@ -56,8 +56,6 @@ public class Planet : CollidablePoolObject
             _spriteRenderer.sortingOrder = 2;
         }
 
-        PlayScene.Instance?.Planets.Add(this);
-
         _isAlive = true;
     }
 
@@ -99,8 +97,6 @@ public class Planet : CollidablePoolObject
         Rigid.velocity = Vector2.zero;
         Rigid.angularVelocity = 0;
         Collider.enabled = true;
-
-        PlayScene.Instance?.Planets.Remove(this);
     }
 
     private void OnTriggerStay2D(Collider2D collision)

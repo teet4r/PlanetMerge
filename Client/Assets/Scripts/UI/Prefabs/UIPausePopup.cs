@@ -37,8 +37,8 @@ public class UIPausePopup : UI
         {
             SFX.PlayButtonClick();
             UIManager.Get<UIRemindPopup>()
-                .SetTitle("홈으로 가기")
-                .SetDescription("홈으로 돌아가시겠습니까?")
+                .SetTitle("메인으로 가기")
+                .SetDescription("메인으로 돌아가시겠습니까?")
                 .SetYesButton(() =>
                 {
                     SFX.PlayButtonClick();

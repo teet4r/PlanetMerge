@@ -9,11 +9,11 @@ public class AdManager : SingletonBehaviour<AdManager>
 {
     private static InterstitialAd _interstitialAd;
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
     private static string _adUnitId = "ca-app-pub-3940256099942544/1033173712";
-#elif UNITY_ANDROID
-    private static string _adUnitId = "ca-app-pub-7910487525826129~9852478597";
-#endif
+//#elif UNITY_ANDROID              
+//    private static string _adUnitId = "ca-app-pub-7910487525826129/4858832900";
+//#endif
 
     protected override void Awake()
     {
@@ -39,8 +39,6 @@ public class AdManager : SingletonBehaviour<AdManager>
             _interstitialAd = null;
         }
 
-        Debug.Log("Loading the interstitial ad.");
-
         // create our request used to load the ad.
         var adRequest = new AdRequest();
         adRequest.Keywords.Add("unity-admob-sample");
@@ -51,12 +49,7 @@ public class AdManager : SingletonBehaviour<AdManager>
             {
                 // if error is not null, the load request failed.
                 if (error != null || ad == null)
-                {
-                    Debug.LogError("interstitial ad failed to load an ad with error : " + error);
                     return;
-                }
-
-                Debug.Log("interstitial ad loaded with response : " + ad.GetResponseInfo());
 
                 _interstitialAd = ad;
             }

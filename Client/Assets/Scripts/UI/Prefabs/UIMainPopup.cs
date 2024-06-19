@@ -10,6 +10,7 @@ public class UIMainPopup : UI
     [SerializeField] private Button _howToButton;
     [SerializeField] private Button _settingButton;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Text _bestScoreText;
     [SerializeField] private Text _versionText;
 
     private void Awake()
@@ -39,5 +40,10 @@ public class UIMainPopup : UI
         });
 
         _versionText.text = $"ver.{Application.version}";
+    }
+
+    private void OnEnable()
+    {
+        _bestScoreText.text = $"최고 점수 : {PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0).Comma()}";
     }
 }
