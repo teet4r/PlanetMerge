@@ -1,9 +1,4 @@
 using Cysharp.Threading.Tasks;
-using log4net.Core;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UniRx;
 using UnityEngine;
 
 public class Planet : CollidablePoolObject
