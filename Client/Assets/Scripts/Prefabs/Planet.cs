@@ -168,7 +168,7 @@ public class Planet : CollidablePoolObject
         if (_level != other._level || _isMerging || other._isMerging)
             return;
 
-        if (_level < 9)
+        if (_level < C.PLANET_MAX_LEVEL)
         {
             //나와 상대 위치 가져오기
             float meX = tr.position.x;

@@ -10,6 +10,7 @@ public class UIMainPopup : UI
     [SerializeField] private Button _howToButton;
     [SerializeField] private Button _settingButton;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Text _versionText;
 
     private void Awake()
     {
@@ -36,5 +37,7 @@ public class UIMainPopup : UI
             SFX.PlayButtonClick();
             UIManager.Show<UIExitPopup>();
         });
+
+        _versionText.text = $"ver.{Application.version}";
     }
 }
