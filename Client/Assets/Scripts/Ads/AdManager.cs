@@ -9,11 +9,11 @@ public class AdManager : SingletonBehaviour<AdManager>
 {
     private static InterstitialAd _interstitialAd;
 
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
     private static string _adUnitId = "ca-app-pub-3940256099942544/1033173712";
-//#elif UNITY_ANDROID              
-//    private static string _adUnitId = "ca-app-pub-7910487525826129/4858832900";
-//#endif
+#elif UNITY_ANDROID
+    private static string _adUnitId = "ca-app-pub-7910487525826129/4858832900";
+#endif
 
     protected override void Awake()
     {
