@@ -9,6 +9,6 @@ public class MainScene : SceneSingletonBehaviour<MainScene>
     {
         UIManager.Show<UIMainPopup>();
 
-        BGM.Play(Bgm.BGM2);
+        BGM.Play(Bgm.AmongStars);
     }
 }

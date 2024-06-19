@@ -13,13 +13,13 @@ public class UIExitPopup : UI
         _cancelButton.onClick.AddListener(() =>
         {
             Hide();
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
         });
 
         _exitButton.onClick.AddListener(() =>
         {
             Application.Quit();
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
         });
     }
 }

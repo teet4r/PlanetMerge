@@ -15,18 +15,18 @@ public class UIPausePopup : UI
         _goToGameButton.onClick.AddListener(() =>
         {
             Hide();
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
         });
 
         _retryButton.onClick.AddListener(() =>
         {
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
             UIManager.Get<UIRemindPopup>()
                 .SetTitle("다시하기")
                 .SetDescription("처음부터 다시 하시겠습니까?")
                 .SetYesButton(() =>
                 {
-                    SFX.Play(Sfx.Button);
+                    SFX.PlayButtonClick();
                     CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
                 })
                 .SetNoButton(null)
@@ -35,13 +35,13 @@ public class UIPausePopup : UI
 
         _goToMainButton.onClick.AddListener(() =>
         {
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
             UIManager.Get<UIRemindPopup>()
                 .SetTitle("홈으로 가기")
                 .SetDescription("홈으로 돌아가시겠습니까?")
                 .SetYesButton(() =>
                 {
-                    SFX.Play(Sfx.Button);
+                    SFX.PlayButtonClick();
                     CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
                 })
                 .SetNoButton(null)

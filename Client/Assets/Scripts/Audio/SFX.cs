@@ -35,4 +35,6 @@ public class SFX : SingletonBehaviour<SFX>
 
         _audioSource.PlayOneShot(clip);
     }
+
+    public static void PlayButtonClick() => Play(Sfx.Button);
 }

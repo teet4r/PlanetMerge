@@ -15,25 +15,25 @@ public class UIMainPopup : UI
     {
         _playButton.onClick.AddListener(() =>
         {
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
             CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
         });
 
         _howToButton.onClick.AddListener(() =>
         {
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
             UIManager.Show<UIHowToPopup>();
         });
 
         _settingButton.onClick.AddListener(() =>
         {
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
             UIManager.Show<UISettingPopup>();
         });
 
         _exitButton.onClick.AddListener(() =>
         {
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
             UIManager.Show<UIExitPopup>();
         });
     }

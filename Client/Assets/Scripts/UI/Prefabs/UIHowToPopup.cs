@@ -12,7 +12,7 @@ public class UIHowToPopup : UI
         _closeButton.onClick.AddListener(() =>
         {
             Hide();
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
         });
     }
 }

@@ -15,7 +15,7 @@ public class UISettingPopup : UI
         _closeButton.onClick.AddListener(() =>
         {
             Hide();
-            SFX.Play(Sfx.Button);
+            SFX.PlayButtonClick();
         });
 
         _bgmSlider.value = PlayerPrefs.GetFloat(PlayerPrefsKey.BGM_VALUE, 1f);
