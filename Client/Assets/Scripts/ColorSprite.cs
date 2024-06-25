@@ -26,15 +26,4 @@ public class ColorSprite : MonoBehaviour
         _tweenerCore?.Kill();
         _tweenerCore = _spriteRenderer.material.DOColor(endValue, duration);
     }
-
-    private Color _temp = new();
-    public void Color(Color target, float curValue, float maxValue)
-    {
-        _temp.r = _spriteRenderer.material.color.r + (target.r - _originColor.r) * (curValue / maxValue);
-        _temp.g = _spriteRenderer.material.color.g + (target.g - _originColor.g) * (curValue / maxValue);
-        _temp.b = _spriteRenderer.material.color.b + (target.b - _originColor.b) * (curValue / maxValue);
-        _temp.a = _originColor.a;
-
-        _spriteRenderer.material.color = _temp;
-    }
 }

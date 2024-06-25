@@ -1,4 +1,7 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 public class Planet : CollidablePoolObject
@@ -15,8 +18,8 @@ public class Planet : CollidablePoolObject
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private CircleCollider2D _circleCollider2D;
-
-    private Color _planetColor;
+    private Color _originColor;
+    private TweenerCore<Color, Color, ColorOptions> _colorTweener;
 
     private Camera _mainCamera;
     private float _deadtime = 0;
@@ -29,7 +32,7 @@ public class Planet : CollidablePoolObject
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
 
-        _planetColor = _spriteRenderer.color;
+        _originColor = _spriteRenderer.material.color;
     }
 
     protected override void OnEnable()
@@ -38,10 +41,11 @@ public class Planet : CollidablePoolObject
 
         _mainCamera = Camera.main;
 
-        _level = UnityEngine.Random.Range(0, PlayScene.Instance.MaxLevel);
-        _spriteRenderer.color = _planetColor;
+        _level = Random.Range(0, PlayScene.Instance.MaxLevel);
         _spriteRenderer.sprite = ResourceLoader.LoadSprite($"Level{_level}");
+        _spriteRenderer.material.color = _originColor;
         _animator.SetInteger(AniParam.LEVEL, _level);
+        Rigid.mass = _level + 1;
 
         if (_level == 7)
         {
@@ -99,6 +103,20 @@ public class Planet : CollidablePoolObject
         Collider.enabled = true;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var collidable = collision.gameObject.GetComponent<ICollidable>();
+
+        switch (collidable)
+        {
+            case GameoverLine:
+                _colorTweener?.Kill();
+                _colorTweener = null;
+                _spriteRenderer.material.color = _originColor;
+                break;
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         var collidable = collision.gameObject.GetComponent<ICollidable>();
@@ -108,8 +126,8 @@ public class Planet : CollidablePoolObject
             case GameoverLine:
                 _deadtime += Time.deltaTime;
                 if (_deadtime > 1f)
-                    _colorSprite.Color(Color.red, _deadtime - 1f, 2f);
-                if (_deadtime > 3f)
+                    _spriteRenderer.material.color = Color.Lerp(Color.white, Color.red, (_deadtime - 1f) / 5f);
+                if (_deadtime > 6f)
                     PlayScene.Instance.Gameover();
                 break;
         }
@@ -122,7 +140,7 @@ public class Planet : CollidablePoolObject
         switch (collidable)
         {
             case GameoverLine:
-                _colorSprite.Color(Color.white, _deadtime);
+                _colorTweener = _spriteRenderer.material.DOColor(_originColor, _deadtime);
                 _deadtime = 0;
                 break;
         }
@@ -291,6 +309,7 @@ public class Planet : CollidablePoolObject
         _PlayEffect();
         SFX.Play(Sfx.LevelUp);
 
+        Rigid.mass = level + 1;
         if (level == 7)
         {
             _circleCollider2D.radius = 0.94f;
