@@ -196,10 +196,12 @@ public class Planet : CollidablePoolObject
         }
         else // level >= 9
         {
-            other.Hide(Vector3.up * 100);
-            other._PlayEffect();
-            Hide(Vector3.up * 100);
-            _PlayEffect();
+            PlayScene.Instance.GameoverLine.LineDown();
+
+            var planets = FindObjectsOfType<Planet>(false);
+            for (int i = 0; i < planets.Length; ++i)
+                if (PlayScene.Instance.LastPlanet != planets[i])
+                    planets[i].Hide(Vector3.up * 100);
         }
     }
 

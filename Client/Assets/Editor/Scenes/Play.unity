@@ -381,7 +381,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &545877189
 Transform:
@@ -423,7 +423,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &545877191
 BoxCollider2D:
@@ -551,6 +551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e231bbcae398d7e4c91208dbb3c69361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameoverLine: {fileID: 1067938135}
   MaxLevel: 0
 --- !u!4 &565865520
 Transform:
@@ -761,6 +762,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc9767255da36a5459081486ce8fff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targetHeight: 2.5
+  _diff: 0.4
+  _lerpT: 0.05
 --- !u!1 &1904809124
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +866,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2141608379
 Transform:
@@ -904,7 +908,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &2141608381
 BoxCollider2D:

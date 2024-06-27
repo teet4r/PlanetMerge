@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
+    public GameoverLine GameoverLine;
     public int MaxLevel;
     public readonly ReactiveProperty<int> Score = new(0);
     public Planet LastPlanet => _lastPlanet;
@@ -38,6 +39,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         var lastPlanet = ObjectPoolManager.Release<Planet>();
         lastPlanet.Tr.position = new Vector2(0f, 4.3f);
         lastPlanet.Activate();
+        SFX.Play(Sfx.Next);
 
         _lastPlanet = lastPlanet;
 
@@ -87,6 +89,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         //게임오버 ui
         UIManager.Show<UIGameoverPopup>().Bind(Score.Value, prevHighestScore, curHighestScore);
+        SFX.Play(Sfx.GameOver);
     }
     
     public void TouchDown()
