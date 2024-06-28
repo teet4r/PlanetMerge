@@ -12,22 +12,13 @@ public class UISettingPopup : UI
 
     private void Awake()
     {
+        _bgmSlider.onValueChanged.AddListener(volume => BGM.Volume = volume);
+        _sfxSlider.onValueChanged.AddListener(volume => SFX.Volume = volume);
+
         _closeButton.onClick.AddListener(() =>
         {
             Hide();
             SFX.PlayButtonClick();
-        });
-
-        _bgmSlider.value = PlayerPrefs.GetFloat(PlayerPrefsKey.BGM_VALUE, 1f);
-        _bgmSlider.onValueChanged.AddListener(volume =>
-        {
-            BGM.Volume = volume;
-        });
-
-        _sfxSlider.value = PlayerPrefs.GetFloat(PlayerPrefsKey.SFX_VALUE, 1f);
-        _sfxSlider.onValueChanged.AddListener(volume =>
-        {
-            SFX.Volume = volume;
         });
 
         _goToStore.onClick.AddListener(() =>
@@ -35,5 +26,11 @@ public class UISettingPopup : UI
             UIManager.Show<UIReadyPopup>().Bind();
             //Application.OpenURL("market://details?id=com.Company.ProductName");
         });
+    }
+
+    public void Bind()
+    {
+        _bgmSlider.value = PlayerPrefs.GetFloat(PlayerPrefsKey.BGM_VALUE, 1f);
+        _sfxSlider.value = PlayerPrefs.GetFloat(PlayerPrefsKey.SFX_VALUE, 1f);
     }
 }

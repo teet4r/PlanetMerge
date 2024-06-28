@@ -30,7 +30,7 @@ public class UIMainPopup : UI
         _settingButton.onClick.AddListener(() =>
         {
             SFX.PlayButtonClick();
-            UIManager.Show<UISettingPopup>();
+            UIManager.Show<UISettingPopup>().Bind();
         });
 
         _exitButton.onClick.AddListener(() =>

@@ -29,7 +29,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     {
         _pauseButton.onClick.AddListener(() =>
         {
-            UIManager.Show<UIPausePopup>();
+            UIManager.Show<UIPausePopup>().Bind();
             SFX.PlayButtonClick();
         });
 
