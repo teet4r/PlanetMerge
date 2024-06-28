@@ -49,7 +49,7 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
     private async UniTask _WaitNext()
     {
         await UniTask.WaitUntil(() => _lastPlanet == null, cancellationToken: destroyCancellationToken);
-        await UniTask.Delay(1800, cancellationToken: destroyCancellationToken);
+        await UniTask.Delay(1000, cancellationToken: destroyCancellationToken);
 
         _NextDongle();
     }

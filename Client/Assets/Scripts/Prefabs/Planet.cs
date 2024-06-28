@@ -270,7 +270,7 @@ public class Planet : CollidablePoolObject
             else
                 tr.localScale = Vector3.Lerp(tr.localScale, Vector3.zero, 0.05f);
 
-            await UniTask.DelayFrame(1, cancellationToken : DisableCancellationToken);
+            await UniTask.Yield(cancellationToken: DisableCancellationToken);
         }
 
         PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, _level);
