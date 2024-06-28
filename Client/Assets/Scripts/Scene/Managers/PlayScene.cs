@@ -14,11 +14,13 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
     private Planet _lastPlanet;
     private bool _isGameover;
+    private bool _isTouchingDown;
 
     private void OnEnable()
     {
         Score.Value = 0;
         MaxLevel = 1;
+        _isTouchingDown = false;
 
         _NextDongle();
 
@@ -97,14 +99,16 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
         if (_isGameover || _lastPlanet == null)
             return;
 
+        _isTouchingDown = true;
         _lastPlanet.Drag();
     }
 
     public void TouchUp()
     {
-        if (_isGameover || _lastPlanet == null)
+        if (_isGameover || _lastPlanet == null || !_isTouchingDown)
             return;
 
+        _isTouchingDown = false;
         _lastPlanet.Drop();
         _lastPlanet = null;
     }
