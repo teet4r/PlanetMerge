@@ -3,30 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
 public abstract class ParticleObject : PoolObject
 {
-    protected ParticleSystem _particleSystem;
+    [SerializeField] protected ParticleSystem[] _particleSystems;
+    private UniTask[] _tasks;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        _particleSystem = GetComponent<ParticleSystem>();
+        _tasks = new UniTask[_particleSystems.Length];
+
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        _particleSystem.Clear();
+        for (int i = 0; i < _particleSystems.Length; ++i)
+            _particleSystems[i].Clear();
+    }
+
+    public void SetLocalScale(Vector3 localScale)
+    {
+        for (int i = 0; i < _particleSystems.Length; ++i)
+            _particleSystems[i].transform.localScale = localScale;
     }
 
     public async UniTask Play()
     {
-        _particleSystem.Play();
+        for (int i = 0; i < _particleSystems.Length; ++i)
+        {
+            var i_ = i;
+            _particleSystems[i_].Play();
+            _tasks[i_] = UniTask.WaitUntil(() => _particleSystems[i_].isStopped);
+        }
 
-        await UniTask.WaitUntil(() => _particleSystem.isStopped, cancellationToken : DisableCancellationToken);
+        await UniTask.WhenAll(_tasks).AttachExternalCancellation(DisableCancellationToken);
 
         Pool();
     }

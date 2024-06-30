@@ -257,7 +257,7 @@ public class Planet : CollidablePoolObject
         Collider.enabled = false;
 
         if (targetPos == Vector3.up * 100)
-            _PlayEffect();
+            _PlayEffect<MergeEffect>();
 
         int frameCount = 0;
 
@@ -308,7 +308,7 @@ public class Planet : CollidablePoolObject
         if (needMergingTime)
             await UniTask.Delay(200, cancellationToken: DisableCancellationToken);
 
-        _PlayEffect();
+        _PlayEffect<MergeEffect>();
         SFX.Play(Sfx.LevelUp);
 
         Rigid.mass = level + 1;
@@ -336,9 +336,9 @@ public class Planet : CollidablePoolObject
 
 
 
-    private void _PlayEffect()
+    private void _PlayEffect<T>() where T : ParticleObject
     {
-        var effect = ObjectPoolManager.Release<MergeEffect>();
+        var effect = ObjectPoolManager.Release<T>();
 
         effect.Tr.position = tr.position;
         effect.Tr.localScale = tr.localScale;
