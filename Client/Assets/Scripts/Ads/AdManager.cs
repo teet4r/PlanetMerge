@@ -7,12 +7,15 @@ using System;
 
 public class AdManager : SingletonBehaviour<AdManager>
 {
+    /// <summary>
+    /// Àü¸é ±¤°í
+    /// </summary>
     private static InterstitialAd _interstitialAd;
 
 #if UNITY_EDITOR
-    private static string _adUnitId = "ca-app-pub-3940256099942544/1033173712";
+    private static string _interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712";
 #elif UNITY_ANDROID
-    private static string _adUnitId = "ca-app-pub-7910487525826129/4858832900";
+    private static string _interstitialAdUnitId = "ca-app-pub-7910487525826129/4858832900";
 #endif
 
     protected override void Awake()
@@ -44,7 +47,7 @@ public class AdManager : SingletonBehaviour<AdManager>
         adRequest.Keywords.Add("unity-admob-sample");
 
         // send the request to load the ad.
-        InterstitialAd.Load(_adUnitId, adRequest,
+        InterstitialAd.Load(_interstitialAdUnitId, adRequest,
             (InterstitialAd ad, LoadAdError error) =>
             {
                 // if error is not null, the load request failed.
@@ -65,5 +68,63 @@ public class AdManager : SingletonBehaviour<AdManager>
         }
         else
             _LoadInterstitialAd();
+    }
+
+
+
+
+
+    /// <summary>
+    /// ¹è³Ê ±¤°í
+    /// </summary>
+    private static BannerView _bannerView;
+
+#if UNITY_EDITOR
+    private static string _bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
+#elif UNITY_ANDROID
+    private static string _bannerAdUnitId = "ca-app-pub-7910487525826129/4241478123";
+#endif
+
+    /// <summary>
+    /// Creates a 320x50 banner view at top of the screen.
+    /// </summary>
+    private static void _CreateBannerView()
+    {
+        // If we already have a banner, destroy the old one.
+        if (_bannerView != null)
+            DestroyBannerView();
+
+        // Create a 320x50 banner at top of the screen
+        //AdSize adaptiveSize =
+        //        AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+        _bannerView = new BannerView(_bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
+    }
+
+    /// <summary>
+    /// Creates the banner view and loads a banner ad.
+    /// </summary>
+    public static void LoadBannerAd()
+    {
+        // create an instance of a banner view first.
+        if (_bannerView == null)
+            _CreateBannerView();
+
+        // create our request used to load the ad.
+        var adRequest = new AdRequest();
+
+        // send the request to load the ad.
+        _bannerView.LoadAd(adRequest);
+    }
+
+    /// <summary>
+    /// Destroys the banner view.
+    /// </summary>
+    public static void DestroyBannerView()
+    {
+        if (_bannerView != null)
+        {
+            _bannerView.Destroy();
+            _bannerView = null;
+        }
     }
 }

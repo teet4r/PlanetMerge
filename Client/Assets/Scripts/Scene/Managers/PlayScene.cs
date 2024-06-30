@@ -18,6 +18,8 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
     private void OnEnable()
     {
+        AdManager.LoadBannerAd();
+
         Score.Value = 0;
         MaxLevel = 1;
         _isTouchingDown = false;
