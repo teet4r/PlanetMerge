@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,6 +12,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     [Space(15)]
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _curScoreText;
+    [SerializeField] private Text _curComboText;
     [SerializeField] private CustomToggle _boomItemToggle;
     [SerializeField] private CustomButton _upgradeItemButton;
     [SerializeField] private CustomButton _downgradeItemButton;
@@ -79,7 +81,11 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 
         onHide += () => AdManager.DestroyBannerView();
 
-        Combo.OnCombo += () => _comboAnimator.SetTrigger(_fadeoutTrigger);
+        Combo.OnCombo += () =>
+        {
+            _curComboText.text = $"{Combo.Count} Combo!";
+            _comboAnimator.SetTrigger(_fadeoutTrigger);
+        };
     }
 
     public void Bind()
