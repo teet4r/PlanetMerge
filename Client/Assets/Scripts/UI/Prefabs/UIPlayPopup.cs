@@ -14,6 +14,8 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private CustomToggle _boomItemToggle;
     [SerializeField] private CustomButton _upgradeItemButton;
     [SerializeField] private CustomButton _downgradeItemButton;
+    [SerializeField] private Animator _scoreAnimator;
+    [SerializeField] private Animator _comboAnimator;
 
     [Header("---------- 인스펙터 에디터 ----------")]
     [Space(15)]
@@ -24,6 +26,9 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     private bool _availableBoomItem;
     private bool _availableUpgradeItem;
     private bool _availableDowngradeItem;
+
+    private int _flinchTrigger = Animator.StringToHash("Flinch");
+    private int _fadeoutTrigger = Animator.StringToHash("Fadeout");
 
     private void Start()
     {
@@ -71,6 +76,10 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             _availableDowngradeItem = false;
             PlayScene.Instance.LastPlanet?.LevelDown();
         });
+
+        onHide += () => AdManager.DestroyBannerView();
+
+        Combo.OnCombo += () => _comboAnimator.SetTrigger(_fadeoutTrigger);
     }
 
     public void Bind()
@@ -108,8 +117,15 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         }).AddTo(disposablesOnHide);
 
         PlayScene.Instance.Score
-            .Subscribe(score => _curScoreText.text = score.Comma())
+            .Subscribe(score =>
+            {
+                _curScoreText.text = score.Comma();
+                if (score > 0)
+                    _scoreAnimator.SetTrigger(_flinchTrigger);
+            })
             .AddTo(disposablesOnHide);
+
+        AdManager.LoadBannerAd();
     }
 
     public void OnPointerDown(PointerEventData eventData)

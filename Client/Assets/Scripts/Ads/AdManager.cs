@@ -95,8 +95,7 @@ public class AdManager : SingletonBehaviour<AdManager>
             DestroyBannerView();
 
         // Create a 320x50 banner at top of the screen
-        //AdSize adaptiveSize =
-        //        AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+        //AdSize adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
         _bannerView = new BannerView(_bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
     }
 

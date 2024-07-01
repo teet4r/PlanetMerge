@@ -7,7 +7,6 @@ using Cysharp.Threading.Tasks;
 
 public class PlayScene : SceneSingletonBehaviour<PlayScene>
 {
-    public GameoverLine GameoverLine;
     public int MaxLevel;
     public readonly ReactiveProperty<int> Score = new(0);
     public Planet LastPlanet => _lastPlanet;
@@ -18,8 +17,6 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
     private void OnEnable()
     {
-        AdManager.LoadBannerAd();
-
         Score.Value = 0;
         MaxLevel = 1;
         _isTouchingDown = false;

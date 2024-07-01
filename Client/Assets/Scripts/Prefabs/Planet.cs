@@ -18,11 +18,8 @@ public class Planet : CollidablePoolObject
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private CircleCollider2D _circleCollider2D;
-    private Color _originColor;
-    private TweenerCore<Color, Color, ColorOptions> _colorTweener;
 
     private Camera _mainCamera;
-    private float _deadtime = 0;
 
     public override void Initialize()
     {
@@ -31,8 +28,6 @@ public class Planet : CollidablePoolObject
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
-
-        _originColor = _spriteRenderer.material.color;
     }
 
     protected override void OnEnable()
@@ -43,7 +38,6 @@ public class Planet : CollidablePoolObject
 
         _level = Random.Range(0, PlayScene.Instance.MaxLevel);
         _spriteRenderer.sprite = ResourceLoader.LoadSprite($"Level{_level}");
-        _spriteRenderer.material.color = _originColor;
         _animator.SetInteger(AniParam.LEVEL, _level);
         Rigid.mass = _level + 1;
 
@@ -63,7 +57,7 @@ public class Planet : CollidablePoolObject
         _isAlive = true;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!_isDrag)
             return;
@@ -103,49 +97,6 @@ public class Planet : CollidablePoolObject
         Collider.enabled = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        var collidable = collision.gameObject.GetComponent<ICollidable>();
-
-        switch (collidable)
-        {
-            case GameoverLine:
-                _colorTweener?.Kill();
-                _colorTweener = null;
-                _spriteRenderer.material.color = _originColor;
-                break;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        var collidable = collision.gameObject.GetComponent<ICollidable>();
-
-        switch (collidable)
-        {
-            case GameoverLine:
-                _deadtime += Time.deltaTime;
-                if (_deadtime > 1f)
-                    _spriteRenderer.material.color = Color.Lerp(Color.white, Color.red, (_deadtime - 1f) / 5f);
-                if (_deadtime > 6f)
-                    PlayScene.Instance.Gameover();
-                break;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        var collidable = collision.gameObject.GetComponent<ICollidable>();
-
-        switch (collidable)
-        {
-            case GameoverLine:
-                _colorTweener = _spriteRenderer.material.DOColor(_originColor, _deadtime);
-                _deadtime = 0;
-                break;
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _Attach();
@@ -177,31 +128,33 @@ public class Planet : CollidablePoolObject
         if (_level != other._level || _isMerging || other._isMerging)
             return;
 
-        if (_level < C.PLANET_MAX_LEVEL)
+        //나와 상대 위치 가져오기
+        float meX = tr.position.x;
+        float meY = tr.position.y;
+        float otherX = other.tr.position.x;
+        float otherY = other.tr.position.y;
+        //1. 내가 아래
+        //2. 동일한 높이, 내가 오른쪽
+        if (meY < otherY || (meY == otherY && meX > otherX))
         {
-            //나와 상대 위치 가져오기
-            float meX = tr.position.x;
-            float meY = tr.position.y;
-            float otherX = other.tr.position.x;
-            float otherY = other.tr.position.y;
-            //1. 내가 아래
-            //2. 동일한 높이, 내가 오른쪽
-            if (meY < otherY || (meY == otherY && meX > otherX))
+            Combo.Add();
+
+            if (_level < C.PLANET_MAX_LEVEL)
             {
                 //상대 숨기기
                 other.Hide(tr.position);
                 //나 레벨업
                 LevelUp(needMergingTime: true);
             }
-        }
-        else // level >= 9
-        {
-            PlayScene.Instance.GameoverLine.LineDown();
+            else // level >= 9
+            {
+                GameoverLine.Instance.LineDown();
 
-            var planets = FindObjectsOfType<Planet>(false);
-            for (int i = 0; i < planets.Length; ++i)
-                if (PlayScene.Instance.LastPlanet != planets[i])
-                    planets[i].Hide(Vector3.up * 100);
+                var planets = FindObjectsOfType<Planet>(false);
+                for (int i = 0; i < planets.Length; ++i)
+                    if (PlayScene.Instance.LastPlanet != planets[i])
+                        planets[i].Hide(Vector3.up * 100);
+            }
         }
     }
 
@@ -248,6 +201,8 @@ public class Planet : CollidablePoolObject
         _isAlive = false;
         _isMerging = true;
 
+        PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, _level) * Combo.Count;
+
         _HideRoutine(targetPos).Forget();
     }
 
@@ -272,8 +227,6 @@ public class Planet : CollidablePoolObject
 
             await UniTask.Yield(cancellationToken: DisableCancellationToken);
         }
-
-        PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, _level);
 
         _isMerging = false;
 
