@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,6 +12,8 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _curScoreText;
     [SerializeField] private Text _curComboText;
+    [SerializeField] private Text _curLineBonusText;
+    [SerializeField] private RectTransform _lineBonusText;
     [SerializeField] private CustomToggle _boomItemToggle;
     [SerializeField] private CustomButton _upgradeItemButton;
     [SerializeField] private CustomButton _downgradeItemButton;
@@ -34,6 +35,8 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 
     private void Start()
     {
+        Combo.Initialize();
+
         _pauseButton.onClick.AddListener(() =>
         {
             UIManager.Show<UIPausePopup>().Bind();
@@ -88,6 +91,21 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
         };
     }
 
+
+    private void FixedUpdate()
+    {
+        var gameoverLine = Ground.Instance.GameoverLine;
+
+        if (gameoverLine != null)
+        {
+            _curLineBonusText.text = $"<size=30>Line Bonus</size>\nx{gameoverLine.LineBonus}";
+            var point = _mainCamera.WorldToScreenPoint(gameoverLine.Position);
+            var txtPosition = _lineBonusText.transform.position;
+            txtPosition.y = point.y + UIManager.ToReactiveHeight(80);
+            _lineBonusText.transform.position = txtPosition;
+        }
+    }
+
     public void Bind()
     {
         _mainCamera = Camera.main;
@@ -128,8 +146,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
                 _curScoreText.text = score.Comma();
                 if (score > 0)
                     _scoreAnimator.SetTrigger(_flinchTrigger);
-            })
-            .AddTo(disposablesOnHide);
+            }).AddTo(disposablesOnHide);
 
         AdManager.LoadBannerAd();
     }

@@ -16,6 +16,7 @@ public class InitializationScene : SceneSingletonBehaviour<InitializationScene>
     private void Start()
     {
         Translator.Initialize();
+        AdManager.Initialize();
 
         CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
     }

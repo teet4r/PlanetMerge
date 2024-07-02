@@ -1,11 +1,7 @@
-using Behaviour;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
 
-public class AdManager : SingletonBehaviour<AdManager>
+public static class AdManager
 {
     /// <summary>
     /// Àü¸é ±¤°í
@@ -18,18 +14,13 @@ public class AdManager : SingletonBehaviour<AdManager>
     private static string _interstitialAdUnitId = "ca-app-pub-7910487525826129/4858832900";
 #endif
 
-    protected override void Awake()
+    public static void Initialize()
     {
-        base.Awake();
-
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize((InitializationStatus initStatus) => {
             // This callback is called once the MobileAds SDK is initialized.
         });
-    }
 
-    private void Start()
-    {
         _LoadInterstitialAd();
     }
 
@@ -78,6 +69,9 @@ public class AdManager : SingletonBehaviour<AdManager>
     /// ¹è³Ê ±¤°í
     /// </summary>
     private static BannerView _bannerView;
+
+    public static float BannerHeight => _bannerView.GetHeightInPixels();
+    public static float BannerWidth => _bannerView.GetWidthInPixels();
 
 #if UNITY_EDITOR
     private static string _bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";

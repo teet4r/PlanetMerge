@@ -1,15 +1,22 @@
 using Behaviour;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
-public class GameoverLine : SceneSingletonBehaviour<GameoverLine>, ICollidable
+public class GameoverLine : MonoBehaviour, ICollidable
 {
+    // Variables
     public bool PauseUpdate;
 
+    // Get Properties
+    public Vector3 Position => _tr.position;
+    public int LineBonus => _lineBonus;
+
     [SerializeField] private float _targetHeight;
-    [Min(0f)][SerializeField] private float _diff;
-    [Range(0f, 1f)][SerializeField] private float _lerpT;
+    private const float _DIFF = 0.4f;
+    private const float _LERP_T = 0.05f;
 
     private Transform _tr;
     private SpriteRenderer _renderer;
@@ -19,11 +26,10 @@ public class GameoverLine : SceneSingletonBehaviour<GameoverLine>, ICollidable
     private Color _originColor;
     private int _touchingCnt;
     private float _deadtime;
+    private int _lineBonus;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
         _tr = GetComponent<Transform>();
         _renderer = GetComponent<SpriteRenderer>();
 
@@ -40,6 +46,7 @@ public class GameoverLine : SceneSingletonBehaviour<GameoverLine>, ICollidable
         _renderer.material.color = _originColor;
         _touchingCnt = 0;
         _deadtime = 0f;
+        _lineBonus = 1;
     }
 
     private void FixedUpdate()
@@ -47,7 +54,7 @@ public class GameoverLine : SceneSingletonBehaviour<GameoverLine>, ICollidable
         if (PauseUpdate)
             return;
 
-        _t.y = Mathf.Lerp(_tr.position.y, _targetHeight, _lerpT);
+        _t.y = Mathf.Lerp(_tr.position.y, _targetHeight, _LERP_T);
         _tr.position = _t;
 
         if (_touchingCnt > 0)
@@ -93,6 +100,9 @@ public class GameoverLine : SceneSingletonBehaviour<GameoverLine>, ICollidable
         }
     }
 
-    public void LineDown() => _targetHeight -= _diff;
-    public void LineUp() => _targetHeight += _diff;
+    public void LineDown()
+    {
+        ++_lineBonus;
+        _targetHeight -= _DIFF;
+    }
 }

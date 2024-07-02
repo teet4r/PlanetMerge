@@ -1,19 +1,16 @@
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 public class Planet : CollidablePoolObject
 {
     public int Level => _level;
 
-    [SerializeField] private ColorSprite _colorSprite;
     private bool _isAlive;
     private bool _isDrag;
     private bool _isMerging;
     private bool _isAttach;
     private int _level;
+    private Color _originColor;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
@@ -28,6 +25,8 @@ public class Planet : CollidablePoolObject
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
+
+        _originColor = _spriteRenderer.material.color;
     }
 
     protected override void OnEnable()
@@ -38,6 +37,7 @@ public class Planet : CollidablePoolObject
 
         _level = Random.Range(0, PlayScene.Instance.MaxLevel);
         _spriteRenderer.sprite = ResourceLoader.LoadSprite($"Level{_level}");
+        _spriteRenderer.material.color = _originColor;
         _animator.SetInteger(AniParam.LEVEL, _level);
         Rigid.mass = _level + 1;
 
@@ -148,7 +148,7 @@ public class Planet : CollidablePoolObject
             }
             else // level >= 9
             {
-                GameoverLine.Instance.LineDown();
+                Ground.Instance.GameoverLine.LineDown();
 
                 var planets = FindObjectsOfType<Planet>(false);
                 for (int i = 0; i < planets.Length; ++i)
@@ -185,7 +185,7 @@ public class Planet : CollidablePoolObject
 
         _isAttach = true;
 
-        SFX.Play(Sfx.Attach);
+        //SFX.Play(Sfx.Attach);
 
         await UniTask.Delay(500, cancellationToken: DisableCancellationToken);
 
@@ -201,16 +201,17 @@ public class Planet : CollidablePoolObject
         _isAlive = false;
         _isMerging = true;
 
-        PlayScene.Instance.Score.Value += (int)Mathf.Pow(2, _level) * Combo.Count;
+        Rigid.simulated = false;
+        Collider.enabled = false;
+
+        PlayScene.Instance.Score.Value +=
+            (int)Mathf.Pow(2, _level) * Mathf.Max(Combo.Count, 1) * Ground.Instance.GameoverLine.LineBonus;
 
         _HideRoutine(targetPos).Forget();
     }
 
     private async UniTask _HideRoutine(Vector3 targetPos)
     {
-        Rigid.simulated = false;
-        Collider.enabled = false;
-
         if (targetPos == Vector3.up * 100)
             _PlayEffect<MergeEffect>();
 
@@ -302,7 +303,7 @@ public class Planet : CollidablePoolObject
 
 
 
-    public void SetColor(Color color) => _spriteRenderer.color = color;
+    public void SetColor(Color color) => _spriteRenderer.material.color = color;
 
 
 

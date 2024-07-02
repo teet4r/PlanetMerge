@@ -19,6 +19,6 @@ public class Log : MonoBehaviour
 
     public static void Bind(string log)
     {
-        _text.text += $"{log}\n";
+        _text.text = $"{log}\n";
     }
 }

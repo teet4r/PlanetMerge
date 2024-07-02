@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class Combo : SceneSingletonBehaviour<Combo>
+public static class Combo
 {
     public static int Count => _count;
     public static event Action OnCombo;
@@ -15,19 +15,22 @@ public class Combo : SceneSingletonBehaviour<Combo>
     private static int _count;
     private static float _remainTime;
 
-    private void OnEnable()
+    private static IDisposable _disposable;
+
+    public static void Initialize()
     {
         _count = 0;
         _remainTime = 0f;
         OnCombo = null;
-    }
 
-    private void FixedUpdate()
-    {
-        _remainTime = Mathf.Max(_remainTime - Time.fixedDeltaTime, 0f);
+        _disposable?.Dispose();
+        _disposable = Observable.EveryFixedUpdate().Subscribe(t =>
+        {
+            _remainTime = Mathf.Max(_remainTime - Time.fixedDeltaTime, 0f);
 
-        if (_remainTime <= 0f)
-            _count = 0;
+            if (_remainTime <= 0f)
+                _count = 0;
+        });
     }
 
     public static void Add()
