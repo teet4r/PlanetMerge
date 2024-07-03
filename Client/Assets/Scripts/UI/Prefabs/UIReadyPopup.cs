@@ -19,6 +19,6 @@ public class UIReadyPopup : UI
     {
         _tweener?.Kill();
         _canvasGroup.alpha = 1f;
-        _tweener = _canvasGroup.DOFade(0f, 3f).OnComplete(() => Hide());
+        _tweener = _canvasGroup.DOFade(0f, 1.5f).OnComplete(() => Hide());
     }
 }
