@@ -39,11 +39,11 @@ public class UIMainPopup : UI
             UIManager.Show<UIExitPopup>();
         });
 
-        _versionText.text = $"ver.{Application.version}";
+        _versionText.text = $"ver {UnityEngine.Application.version}";
     }
 
     private void OnEnable()
     {
-        _bestScoreText.text = $"√÷∞Ì ¡°ºˆ : {PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0).Comma()}";
+        _bestScoreText.text = Translator.Get("ÏµúÍ≥† Ï†êÏàò : {0}", PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0).Comma());
     }
 }

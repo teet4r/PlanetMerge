@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 4985208550696147800}
   - component: {fileID: 1694963574607766959}
   m_Layer: 5
-  m_Name: InnerTxt
+  m_Name: $InnerTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -500,7 +500,7 @@ GameObject:
   - component: {fileID: 2023555817334784116}
   - component: {fileID: 4583812019873804512}
   m_Layer: 5
-  m_Name: CloseTxt
+  m_Name: $CloseTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -579,7 +579,7 @@ GameObject:
   - component: {fileID: 5174234774591345790}
   - component: {fileID: 3891265860266329317}
   m_Layer: 5
-  m_Name: ExitTxt
+  m_Name: $ExitTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -658,7 +658,7 @@ GameObject:
   - component: {fileID: 2371997538877534096}
   - component: {fileID: 2331590665662917189}
   m_Layer: 5
-  m_Name: MainTxt
+  m_Name: $MainTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

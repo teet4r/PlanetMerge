@@ -69,7 +69,7 @@ public class UIManager : SingletonBehaviour<UIManager>
     }
 
     /// <summary>
-    /// Àı´ë ±æÀÌ¸¦ »ó´ë ±æÀÌ·Î º¯È¯
+    /// ì ˆëŒ€ ê¸¸ì´ë¥¼ ìƒëŒ€ ê¸¸ì´ë¡œ ë³€í™˜
     /// </summary>
     /// <param name="height"></param>
     /// <returns></returns>

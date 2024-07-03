@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 132522187806970205}
   - component: {fileID: 3122241773901696305}
   - component: {fileID: 7722408381910317251}
+  - component: {fileID: 1806675406438692673}
   m_Layer: 5
   m_Name: BestScoreTxt
   m_TagString: Untagged
@@ -177,6 +178,46 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uCD5C\uACE0 \uC810\uC218 : 000,000"
+--- !u!114 &1806675406438692673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215514438776008268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7722408381910317251}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &3789600984772966263
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +417,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ver.1.0
+  m_Text: ver 1.0
 --- !u!1 &5087316206824895405
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +430,7 @@ GameObject:
   - component: {fileID: 744263331289338546}
   - component: {fileID: 2803021700809874682}
   m_Layer: 5
-  m_Name: PlayTxt
+  m_Name: $PlayTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -468,7 +509,7 @@ GameObject:
   - component: {fileID: 2523819178614486814}
   - component: {fileID: 8194671574794023142}
   m_Layer: 5
-  m_Name: ExitTxt
+  m_Name: $ExitTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -547,7 +588,7 @@ GameObject:
   - component: {fileID: 9168889751411705752}
   - component: {fileID: 2707850506460093494}
   m_Layer: 5
-  m_Name: SettingTxt
+  m_Name: $SettingTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,7 +733,7 @@ GameObject:
   - component: {fileID: 9203605318504846700}
   - component: {fileID: 4192655210888418187}
   m_Layer: 5
-  m_Name: HowtoTxt
+  m_Name: $HowtoTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

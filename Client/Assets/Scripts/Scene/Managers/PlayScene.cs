@@ -66,13 +66,13 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
     private async UniTask _GameoverRoutine()
     {
-        // Àå¸é¾È¿¡ È°¼ºÈ­ µÇ¾îÀÖ´Â ¸ğµç µ¿±Û °¡Á®¿À±â
+        // ì¥ë©´ì•ˆì— í™œì„±í™” ë˜ì–´ìˆëŠ” ëª¨ë“  ë™ê¸€ ê°€ì ¸ì˜¤ê¸°
         var planets = FindObjectsOfType<Planet>();
 
         for (int i = 0; i < planets.Length; ++i)
             planets[i].Rigid.simulated = false;
 
-        // À­ ¸ñ·Ï ÇÏ³ª¾¿ Á¢±ÙÇØ¼­ »èÁ¦
+        // ìœ— ëª©ë¡ í•˜ë‚˜ì”© ì ‘ê·¼í•´ì„œ ì‚­ì œ
         for (int i = 0; i < planets.Length; ++i)
         {
             planets[i].Hide(Vector3.up * 100);
@@ -82,13 +82,13 @@ public class PlayScene : SceneSingletonBehaviour<PlayScene>
 
         await UniTask.Delay(2000, cancellationToken: destroyCancellationToken);
 
-        //ÃÖ°í Á¡¼ö °»½Å
+        //ìµœê³  ì ìˆ˜ ê°±ì‹ 
         //await _RenewalHighestScore();
         var prevHighestScore = PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0);
         var curHighestScore = prevHighestScore < Score.Value ? Score.Value : prevHighestScore;
         PlayerPrefs.SetInt(PlayerPrefsKey.HIGHEST_SCORE, curHighestScore);
 
-        //°ÔÀÓ¿À¹ö ui
+        //ê²Œì„ì˜¤ë²„ ui
         UIManager.Show<UIGameoverPopup>().Bind(Score.Value, prevHighestScore, curHighestScore);
         SFX.Play(Sfx.GameOver);
     }

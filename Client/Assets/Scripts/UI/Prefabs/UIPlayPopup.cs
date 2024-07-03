@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 {
-    [Header("---------- ÂüÁ¶ ----------")]
+    [Header("---------- ì°¸ì¡° ----------")]
     [Space(15)]
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _curScoreText;
@@ -20,9 +20,9 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private Animator _scoreAnimator;
     [SerializeField] private Animator _comboAnimator;
 
-    [Header("---------- ÀÎ½ºÆåÅÍ ¿¡µğÅÍ ----------")]
+    [Header("---------- ì¸ìŠ¤í™í„° ì—ë””í„° ----------")]
     [Space(15)]
-    [SerializeField] private Color _boom¾ÆÀÌÅÛ¾µ¶§Àû¿ëÇÒ»ö±ò;
+    [SerializeField] private Color _boomì•„ì´í…œì“¸ë•Œì ìš©í• ìƒ‰ê¹”;
 
     private Camera _mainCamera;
     private bool _boomItemMode;
@@ -59,7 +59,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             var planets = FindObjectsOfType<Planet>();
 
             for (int i = 0; i < planets.Length; ++i)
-                planets[i].SetColor(isOn ? _boom¾ÆÀÌÅÛ¾µ¶§Àû¿ëÇÒ»ö±ò : Color.white);
+                planets[i].SetColor(isOn ? _boomì•„ì´í…œì“¸ë•Œì ìš©í• ìƒ‰ê¹” : Color.white);
         });
 
         _upgradeItemButton.AddListener(() =>

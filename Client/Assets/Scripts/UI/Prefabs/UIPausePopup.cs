@@ -27,8 +27,8 @@ public class UIPausePopup : UI
         {
             SFX.PlayButtonClick();
             UIManager.Get<UIRemindPopup>()
-                .SetTitle("´Ù½ÃÇÏ±â")
-                .SetDescription("Ã³À½ºÎÅÍ ´Ù½Ã ÇÏ½Ã°Ú½À´Ï±î?")
+                .SetTitle(Translator.Get("ë‹¤ì‹œí•˜ê¸°"))
+                .SetDescription(Translator.Get("ì²˜ìŒë¶€í„° ë‹¤ì‹œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"))
                 .SetYesButton(() =>
                 {
                     SFX.PlayButtonClick();
@@ -42,8 +42,8 @@ public class UIPausePopup : UI
         {
             SFX.PlayButtonClick();
             UIManager.Get<UIRemindPopup>()
-                .SetTitle("¸ÞÀÎÀ¸·Î °¡±â")
-                .SetDescription("¸ÞÀÎÀ¸·Î µ¹¾Æ°¡½Ã°Ú½À´Ï±î?")
+                .SetTitle(Translator.Get("ë©”ì¸ìœ¼ë¡œ ê°€ê¸°"))
+                .SetDescription(Translator.Get("ë©”ì¸ìœ¼ë¡œ ëŒì•„ê°€ì‹œê² ìŠµë‹ˆê¹Œ?"))
                 .SetYesButton(() =>
                 {
                     SFX.PlayButtonClick();

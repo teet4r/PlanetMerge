@@ -9,14 +9,14 @@ public class ObjectPoolManager : SingletonBehaviour<ObjectPoolManager>
     private class ObjectPool
     {
         private Transform _parent;
-        private PoolObject _prefab; // Ç®¿¡ Àç»ç¿ëÇÒ ¿ÀºêÁ§Æ®´Â PoolObject¸¦ »ó¼ÓÇØ¾ß ÇÔ
+        private PoolObject _prefab; // í’€ì— ì¬ì‚¬ìš©í•  ì˜¤ë¸Œì íŠ¸ëŠ” PoolObjectë¥¼ ìƒì†í•´ì•¼ í•¨
         private PoolObject[] _pool = new PoolObject[1];
         private int _top = -1;
 
         public ObjectPool(string prefabName, Transform parent)
         {
             _parent = parent;
-            _prefab = Resources.Load<PoolObject>($"Prefabs/{prefabName}"); // ½ºÅ©¸³Æ®¿Í ÇÁ¸®ÆÕ ÀÌ¸§Àº µ¿ÀÏÇÏ°Ô
+            _prefab = Resources.Load<PoolObject>($"Prefabs/{prefabName}"); // ìŠ¤í¬ë¦½íŠ¸ì™€ í”„ë¦¬íŒ¹ ì´ë¦„ì€ ë™ì¼í•˜ê²Œ
             _prefab.gameObject.SetActive(false);
         }
 

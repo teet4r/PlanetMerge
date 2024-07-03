@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 2188385400526527091}
   - component: {fileID: 2612659937974294657}
   m_Layer: 5
-  m_Name: BestScoreTxt
+  m_Name: $BestScoreTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 8832537535718018827}
   - component: {fileID: 4158611107459139058}
   m_Layer: 5
-  m_Name: NewBestScoreTxt
+  m_Name: $NewBestScoreTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 2583303963723627243}
   - component: {fileID: 8913040708294279805}
   m_Layer: 5
-  m_Name: NowScoreTxt
+  m_Name: $NowScoreTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 3805083452395747700}
   - component: {fileID: 6770860168339640731}
   m_Layer: 5
-  m_Name: RetryTxt
+  m_Name: $RetryTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -853,7 +853,7 @@ GameObject:
   - component: {fileID: 468964481579770071}
   - component: {fileID: 3505131801224671965}
   m_Layer: 5
-  m_Name: MainTxt
+  m_Name: $MainTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1008,7 +1008,7 @@ GameObject:
   - component: {fileID: 4308820776696770023}
   - component: {fileID: 5657344960259323199}
   m_Layer: 5
-  m_Name: ExitTxt
+  m_Name: $ExitTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

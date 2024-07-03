@@ -30,6 +30,6 @@ public abstract class PoolObject : MonoBehaviour
 
     public void Activate() => gameObject.SetActive(true);
 
-    // Ç®¿¡ ´Ù½Ã Áı¾î³Ö´Â ÀÛ¾÷
+    // í’€ì— ë‹¤ì‹œ ì§‘ì–´ë„£ëŠ” ì‘ì—…
     public abstract void Pool();
 }

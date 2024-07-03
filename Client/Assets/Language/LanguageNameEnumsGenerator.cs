@@ -24,11 +24,12 @@ public class GenerateLanguageNameEnums : Editor
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
-                    var result = reader.AsDataSet();
-                    var tables = result.Tables;
+                    var table = reader.AsDataSet().Tables[0];
+                    var rows = table.Rows;
+                    var columnCount = table.Columns.Count;
 
-                    for (int t = 0; t < tables.Count; ++t)
-                        languages.Add(tables[t].TableName);
+                    for (int i = 0; i < columnCount; ++i)
+                        languages.Add(rows[0][i].ToString());
                 }
             }
 

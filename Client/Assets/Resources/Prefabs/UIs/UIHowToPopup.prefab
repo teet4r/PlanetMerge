@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1168958844110212629}
   - component: {fileID: 4588864283939453903}
   m_Layer: 5
-  m_Name: ItemName
+  m_Name: $ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 7945521041283677519}
   - component: {fileID: 7412045187895579082}
   m_Layer: 5
-  m_Name: ExplainTxt (4)
+  m_Name: $ExplainTxt (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -767,7 +767,7 @@ GameObject:
   - component: {fileID: 1912872737637434797}
   - component: {fileID: 5715808955184814265}
   m_Layer: 5
-  m_Name: ExplainTxt (1)
+  m_Name: $ExplainTxt (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -846,7 +846,7 @@ GameObject:
   - component: {fileID: 5323394923134002878}
   - component: {fileID: 23305628582080966}
   m_Layer: 5
-  m_Name: HowtoTxt
+  m_Name: $HowtoTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 586070574548398458}
   - component: {fileID: 3072943270420814769}
   m_Layer: 5
-  m_Name: CloseTxt
+  m_Name: $CloseTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1391,7 +1391,7 @@ GameObject:
   - component: {fileID: 7498557953202156015}
   - component: {fileID: 6776263365176873357}
   m_Layer: 5
-  m_Name: ExplainTxt (4)
+  m_Name: $ExplainTxt (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1457,8 +1457,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.3
-  m_Text: "\uC6D0\uD558\uB294 \uD589\uC131\n\uD558\uB098\uB97C \uC120\uD0DD\uD574\n\uC5C6\uC568
-    \uC218 \uC788\uB2E4."
+  m_Text: "\uC6D0\uD558\uB294 \uD589\uC131 \uD558\uB098\uB97C \uC120\uD0DD\uD574
+    \uC5C6\uC568 \uC218 \uC788\uB2E4."
 --- !u!1 &5193583086339644520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,7 +1546,7 @@ GameObject:
   - component: {fileID: 5933646243668765706}
   - component: {fileID: 8446666536470306682}
   m_Layer: 5
-  m_Name: ExplainTxt
+  m_Name: $ExplainTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1612,7 +1612,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.3
-  m_Text: "\uC544\uC774\uD15C \uC124\uBA85\n"
+  m_Text: "\uC544\uC774\uD15C \uC124\uBA85"
 --- !u!1 &5658908920242085429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1928,7 +1928,7 @@ GameObject:
   - component: {fileID: 832509378674165658}
   - component: {fileID: 9141913019675866617}
   m_Layer: 5
-  m_Name: ExplainTxt (4)
+  m_Name: $ExplainTxt (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2158,7 +2158,7 @@ GameObject:
   - component: {fileID: 2733759858914340790}
   - component: {fileID: 1568229202894609460}
   m_Layer: 5
-  m_Name: ExplainTxt (1)
+  m_Name: $ExplainTxt (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2436,7 +2436,7 @@ GameObject:
   - component: {fileID: 6690630370902252917}
   - component: {fileID: 1707079472141569539}
   m_Layer: 5
-  m_Name: ItemName
+  m_Name: $ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2548,7 +2548,7 @@ GameObject:
   - component: {fileID: 8356013877237734513}
   - component: {fileID: 7951102403083764971}
   m_Layer: 5
-  m_Name: ItemName
+  m_Name: $ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

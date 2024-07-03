@@ -5,8 +5,6 @@ using System.IO;
 
 public static class Translator
 {
-    public static Language CurLanguage => _curLan;
-
     private static Dictionary<string, string> _dict = new();
     private static Language _curLan;
 
@@ -27,19 +25,26 @@ public static class Translator
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
                 var result = reader.AsDataSet();
-                var rows = result.Tables[(int)_curLan].Rows;
+                var rows = result.Tables[0].Rows;
+                var korIdx = (int)Language.Korean;
+                var langIdx = (int)_curLan;
 
-                for (int i = 0; i < rows.Count; ++i)
-                    _dict.Add(rows[i][0].ToString(), rows[i][1].ToString());
+                for (int i = 1; i < rows.Count; ++i)
+                    _dict.Add(rows[i][korIdx].ToString(), rows[i][langIdx].ToString());
             }
         }
     }
 
-    public static string Get(string kor)
+    public static string Get(string korFormat, params object[] args)
     {
+        string format;
+
         if (_curLan == Language.Korean)
-            return kor;
-        return _dict[kor];
+            format = korFormat;
+        else
+            format = _dict[korFormat];
+
+        return string.Format(format, args);
     }
 
     public static void ChangeLanguage(Language newLanguage)

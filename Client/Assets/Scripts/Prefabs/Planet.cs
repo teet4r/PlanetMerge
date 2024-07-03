@@ -62,8 +62,8 @@ public class Planet : CollidablePoolObject
         if (!_isDrag)
             return;
 
-        var mousePos = _mainCamera.ScreenToWorldPoint(Input.mousePosition); //½ºÅ©¸° ÁÂÇ¥¸¦ ¿ùµå ÁÂÇ¥·Î
-                                                                            //xÃà °æ°è ¼³Á¤
+        var mousePos = _mainCamera.ScreenToWorldPoint(Input.mousePosition); //ìŠ¤í¬ë¦° ì¢Œí‘œë¥¼ ì›”ë“œ ì¢Œí‘œë¡œ
+                                                                            //xì¶• ê²½ê³„ ì„¤ì •
         float leftBorder = -2.9f + tr.localScale.x;
         float rightBorder = 2.9f - tr.localScale.x;
 
@@ -74,7 +74,7 @@ public class Planet : CollidablePoolObject
 
         mousePos.y = 4.3f;
         mousePos.z = 0;
-        //ºÎµå·´°Ô µû¶ó´Ù´Ï°Ô lerp(ÇöÀçÀ§Ä¡, ¸ñÇ¥À§Ä¡, µû¶ó°¡´Â °­µµ
+        //ë¶€ë“œëŸ½ê²Œ ë”°ë¼ë‹¤ë‹ˆê²Œ lerp(í˜„ì¬ìœ„ì¹˜, ëª©í‘œìœ„ì¹˜, ë”°ë¼ê°€ëŠ” ê°•ë„
         tr.position = Vector3.Lerp(tr.position, mousePos, 0.2f);
     }
 
@@ -128,22 +128,22 @@ public class Planet : CollidablePoolObject
         if (_level != other._level || _isMerging || other._isMerging)
             return;
 
-        //³ª¿Í »ó´ë À§Ä¡ °¡Á®¿À±â
+        //ë‚˜ì™€ ìƒëŒ€ ìœ„ì¹˜ ê°€ì ¸ì˜¤ê¸°
         float meX = tr.position.x;
         float meY = tr.position.y;
         float otherX = other.tr.position.x;
         float otherY = other.tr.position.y;
-        //1. ³»°¡ ¾Æ·¡
-        //2. µ¿ÀÏÇÑ ³ôÀÌ, ³»°¡ ¿À¸¥ÂÊ
+        //1. ë‚´ê°€ ì•„ë˜
+        //2. ë™ì¼í•œ ë†’ì´, ë‚´ê°€ ì˜¤ë¥¸ìª½
         if (meY < otherY || (meY == otherY && meX > otherX))
         {
             Combo.Add();
 
             if (_level < C.PLANET_MAX_LEVEL)
             {
-                //»ó´ë ¼û±â±â
+                //ìƒëŒ€ ìˆ¨ê¸°ê¸°
                 other.Hide(tr.position);
-                //³ª ·¹º§¾÷
+                //ë‚˜ ë ˆë²¨ì—…
                 LevelUp(needMergingTime: true);
             }
             else // level >= 9

@@ -615,7 +615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _leftWall: {fileID: 2141608378}
   _rightWall: {fileID: 545877188}
-  _groundSpace: {fileID: 2136222313}
+  _playBox: {fileID: 2136222313}
   _gameoverLine: {fileID: 1067938135}
 --- !u!1 &1067938131
 GameObject:
@@ -856,7 +856,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2136222313}
   m_Layer: 0
-  m_Name: GroundSpace
+  m_Name: PlayBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -875,9 +875,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1067938132}
   - {fileID: 2141608379}
   - {fileID: 545877189}
-  - {fileID: 1067938132}
   - {fileID: 326256276}
   m_Father: {fileID: 1024329185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

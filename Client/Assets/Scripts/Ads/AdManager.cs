@@ -4,7 +4,7 @@ using System;
 public static class AdManager
 {
     /// <summary>
-    /// Àü¸é ±¤°í
+    /// ì „ë©´ ê´‘ê³ 
     /// </summary>
     private static InterstitialAd _interstitialAd;
 
@@ -66,7 +66,7 @@ public static class AdManager
 
 
     /// <summary>
-    /// ¹è³Ê ±¤°í
+    /// ë°°ë„ˆ ê´‘ê³ 
     /// </summary>
     private static BannerView _bannerView;
 

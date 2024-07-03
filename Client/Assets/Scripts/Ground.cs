@@ -9,7 +9,7 @@ public class Ground : SceneSingletonBehaviour<Ground>
 
     [SerializeField] private GameObject _leftWall;
     [SerializeField] private GameObject _rightWall;
-    [SerializeField] private Transform _groundSpace;
+    [SerializeField] private Transform _playBox;
     [SerializeField] private GameoverLine _gameoverLine;
 
     private Camera _mainCamera;
@@ -26,8 +26,8 @@ public class Ground : SceneSingletonBehaviour<Ground>
         _leftWall.transform.localPosition = new Vector2(-cameraHalfWidth - 0.5f, 0f);
         _rightWall.transform.localPosition = new Vector2(cameraHalfWidth + 0.5f, 0f);
 
-        var spacePos = _groundSpace.position;
+        var spacePos = _playBox.position;
         spacePos.y += _mainCamera.ScreenSizeYToWorldSizeY(AdManager.BannerHeight + 10);
-        _groundSpace.position = spacePos;
+        _playBox.position = spacePos;
     }
 }
