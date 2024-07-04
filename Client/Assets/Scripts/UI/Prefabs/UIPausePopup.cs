@@ -29,12 +29,12 @@ public class UIPausePopup : UI
             UIManager.Get<UIRemindPopup>()
                 .SetTitle(Translator.Get("다시하기"))
                 .SetDescription(Translator.Get("처음부터 다시 하시겠습니까?"))
-                .SetYesButton(() =>
+                .SetFirstButton(Translator.Get("예"), () =>
                 {
                     SFX.PlayButtonClick();
                     CustomSceneManager.LoadSceneAsync(SceneName.Play).Forget();
                 })
-                .SetNoButton(null)
+                .SetSecondButton(Translator.Get("아니오"))
                 .Show();
         });
 
@@ -44,12 +44,12 @@ public class UIPausePopup : UI
             UIManager.Get<UIRemindPopup>()
                 .SetTitle(Translator.Get("메인으로 가기"))
                 .SetDescription(Translator.Get("메인으로 돌아가시겠습니까?"))
-                .SetYesButton(() =>
+                .SetFirstButton(Translator.Get("예"), () =>
                 {
                     SFX.PlayButtonClick();
                     CustomSceneManager.LoadSceneAsync(SceneName.Main).Forget();
                 })
-                .SetNoButton(null)
+                .SetSecondButton(Translator.Get("아니오"))
                 .Show();
         });
     }

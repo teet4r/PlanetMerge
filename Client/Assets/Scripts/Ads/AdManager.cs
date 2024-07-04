@@ -1,5 +1,6 @@
 using GoogleMobileAds.Api;
 using System;
+using UnityEngine;
 
 public static class AdManager
 {
@@ -43,7 +44,10 @@ public static class AdManager
             {
                 // if error is not null, the load request failed.
                 if (error != null || ad == null)
+                {
+                    _HandleError(error);
                     return;
+                }
 
                 _interstitialAd = ad;
             }
@@ -52,13 +56,13 @@ public static class AdManager
 
     public static void ShowInterstitialAd(Action onClosed)
     {
+        _LoadInterstitialAd();
+
         if (_interstitialAd != null && _interstitialAd.CanShowAd())
         {
             _interstitialAd.OnAdFullScreenContentClosed += onClosed;
             _interstitialAd.Show();
         }
-        else
-            _LoadInterstitialAd();
     }
 
 
@@ -91,6 +95,7 @@ public static class AdManager
         // Create a 320x50 banner at top of the screen
         //AdSize adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
         _bannerView = new BannerView(_bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
+        _bannerView.OnBannerAdLoadFailed += (LoadAdError error) => _HandleError(error);
     }
 
     /// <summary>
@@ -118,6 +123,34 @@ public static class AdManager
         {
             _bannerView.Destroy();
             _bannerView = null;
+        }
+    }
+
+
+
+    private static void _HandleError(LoadAdError error)
+    {
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            UIManager.Get<UIRemindPopup>()
+                .SetTitle(Translator.Get("에러"))
+                .SetDescription(Translator.Get("인터넷이 연결되어 있지 않습니다."))
+                .SetFirstButton(Translator.Get("종료"), () =>
+                {
+                    Application.Quit();
+                })
+                .Show();
+        }
+        else
+        {
+            UIManager.Get<UIRemindPopup>()
+                .SetTitle(Translator.Get("에러"))
+                .SetDescription(Translator.Get("에러가 발생하였습니다: {0}", error.GetMessage()))
+                .SetFirstButton(Translator.Get("종료"), () =>
+                {
+                    Application.Quit();
+                })
+                .Show();
         }
     }
 }
