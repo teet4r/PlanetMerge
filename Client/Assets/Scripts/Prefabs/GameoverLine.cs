@@ -1,8 +1,5 @@
-using Behaviour;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UniRx;
 using UnityEngine;
 
 public class GameoverLine : MonoBehaviour, ICollidable
@@ -20,6 +17,8 @@ public class GameoverLine : MonoBehaviour, ICollidable
 
     private Transform _tr;
     private SpriteRenderer _renderer;
+    private Animation _animation;
+    private AnimationState _fadeOutInState;
     private Vector2 _t = new();
 
     private float _originHeight;
@@ -32,10 +31,13 @@ public class GameoverLine : MonoBehaviour, ICollidable
     {
         _tr = GetComponent<Transform>();
         _renderer = GetComponent<SpriteRenderer>();
+        _animation = GetComponent<Animation>();
 
         _originHeight = _tr.position.y;
         _t.x = _tr.position.x;
         _originColor = _renderer.material.color;
+
+        _fadeOutInState = _animation["FadeOutIn"];
     }
 
     private void OnEnable()
@@ -59,21 +61,16 @@ public class GameoverLine : MonoBehaviour, ICollidable
 
         if (_touchingCnt > 0)
         {
-            _deadtime += Time.fixedDeltaTime;
+            _deadtime = Mathf.Min(_deadtime + Time.fixedDeltaTime, 6f);
 
             if (_deadtime >= 6f)
             {
                 PauseUpdate = true;
                 PlayScene.Instance.Gameover();
             }
-            else if (_deadtime >= 1f)
-                _renderer.material.color = Color.Lerp(_originColor, Color.red, (_deadtime - 1f) / 5f);
         }
         else
-        {
             _deadtime = Mathf.Max(_deadtime - Time.fixedDeltaTime, 0f);
-            _renderer.material.color = Color.Lerp(_originColor, Color.red, (_deadtime - 1f) / 5f);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -84,6 +81,22 @@ public class GameoverLine : MonoBehaviour, ICollidable
         {
             case Planet:
                 ++_touchingCnt;
+                break;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        var collidable = collision.gameObject.GetComponent<ICollidable>();
+
+        switch (collidable)
+        {
+            case Planet:
+                if (_deadtime >= 1f && !_animation.isPlaying)
+                {
+                    _fadeOutInState.speed = _deadtime * 0.8f;
+                    _animation.Play();
+                }
                 break;
         }
     }

@@ -628,6 +628,7 @@ GameObject:
   - component: {fileID: 1067938132}
   - component: {fileID: 1067938133}
   - component: {fileID: 1067938134}
+  - component: {fileID: 1067938136}
   - component: {fileID: 1067938135}
   m_Layer: 0
   m_Name: Line
@@ -762,6 +763,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PauseUpdate: 0
   _targetHeight: 2.5
+--- !u!111 &1067938136
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067938131}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 5cd7f4fade7abd04187ae8ea91fa64fd, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 5cd7f4fade7abd04187ae8ea91fa64fd, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1904809124
 GameObject:
   m_ObjectHideFlags: 0
