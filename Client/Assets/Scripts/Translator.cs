@@ -51,5 +51,6 @@ public static class Translator
             return;
 
         PlayerPrefs.SetInt(PlayerPrefsKey.LANGUAGE, (int)newLanguage);
+        ApplicationExtensions.Restart();
     }
 }

@@ -31,11 +31,7 @@ public class UISettingPopup : UI
         _languageDropdown.AddOptions(Translator.LocalLanguages);
         _languageDropdown.captionText.text = Translator.CurLocalLanguage;
         _languageDropdown.value = (int)Translator.CurLanguage;
-        _languageDropdown.onValueChanged.AddListener(idx =>
-        {
-            Translator.ChangeLanguage((Language)idx);
-            ApplicationExtensions.Restart();
-        });
+        _languageDropdown.onValueChanged.AddListener(idx => Translator.ChangeLanguage((Language)idx));
     }
 
     public void Bind()
