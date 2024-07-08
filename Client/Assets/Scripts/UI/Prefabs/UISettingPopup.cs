@@ -9,6 +9,7 @@ public class UISettingPopup : UI
     [SerializeField] private Button _closeButton;
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
+    [SerializeField] private Dropdown _languageDropdown;
 
     private void Awake()
     {
@@ -25,6 +26,15 @@ public class UISettingPopup : UI
         {
             UIManager.Show<UIReadyPopup>().Bind();
             //Application.OpenURL("market://details?id=com.Company.ProductName");
+        });
+
+        _languageDropdown.AddOptions(Translator.LocalLanguages);
+        _languageDropdown.captionText.text = Translator.CurLocalLanguage;
+        _languageDropdown.value = (int)Translator.CurLanguage;
+        _languageDropdown.onValueChanged.AddListener(idx =>
+        {
+            Translator.ChangeLanguage((Language)idx);
+            ApplicationExtensions.Restart();
         });
     }
 

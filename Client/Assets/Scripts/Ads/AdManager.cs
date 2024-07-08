@@ -133,9 +133,9 @@ public static class AdManager
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             UIManager.Get<UIRemindPopup>()
-                .SetTitle(Translator.Get("에러"))
-                .SetDescription(Translator.Get("인터넷이 연결되어 있지 않습니다."))
-                .SetFirstButton(Translator.Get("종료"), () =>
+                .SetTitle(Translator.Get("$$에러"))
+                .SetDescription(Translator.Get("$$인터넷이 연결되어 있지 않습니다."))
+                .SetFirstButton(Translator.Get("$$종료"), () =>
                 {
                     Application.Quit();
                 })
@@ -144,9 +144,9 @@ public static class AdManager
         else
         {
             UIManager.Get<UIRemindPopup>()
-                .SetTitle(Translator.Get("에러"))
-                .SetDescription(Translator.Get("에러가 발생하였습니다: {0}", error.GetMessage()))
-                .SetFirstButton(Translator.Get("종료"), () =>
+                .SetTitle(Translator.Get("$$에러"))
+                .SetDescription(Translator.Get("$$에러가 발생하였습니다: {0}", error.GetMessage()))
+                .SetFirstButton(Translator.Get("$$종료"), () =>
                 {
                     Application.Quit();
                 })

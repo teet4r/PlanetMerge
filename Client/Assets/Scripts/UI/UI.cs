@@ -17,11 +17,10 @@ public class UI : MonoBehaviour
     {
         _rectTr = GetComponent<RectTransform>();
 
-        // Translator.Get()을 통해서 번역할 수 없는 텍스트(고정 텍스트)는 따로 번역
-        // 이름을 '$'으로 시작
+        // "$$"이 있는 문구 번역
         var texts = _rectTr.GetComponentsInChildren<Text>();
         for (int i = 0; i < texts.Length; ++i)
-            if (texts[i].name.StartsWith('$'))
+            if (texts[i].text.StartsWith("$$"))
                 texts[i].text = Translator.Get(texts[i].text);
     }
 

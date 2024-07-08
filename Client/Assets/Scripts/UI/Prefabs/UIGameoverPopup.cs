@@ -31,8 +31,8 @@ public class UIGameoverPopup : UI
 
     public void Bind(int score, int prevHighestScore, int curHighestScore)
     {
-        _scoreText.text = Translator.Get("현재 점수 : {0}", score.Comma());
-        _bestScoreText.text = Translator.Get("최고 점수 : {0}", curHighestScore.Comma());
+        _scoreText.text = Translator.Get("$$현재 점수 : {0}", score.Comma());
+        _bestScoreText.text = Translator.Get("$$최고 점수 : {0}", curHighestScore.Comma());
         _newBestScoreGroup.SetActive(prevHighestScore < curHighestScore);
     }
 }

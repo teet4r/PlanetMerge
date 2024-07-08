@@ -28,8 +28,8 @@ public class GenerateLanguageNameEnums : Editor
                     var rows = table.Rows;
                     var columnCount = table.Columns.Count;
 
-                    for (int i = 0; i < columnCount; ++i)
-                        languages.Add(rows[0][i].ToString());
+                    for (int j = 1; j < columnCount; ++j)
+                        languages.Add(rows[0][j].ToString());
                 }
             }
 

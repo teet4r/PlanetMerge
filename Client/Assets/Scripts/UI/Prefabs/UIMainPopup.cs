@@ -44,6 +44,6 @@ public class UIMainPopup : UI
 
     private void OnEnable()
     {
-        _bestScoreText.text = Translator.Get("최고 점수 : {0}", PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0).Comma());
+        _bestScoreText.text = Translator.Get("$$최고 점수 : {0}", PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0).Comma());
     }
 }

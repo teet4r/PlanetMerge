@@ -5,6 +5,10 @@ using System.IO;
 
 public static class Translator
 {
+    public static Language CurLanguage => _curLan;
+    public static string CurLocalLanguage => LocalLanguages[(int)_curLan];
+    public static List<string> LocalLanguages = new(); // 한국어, English, 日本語, ... (LanguagePack.xlsx 2행)
+
     private static Dictionary<string, string> _dict = new();
     private static Language _curLan;
 
@@ -17,35 +21,29 @@ public static class Translator
 
     private static void _ReadLanguageSheet()
     {
-        if (_curLan == Language.Korean)
-            return;
-
         using (var stream = File.Open($"{Application.dataPath}/Language/LanguagePack.xlsx", FileMode.Open, FileAccess.Read))
         {
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
                 var result = reader.AsDataSet();
-                var rows = result.Tables[0].Rows;
-                var korIdx = (int)Language.Korean;
-                var langIdx = (int)_curLan;
+                var sheet = result.Tables[0];
+                var rows = sheet.Rows;
+                var columnCount = sheet.Columns.Count;
 
-                for (int i = 1; i < rows.Count; ++i)
-                    _dict.Add(rows[i][korIdx].ToString(), rows[i][langIdx].ToString());
+                LocalLanguages.Clear();
+                for (int j = 1; j < columnCount; ++j)
+                    LocalLanguages.Add(rows[1][j].ToString());
+
+                var langIdx = (int)_curLan + 1;
+
+                for (int i = 2; i < rows.Count; ++i)
+                    _dict.Add(rows[i][0].ToString(), rows[i][langIdx].ToString());
             }
         }
     }
 
     public static string Get(string korFormat, params object[] args)
-    {
-        string format;
-
-        if (_curLan == Language.Korean)
-            format = korFormat;
-        else
-            format = _dict[korFormat];
-
-        return string.Format(format, args);
-    }
+        => string.Format(_dict[korFormat], args);
 
     public static void ChangeLanguage(Language newLanguage)
     {

@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 2188385400526527091}
   - component: {fileID: 2612659937974294657}
   m_Layer: 5
-  m_Name: $BestScoreTxt
+  m_Name: BestScoreTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 8832537535718018827}
   - component: {fileID: 4158611107459139058}
   m_Layer: 5
-  m_Name: $NewBestScoreTxt
+  m_Name: NewBestScoreTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uCD5C\uACE0 \uC810\uC218 \uB2EC\uC131!"
+  m_Text: "$$\uCD5C\uACE0 \uC810\uC218 \uB2EC\uC131!"
 --- !u!1 &5337999515190176711
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 2583303963723627243}
   - component: {fileID: 8913040708294279805}
   m_Layer: 5
-  m_Name: $NowScoreTxt
+  m_Name: NowScoreTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 3805083452395747700}
   - component: {fileID: 6770860168339640731}
   m_Layer: 5
-  m_Name: $RetryTxt
+  m_Name: RetryTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -716,10 +716,10 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB2E4\uC2DC\uD558\uAE30"
+  m_Text: "$$\uB2E4\uC2DC\uD558\uAE30"
 --- !u!1 &7909690167953736529
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,7 +853,7 @@ GameObject:
   - component: {fileID: 468964481579770071}
   - component: {fileID: 3505131801224671965}
   m_Layer: 5
-  m_Name: $MainTxt
+  m_Name: MainTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -916,10 +916,10 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uBA54\uC778\uC73C\uB85C"
+  m_Text: "$$\uBA54\uC778\uC73C\uB85C"
 --- !u!1 &9089707649194455458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,7 +1008,7 @@ GameObject:
   - component: {fileID: 4308820776696770023}
   - component: {fileID: 5657344960259323199}
   m_Layer: 5
-  m_Name: $ExitTxt
+  m_Name: ExitTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1074,4 +1074,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uAC8C\uC784 \uACB0\uACFC"
+  m_Text: "$$\uAC8C\uC784 \uACB0\uACFC"
