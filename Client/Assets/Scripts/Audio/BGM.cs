@@ -24,7 +24,11 @@ public class BGM : SingletonBehaviour<BGM>
         base.Awake();
 
         _audioSource = GetComponent<AudioSource>();
+    }
 
+    public static void Initialize()
+    {
+        _bgms.Clear();
         _audioSource.volume = PlayerPrefs.GetFloat(PlayerPrefsKey.BGM_VALUE, 1f);
     }
 

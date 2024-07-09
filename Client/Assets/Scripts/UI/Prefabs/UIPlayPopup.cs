@@ -94,7 +94,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 
     private void FixedUpdate()
     {
-        var gameoverLine = Ground.Instance.GameoverLine;
+        var gameoverLine = Ground.Instance?.GameoverLine;
 
         if (gameoverLine != null)
         {
@@ -120,7 +120,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 
         Observable.EveryFixedUpdate().Subscribe(t =>
         {
-            if (PlayScene.Instance.LastPlanet == null)
+            if (PlayScene.Instance?.LastPlanet == null)
             {
                 _boomItemToggle.Interactable = false;
                 _upgradeItemButton.Interactable = false;

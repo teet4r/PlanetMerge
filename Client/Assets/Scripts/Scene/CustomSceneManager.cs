@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cysharp.Threading.Tasks;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -27,10 +26,14 @@ public class CustomSceneManager : SingletonBehaviour<CustomSceneManager>
     public static async UniTask LoadSceneAsync(SceneName sceneName)
     {
         await SceneManager.LoadSceneAsync((int)SceneName.Empty);
+        await UniTask.DelayFrame(1);
         
         UIManager.HideAll();
+        UIManager.ClearAll();
         ObjectPoolManager.HideAll();
+        ObjectPoolManager.ClearAll();
 
         await SceneManager.LoadSceneAsync((int)sceneName);
+        await UniTask.DelayFrame(1);
     }
 }

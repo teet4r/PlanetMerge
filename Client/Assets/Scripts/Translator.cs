@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using ExcelDataReader;
 using System.IO;
+using Cysharp.Threading.Tasks;
 
 public static class Translator
 {
@@ -21,25 +21,31 @@ public static class Translator
 
     private static void _ReadLanguageSheet()
     {
-        using (var stream = File.Open($"{Application.dataPath}/Language/LanguagePack.xlsx", FileMode.Open, FileAccess.Read))
-        {
-            using (var reader = ExcelReaderFactory.CreateReader(stream))
-            {
-                var result = reader.AsDataSet();
-                var sheet = result.Tables[0];
-                var rows = sheet.Rows;
-                var columnCount = sheet.Columns.Count;
+        string path = null;
+        string json = null;
+#if UNITY_EDITOR
+        path = $"{Application.dataPath}/StreamingAssets/LanguagePack.json";
+        json = File.ReadAllText(path);
+#elif UNITY_ANDROID
+        path = $"jar:file://{Application.dataPath}!/assets/LanguagePack.json";
+        WWW reader = new WWW(path);
+        while (!reader.isDone) { }
+        json = reader.text;
+#endif
+        var translationContainer = JsonUtility.FromJson<LanguageResolver.TranslationContainer>(json);
+        var translationPairs = translationContainer.pairs;
+        var rows = translationPairs.Length;
+        var cols = translationPairs[0].translations.Length;
 
-                LocalLanguages.Clear();
-                for (int j = 1; j < columnCount; ++j)
-                    LocalLanguages.Add(rows[1][j].ToString());
+        LocalLanguages.Clear();
+        for (int j = 0; j < cols; ++j)
+            LocalLanguages.Add(translationPairs[0].translations[j].ToString());
 
-                var langIdx = (int)_curLan + 1;
+        var langIdx = (int)_curLan;
 
-                for (int i = 2; i < rows.Count; ++i)
-                    _dict.Add(rows[i][0].ToString(), rows[i][langIdx].ToString());
-            }
-        }
+        _dict.Clear();
+        for (int i = 1; i < rows; ++i)
+            _dict.Add(translationPairs[i].key, translationPairs[i].translations[langIdx].ToString());
     }
 
     public static string Get(string korFormat, params object[] args)
@@ -51,6 +57,6 @@ public static class Translator
             return;
 
         PlayerPrefs.SetInt(PlayerPrefsKey.LANGUAGE, (int)newLanguage);
-        ApplicationExtensions.Restart();
+        CustomSceneManager.LoadSceneAsync(SceneName.Initialization).Forget();
     }
 }

@@ -24,7 +24,11 @@ public class SFX : SingletonBehaviour<SFX>
         base.Awake();
 
         _audioSource = GetComponent<AudioSource>();
+    }
 
+    public static void Initialize()
+    {
+        _sfxs.Clear();
         _audioSource.volume = PlayerPrefs.GetFloat(PlayerPrefsKey.SFX_VALUE, 1f);
     }
 

@@ -1,0 +1,308 @@
+{
+    "pairs": [
+        {
+            "key": "",
+            "translations": [
+                "한국어",
+                "English",
+                "日本語"
+            ]
+        },
+        {
+            "key": "$$현재 점수 : {0}",
+            "translations": [
+                "현재 점수 : {0}",
+                "Score : {0}",
+                "スコア : {0}"
+            ]
+        },
+        {
+            "key": "$$최고 점수 : {0}",
+            "translations": [
+                "최고 점수 : {0}",
+                "Best score : {0}",
+                "最高スコア : {0}"
+            ]
+        },
+        {
+            "key": "$$처음부터 다시 하시겠습니까?",
+            "translations": [
+                "처음부터 다시 하시겠습니까?",
+                "Do you want to start all over again?",
+                "はじめからやりなおしますか?"
+            ]
+        },
+        {
+            "key": "$$메인으로 돌아가시겠습니까?",
+            "translations": [
+                "메인으로 돌아가시겠습니까?",
+                "Are you sure you want to go back to the main?",
+                "ゲームをやめてホームでいきますか?"
+            ]
+        },
+        {
+            "key": "$$게임 시작",
+            "translations": [
+                "게임 시작",
+                "Game start",
+                "ゲームスタート"
+            ]
+        },
+        {
+            "key": "$$게임 안내",
+            "translations": [
+                "게임 안내",
+                "How to play",
+                "ゲームの遊び方"
+            ]
+        },
+        {
+            "key": "$$업그레이드 순서",
+            "translations": [
+                "업그레이드 순서",
+                "Upgrade order",
+                "アップグレード順序"
+            ]
+        },
+        {
+            "key": "$$아이템 설명",
+            "translations": [
+                "아이템 설명",
+                "Item description",
+                "アイテムの説明"
+            ]
+        },
+        {
+            "key": "$$1판에 각 1개씩 사용 가능하며, 게임 종료 시 소멸된다.",
+            "translations": [
+                "1판에 각 1개씩 사용 가능하며, 게임 종료 시 소멸된다.",
+                "You can use one per game, and it will disappear when the game is over.",
+                "1ゲームにつき1つ使用できて、ゲームが終了すると消えます。"
+            ]
+        },
+        {
+            "key": "$$업그레이드",
+            "translations": [
+                "업그레이드",
+                "Upgrade",
+                "アップグレード"
+            ]
+        },
+        {
+            "key": "$$현재 떨어트릴 수 있는 행성을 한 단계 업그레이드 시킨다.",
+            "translations": [
+                "현재 떨어트릴 수 있는 행성을 한 단계 업그레이드 시킨다.",
+                "Upgrade the planet you are dropping by one level.",
+                "いま落とそうとしている惑星を1段階アップグレードします"
+            ]
+        },
+        {
+            "key": "$$폭탄",
+            "translations": [
+                "폭탄",
+                "Bomb",
+                "爆弾"
+            ]
+        },
+        {
+            "key": "$$원하는 행성 하나를 선택해 없앨 수 있다.",
+            "translations": [
+                "원하는 행성 하나를 선택해 없앨 수 있다.",
+                "You can choose and bomb one planet you want.",
+                "1つの惑星を選択して、その惑星を爆撃することができます。"
+            ]
+        },
+        {
+            "key": "$$다운그레이드",
+            "translations": [
+                "다운그레이드",
+                "Downgrade",
+                "ダウングレード"
+            ]
+        },
+        {
+            "key": "$$현재 떨어트릴 수 있는 행성을 한 단계 다운그레이드 시킨다.",
+            "translations": [
+                "현재 떨어트릴 수 있는 행성을 한 단계 다운그레이드 시킨다.",
+                "Downgrade the planet you are dropping by one level.",
+                "いま落とそうとしている惑星を1段階ダウングレードします"
+            ]
+        },
+        {
+            "key": "$$환경설정",
+            "translations": [
+                "환경설정",
+                "Settings",
+                "オプション"
+            ]
+        },
+        {
+            "key": "$$게임 종료",
+            "translations": [
+                "게임 종료",
+                "Exit",
+                "ゲーム終了"
+            ]
+        },
+        {
+            "key": "$$게임을 종료하시겠습니까?",
+            "translations": [
+                "게임을 종료하시겠습니까?",
+                "Do you want to quit the game?",
+                "ゲームをやめますか？"
+            ]
+        },
+        {
+            "key": "$$일시정지",
+            "translations": [
+                "일시정지",
+                "Pause",
+                "ポーズ"
+            ]
+        },
+        {
+            "key": "$$배경음",
+            "translations": [
+                "배경음",
+                "BGM",
+                "音楽"
+            ]
+        },
+        {
+            "key": "$$효과음",
+            "translations": [
+                "효과음",
+                "SFX",
+                "サウンド"
+            ]
+        },
+        {
+            "key": "$$게임으로",
+            "translations": [
+                "게임으로",
+                "Resume",
+                "ゲームをつづける"
+            ]
+        },
+        {
+            "key": "$$다시하기",
+            "translations": [
+                "다시하기",
+                "Retry",
+                "リトライ"
+            ]
+        },
+        {
+            "key": "$$메인으로",
+            "translations": [
+                "메인으로",
+                "Go to main",
+                "ホームでもどる"
+            ]
+        },
+        {
+            "key": "$$메인으로 가기",
+            "translations": [
+                "메인으로 가기",
+                "Go to main",
+                "ホームでもどる"
+            ]
+        },
+        {
+            "key": "$$최고 점수 달성!",
+            "translations": [
+                "최고 점수 달성!",
+                "New Record!",
+                "最高記録達成!"
+            ]
+        },
+        {
+            "key": "$$게임 결과",
+            "translations": [
+                "게임 결과",
+                "Report",
+                "報告"
+            ]
+        },
+        {
+            "key": "$$예",
+            "translations": [
+                "예",
+                "Yes",
+                "はい"
+            ]
+        },
+        {
+            "key": "$$아니오",
+            "translations": [
+                "아니오",
+                "No",
+                "いいえ"
+            ]
+        },
+        {
+            "key": "$$닫기",
+            "translations": [
+                "닫기",
+                "Close",
+                "閉じる"
+            ]
+        },
+        {
+            "key": "$$준비 중입니다!",
+            "translations": [
+                "준비 중입니다!",
+                "Coming soon!",
+                "準備しています！"
+            ]
+        },
+        {
+            "key": "$$별점 주러 가기",
+            "translations": [
+                "별점 주러 가기",
+                "Give a rating",
+                "評定を下す"
+            ]
+        },
+        {
+            "key": "$$에러",
+            "translations": [
+                "에러",
+                "Error",
+                "エラー"
+            ]
+        },
+        {
+            "key": "$$인터넷이 연결되어 있지 않습니다.",
+            "translations": [
+                "인터넷이 연결되어 있지 않습니다.",
+                "There is no internet connection.",
+                "インターネット接続がありません。"
+            ]
+        },
+        {
+            "key": "$$종료",
+            "translations": [
+                "종료",
+                "Quit",
+                "終了"
+            ]
+        },
+        {
+            "key": "$$에러가 발생하였습니다: {0}",
+            "translations": [
+                "에러가 발생하였습니다: {0}",
+                "An error has occurred: {0}",
+                "エラーが発生しました: {0}"
+            ]
+        },
+        {
+            "key": "$$언어",
+            "translations": [
+                "언어",
+                "Language",
+                "言語"
+            ]
+        }
+    ]
+}

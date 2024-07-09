@@ -4,6 +4,19 @@ using UnityEngine;
 
 public static class AdManager
 {
+    public static void Initialize()
+    {
+        // Initialize the Google Mobile Ads SDK.
+        MobileAds.Initialize((InitializationStatus initStatus) => {
+            // This callback is called once the MobileAds SDK is initialized.
+        });
+
+        _interstitialAd = null;
+        _bannerView = null;
+
+        _LoadInterstitialAd();
+    }
+
     /// <summary>
     /// 전면 광고
     /// </summary>
@@ -14,16 +27,6 @@ public static class AdManager
 #elif UNITY_ANDROID
     private static string _interstitialAdUnitId = "ca-app-pub-7910487525826129/4858832900";
 #endif
-
-    public static void Initialize()
-    {
-        // Initialize the Google Mobile Ads SDK.
-        MobileAds.Initialize((InitializationStatus initStatus) => {
-            // This callback is called once the MobileAds SDK is initialized.
-        });
-
-        _LoadInterstitialAd();
-    }
 
     private static void _LoadInterstitialAd()
     {
@@ -56,13 +59,13 @@ public static class AdManager
 
     public static void ShowInterstitialAd(Action onClosed)
     {
-        _LoadInterstitialAd();
-
         if (_interstitialAd != null && _interstitialAd.CanShowAd())
         {
             _interstitialAd.OnAdFullScreenContentClosed += onClosed;
             _interstitialAd.Show();
         }
+        else
+            _LoadInterstitialAd();
     }
 
 
