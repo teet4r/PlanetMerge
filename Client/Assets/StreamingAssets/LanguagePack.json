@@ -303,6 +303,14 @@
                 "Language",
                 "言語"
             ]
+        },
+        {
+            "key": "$$피드백 남기기",
+            "translations": [
+                "피드백 남기기",
+                "Give feedback",
+                "感想を述べます"
+            ]
         }
     ]
 }

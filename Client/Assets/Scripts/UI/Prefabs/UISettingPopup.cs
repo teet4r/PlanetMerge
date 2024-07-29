@@ -24,7 +24,8 @@ public class UISettingPopup : UI
 
         _goToStore.onClick.AddListener(() =>
         {
-            UIManager.Show<UIReadyPopup>().Bind();
+            //UIManager.Show<UIReadyPopup>().Bind();
+            Application.OpenURL("https://forms.gle/1G1SAPZWZ9m4DsV36");
             //Application.OpenURL("market://details?id=com.Company.ProductName");
         });
 

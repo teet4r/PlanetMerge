@@ -538,7 +538,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "$$\uBCC4\uC810 \uC8FC\uB7EC \uAC00\uAE30"
+  m_Text: "$$\uD53C\uB4DC\uBC31 \uB0A8\uAE30\uAE30"
 --- !u!1 &1799679026926714495
 GameObject:
   m_ObjectHideFlags: 0
@@ -2623,7 +2623,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 915481827634486679}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.75
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
