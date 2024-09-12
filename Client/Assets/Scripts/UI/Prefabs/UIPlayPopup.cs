@@ -11,6 +11,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
     [Space(15)]
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Text _curScoreText;
+    [SerializeField] private Text _bestText;
     [SerializeField] private Text _curComboText;
     [SerializeField] private Text _curLineBonusText;
     [SerializeField] private RectTransform _lineBonusText;
@@ -98,7 +99,7 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
 
         if (gameoverLine != null)
         {
-            _curLineBonusText.text = $"<size=30>Line Bonus</size>\nx{gameoverLine.LineBonus}";
+            _curLineBonusText.text = $"<size=40>Line Bonus</size>\nx{gameoverLine.LineBonus}";
             var point = _mainCamera.WorldToScreenPoint(gameoverLine.Position);
             var txtPosition = _lineBonusText.transform.position;
             txtPosition.y = point.y + UIManager.ToReactiveHeight(80);
@@ -140,9 +141,12 @@ public class UIPlayPopup : UI, IPointerDownHandler, IPointerUpHandler
             }
         }).AddTo(disposablesOnHide);
 
+        int prevScore = PlayerPrefs.GetInt(PlayerPrefsKey.HIGHEST_SCORE, 0);
+
         PlayScene.Instance.Score
             .Subscribe(score =>
             {
+                _bestText.gameObject.SetActive(prevScore < score);
                 _curScoreText.text = score.Comma();
                 if (score > 0)
                     _scoreAnimator.SetTrigger(_flinchTrigger);
